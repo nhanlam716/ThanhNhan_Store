@@ -1,100 +1,240 @@
 import React from "react";
+import Logo from "../assets/image/logo_medium.webp";
+import User from "../assets/image/icon-user.webp";
+import Bag from "../assets/image/icon-bag.webp";
+import { FloatingLabel } from "flowbite-react";
+import { ACCESSORY, BRAND } from "../constants/menu";
 
 const Header = () => {
   return (
     <header>
-      <div className="wrapper">
-        <nav>
-          <ul className="ul">
-            <li className="item">
-              <a href="./Header.tsx">trang chủ</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">sản phẩm</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">giày NT</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">giày FS</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">thương hiệu</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">
-                <span>hot sale</span>
-              </a>
-              <li className="item-child">
-                <a href="./Header.tsx">giày NT</a>
-                <ul className="ul-child">
-                  <li>
-                    <a href="./Header.tsx">giày abc</a>
+      <div className="mx-5 my-4">
+        <div className="flex items-center">
+          <div className="flex-1">
+            <a href="./Header.tsx">
+              <img src={Logo} alt="logo" />
+            </a>
+          </div>
+          <div className="flex-[2.5]">
+            <FloatingLabel variant="filled" label="Bạn đang tìm kiếm ..." />
+          </div>
+          <div className="flex-[0.5]">
+            <div className="flex justify-center gap-4">
+              <div className="relative group">
+                <img width={28} src={User} alt="user" />
+                <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  <li className="px-4 py-2 mb-2 hover:bg-slate-100">
+                    <a
+                      href="./Header.tsx"
+                      className="hover:block hover:text-[red]"
+                    >
+                      Đăng nhập
+                    </a>
                   </li>
-                  <li>
-                    <a href="./Header.tsx">giày vcx</a>
+                  <li className="px-4 py-2 hover:bg-slate-100">
+                    <a
+                      href="./Header.tsx"
+                      className="hover:block hover:text-[red]"
+                    >
+                      Đăng kí
+                    </a>
                   </li>
-                  <li>
-                    <a href="./Header.tsx">giày bjk</a>
+                </ul>
+              </div>
+              <div className="relative">
+                <a href="./Header.tsx">
+                  <img width={28} src={Bag} alt="bag" />
+                  <span className="absolute top-[-2px] right-[-4px] text-[10px] text-center w-4 h-4 leading-4 bg-[#c54934] text-[#fff] rounded-full">
+                    0
+                  </span>
+                </a>
+              </div>
+              <div>
+                <span className="uppercase cursor-pointer">eng</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-7">
+          <nav>
+            <ul className="flex gap-5 uppercase font-medium text-sm">
+              <li>
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  trang chủ
+                </a>
+              </li>
+              <li>
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  tất cả sản phẩm
+                </a>
+              </li>
+              <li className="relative group">
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  giày cỏ nhân tạo
+                </a>
+                <ul className="absolute top-full left-[-15px] z-50 w-52 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  {BRAND.map((item) => (
+                    <li
+                      key={item.name}
+                      className="px-4 py-2 mb-2 hover:bg-slate-100"
+                    >
+                      <a
+                        href="./Header.tsx"
+                        className="hover:block hover:text-[red]"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="relative group">
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  giày futsal
+                </a>
+                <ul className="absolute top-full left-[-15px] z-50 w-52 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  {BRAND.map((item) => (
+                    <li
+                      key={item.name}
+                      className="px-4 py-2 mb-2 hover:bg-slate-100"
+                    >
+                      <a
+                        href="./Header.tsx"
+                        className="hover:block hover:text-[red]"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="relative group">
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  thương hiệu
+                </a>
+                <ul className="absolute top-full left-[-15px] z-50 w-52 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  {BRAND.map((item) => (
+                    <li
+                      key={item.name}
+                      className="px-4 py-2 mb-2 hover:bg-slate-100"
+                    >
+                      <a
+                        href="./Header.tsx"
+                        className="hover:block hover:text-[red]"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li className="relative group">
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  hot sales
+                </a>
+                <ul className="absolute top-full left-[-15px] z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  <li className="px-4 py-2 mb-2 hover:bg-slate-100 relative">
+                    <a
+                      href="./Header.tsx"
+                      className="hover:block hover:text-[red]"
+                    >
+                      hot deal - giày nhân tạo
+                    </a>
+                    <ul className="absolute top-0 left-full z-50 w-64 bg-[#fff] border box-shadow border-top hidden ">
+                      <li className="px-4 py-2 mb-2 hover:bg-slate-100">
+                        <a
+                          href="./Header.tsx"
+                          className="hover:block hover:text-[red]"
+                        >
+                          giày nhân tạo 1
+                        </a>
+                      </li>
+                      <li className="px-4 py-2 mb-2 hover:bg-slate-100">
+                        <a
+                          href="./Header.tsx"
+                          className="hover:block hover:text-[red]"
+                        >
+                          giày nhân tạo 2
+                        </a>
+                      </li>
+                    </ul>
                   </li>
-                  <li>
-                    <a href="./Header.tsx">giày klkllk</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">giày ksss</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">giày ăecx</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">giày bcnms</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">giày 234</a>
+                  <li className="px-4 py-2 mb-2 hover:bg-slate-100 relative group">
+                    <a
+                      href="./Header.tsx"
+                      className="hover:block hover:text-[red]"
+                    >
+                      hot deal - giày futsal
+                    </a>
                   </li>
                 </ul>
               </li>
-              <li className="item-child">
-                <a href="./Header.tsx">giày FT</a>
-                <ul className="ul-child">
-                  <li>
-                    <a href="./Header.tsx">324324</a>
+              <li className="relative group">
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  phụ kiện
+                </a>
+                <ul className="absolute top-full left-[-15px] z-50 w-52 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  {ACCESSORY.map((item) => (
+                    <li
+                      key={item.name}
+                      className="px-4 py-2 mb-2 hover:bg-slate-100"
+                    >
+                      <a
+                        href="./Header.tsx"
+                        className="hover:block hover:text-[red]"
+                      >
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li>
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  tin tức giày
+                </a>
+              </li>
+              <li>
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  khách hàng
+                </a>
+              </li>
+              <li>
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  cửa hàng
+                </a>
+              </li>
+              <li className="relative group">
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  tuyển dụng
+                </a>
+                <ul className="absolute top-full left-[-15px] z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                  <li className="px-4 py-2 mb-2 hover:bg-slate-100">
+                    <a
+                      href="./Header.tsx"
+                      className="hover:block hover:text-[red]"
+                    >
+                      cửa hàng trưởng
+                    </a>
                   </li>
-                  <li>
-                    <a href="./Header.tsx">dfsdfsdf</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">567567</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">vbnvnv</a>
-                  </li>
-                  <li>
-                    <a href="./Header.tsx">ưqewqewqe</a>
+                  <li className="px-4 py-2 mb-2 hover:bg-slate-100">
+                    <a
+                      href="./Header.tsx"
+                      className="hover:block hover:text-[red]"
+                    >
+                      nhân viên bán hàng
+                    </a>
                   </li>
                 </ul>
               </li>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">phụ kiện</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">tin tức giày</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">khách hàng</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">cửa hàng</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">tuyển dụng</a>
-            </li>
-            <li className="item">
-              <a href="./Header.tsx">liên hệ</a>
-            </li>
-          </ul>
-        </nav>
+              <li>
+                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                  liên hệ
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </header>
   );
