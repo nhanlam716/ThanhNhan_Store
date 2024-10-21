@@ -9,7 +9,7 @@ const Banner = ({ image, height, width }: IImage) => {
   return (
     <div className="max-w-6xl my-0 mx-auto">
       <a href="./Banner.tsx" className="block relative hover-zoom">
-        <img src={image} alt="banner" width={width} height={height} />
+        <img src={image} alt="banner" style={{ width, height }} />
       </a>
     </div>
   );
@@ -32,5 +32,3 @@ const Banner = ({ image, height, width }: IImage) => {
 // };
 
 export default Banner;
-
-// export default Banner;

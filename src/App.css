@@ -43,3 +43,22 @@
   transform: scale(1.05);
   transition: transform 0.5s ease;
 }
+
+.befores::after {
+  position: absolute;
+  content: "";
+  top: 3px;
+  left: 35%;
+  width: 2px;
+  height: 19px;
+  background: #333;
+}
+.afters::after {
+  position: absolute;
+  content: "";
+  top: 7px;
+  left: 18%;
+  width: 1px;
+  height: 15px;
+  background: #333;
+}

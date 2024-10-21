@@ -129,7 +129,10 @@ const Header = () => {
                 </ul>
               </li>
               <li className="relative group">
-                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                <a
+                  href="./Header.tsx"
+                  className="text-[red] hover:block hover:opacity-50"
+                >
                   hot sales
                 </a>
                 <ul className="absolute top-full left-[-15px] z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover:block">

@@ -6,6 +6,8 @@ import Title from "./components/title/Title";
 
 import Banner from "./components/banner/Banner";
 import Card from "./components/card/Card";
+import ProductPage from "./pages/homePage/ProductPage";
+import Button from "./components/button/Button";
 
 const products = [
   {
@@ -67,6 +69,8 @@ function App() {
         </div>
       </div>
       <div className="mb-36"></div>
+      <ProductPage />
+      <Button />
     </>
   );
 }
