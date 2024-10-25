@@ -2,33 +2,21 @@ import React from "react";
 
 interface IImage {
   image: string;
-  width?: string;
-  height?: string;
+  description?: string;
 }
-const Banner = ({ image, height, width }: IImage) => {
+const Banner = ({ image, description }: IImage) => {
   return (
     <div className="max-w-6xl my-0 mx-auto">
-      <a href="./Banner.tsx" className="block relative hover-zoom">
-        <img src={image} alt="banner" style={{ width, height }} />
-      </a>
+      <div className="flex flex-col items-center justify-center gap-[6px]">
+        <a href="./Banner.tsx" className="block relative hover-zoom">
+          <img src={image} alt="banner" />
+        </a>
+        <a href="./Banner.tsx" className="text-[#288ad6] text-lg">
+          <span>{description}</span>
+        </a>
+      </div>
     </div>
   );
 };
-
-// const Banner = ({ image, height, width }: IImage) => {
-//   return (
-//     <div className="max-w-6xl mx-auto my-0">
-//       <a href="./Banner.tsx" className="block relative overflow-hidden group">
-//         <img
-//           src={image}
-//           alt="banner"
-//           width={width}
-//           height={height}
-//           className="transition-transform duration-500 ease-in-out transform group-hover:scale-110 group-hover:brightness-110 group-hover:contrast-110"
-//         />
-//       </a>
-//     </div>
-//   );
-// };
 
 export default Banner;

@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import logomini from "../../assets/image/logo_transparent.png";
+import logoStore from "../../assets/image/logo_store.webp";
+import iconStore from "../../assets/image/icon_store.webp";
+import iconBag from "../../assets/image/pd_policy_1_img.webp";
+import iconShoe from "../../assets/image/pd_policy_2_img.webp";
+import iconOto from "../../assets/image/pd_policy_3_img.webp";
+import iconcard from "../../assets/image/pd_policy_4_img.webp";
 
 const ProductPage = () => {
   const images = [
@@ -71,13 +77,13 @@ const ProductPage = () => {
                     </svg>
                   </button>
                 </div>
-                <div className="relative">
+                <div className="relative pt-[14px]">
                   <img
                     src={selectedImage}
                     alt="Main product"
                     className="w-[400px] h-auto object-cover"
                   />
-                  <span className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-sm">
+                  <span className="absolute mt-[14px] top-0 right-0 bg-red-500 text-white px-2 py-1 text-sm">
                     -19%
                   </span>
                 </div>
@@ -194,6 +200,98 @@ const ProductPage = () => {
                 <button className=" bg-black text-white px-6 py-3 rounded w-full text-lg">
                   MUA NGAY
                 </button>
+              </div>
+              <div className="mt-4">
+                <div className="p-4 border-solid border-2 border-[#333]">
+                  <div className="flex gap-2 uppercase font-bold text-[red]">
+                    <img src={logoStore} alt="logostore" />
+                    <span className="text-lg">có mặt tại 3 cửa hàng:</span>
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex gap-2 mt-2">
+                      <img src={iconStore} alt="iconStore" />
+                      <span className="text-sm font-bold">
+                        27 Đường D52, P. 12, Q. Tân Bình, TP. HCM | Hotline:
+                        0901 377 722
+                      </span>
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <img src={iconStore} alt="iconStore" />
+                      <span className="text-sm font-bold">
+                        27 Đường D52, P. 12, Q. Tân Bình, TP. HCM | Hotline:
+                        0901 377 722
+                      </span>
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <img src={iconStore} alt="iconStore" />
+                      <span className="text-sm font-bold">
+                        27 Đường D52, P. 12, Q. Tân Bình, TP. HCM | Hotline:
+                        0901 377 722
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6">
+                <div className="p-2">
+                  <div className="flex items-center gap-5 mb-5">
+                    <div className="max-w-[48px]">
+                      <img src={iconBag} alt="Bags" />
+                    </div>
+                    <div>
+                      <h4 className="uppercase text-[red] text-sm font-bold">
+                        ưu đãi tặng kèm
+                      </h4>
+                      <span className="text-[12px] font-medium leading-3">
+                        Tặng kèm vớ dệt kim và balô chống thấm đựng giày cho mỗi
+                        đơn hàng Giày đá bóng.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-5 mb-5">
+                    <div className="max-w-[48px]">
+                      <img src={iconShoe} alt="Bags" />
+                    </div>
+                    <div>
+                      <h4 className="uppercase text-[red] text-sm font-bold">
+                        đổi hàng dễ dàng{" "}
+                      </h4>
+                      <span className="text-[12px] font-medium leading-3">
+                        Hỗ trợ khách hàng đổi size hoặc mẫu trong vòng 7 ngày.
+                        (Sản phẩm chưa qua sử dụng).
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-5 mb-5">
+                    <div className="max-w-[48px]">
+                      <img src={iconOto} alt="Bags" />
+                    </div>
+                    <div>
+                      <h4 className="uppercase text-[red] text-sm font-bold">
+                        Chính sách giao hàng{" "}
+                      </h4>
+                      <span className="text-[12px] font-medium leading-3">
+                        COD Toàn quốc | Freeship toàn quốc khi khách hàng thanh
+                        toán chuyển khoản trước với đơn hàng Giày đá bóng trên 1
+                        triệu.
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-5 mb-5">
+                    <div className="max-w-[48px]">
+                      <img src={iconcard} alt="Bags" />
+                    </div>
+                    <div>
+                      <h4 className="uppercase text-[red] text-sm font-bold">
+                        Thanh toán tiện lợi
+                      </h4>
+                      <span className="text-[12px] font-medium leading-3">
+                        Chấp nhận các loại hình thanh toán bằng thẻ, tiền mặt,
+                        chuyển khoản.
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

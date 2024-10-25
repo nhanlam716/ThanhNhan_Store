@@ -62,3 +62,24 @@
   height: 15px;
   background: #333;
 }
+
+.footerAfter::after {
+  position: absolute;
+  content: "";
+  top: 38px;
+  left: 0;
+  width: 60px;
+  height: 1px;
+  background: #333;
+}
+.pImportan {
+  padding: 0 !important;
+}
+.h4 {
+  font-weight: normal;
+  margin-bottom: 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

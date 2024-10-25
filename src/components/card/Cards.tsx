@@ -20,7 +20,6 @@ const Card = ({
 }: IProduct) => {
   return (
     <div className=" bg-white shadow-sm rounded-lg overflow-hidden duration-300">
-      {/* Image Section */}
       <a href="./Card.tsx">
         <div className="relative overflow-hidden">
           <img
@@ -29,18 +28,15 @@ const Card = ({
             className="w-full h-72 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
           />
 
-          {/* Discount Badge */}
           <div className="absolute top-2 left-2 bg-[#fff] text-[red] text-lg px-2 py-1 rounded">
             {discount}
           </div>
 
-          {/* New Badge */}
           <div className="absolute top-2 right-2 bg-red-600 text-white text-lg px-2 py-1 rounded">
             {badge}
           </div>
         </div>
 
-        {/* Product Info */}
         <div className="p-4">
           <h3 className="text-gray-900 font-semibold text-sm">{name}</h3>
 
