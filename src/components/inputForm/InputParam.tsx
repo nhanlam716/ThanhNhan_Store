@@ -3,16 +3,15 @@ import React from "react";
 interface IParam {
   description?: string;
   link?: string;
+  href?: string;
 }
-const InputParam = ({ description, link }: IParam) => {
+const InputParam = ({ description, link, href }: IParam) => {
   return (
     <div className="flex gap-1 mt-5">
       <p className="text-base">{description}</p>
-      <span>
-        <a href="./Input.tsx" className="font-bold">
-          {link}
-        </a>
-      </span>
+      <a href={href} className="font-bold">
+        {link}
+      </a>
     </div>
   );
 };

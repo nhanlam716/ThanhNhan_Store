@@ -6,6 +6,7 @@ import iconBag from "../../assets/image/pd_policy_1_img.webp";
 import iconShoe from "../../assets/image/pd_policy_2_img.webp";
 import iconOto from "../../assets/image/pd_policy_3_img.webp";
 import iconcard from "../../assets/image/pd_policy_4_img.webp";
+import ButtonQuantity from "../../components/button/ButtonQuantity";
 
 const ProductPage = () => {
   const images = [
@@ -23,7 +24,7 @@ const ProductPage = () => {
   };
   return (
     <div>
-      <div>
+      <div className="mt-16">
         <div className="max-w-6xl my-0 mx-auto">
           <div className="flex gap-7">
             <div className="flex-1 max-w-[50%] px-3">
@@ -79,7 +80,7 @@ const ProductPage = () => {
                 </div>
                 <div className="relative pt-[14px]">
                   <img
-                    src={selectedImage}
+                    src="https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg"
                     alt="Main product"
                     className="w-[400px] h-auto object-cover"
                   />
@@ -180,18 +181,7 @@ const ProductPage = () => {
                 <span className=" flex-[0.5] text-lg text-slate-400">
                   Số lượng:{" "}
                 </span>
-                <div className="flex-1 flex items-center ">
-                  <button className="px-[16px] py-[6px] border border-gray-300 rounded text-2xl">
-                    -
-                  </button>
-                  <input
-                    className="w-14 h-8 leading-8 text-center border-none text-2xl font-semibold"
-                    defaultValue={1}
-                  />
-                  <button className="px-4 py-2 border border-gray-300 rounded text-lg">
-                    +
-                  </button>
-                </div>
+                <ButtonQuantity increase="+" decrease="-" />
                 <button className="bg-red-500 text-white px-6 py-3 rounded w-full flex-1 text-lg">
                   Thêm vào giỏ
                 </button>

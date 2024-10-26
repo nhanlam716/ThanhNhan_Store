@@ -3,7 +3,8 @@ import Logo from "../assets/image/logo_medium.webp";
 import User from "../assets/image/icon-user.webp";
 import Bag from "../assets/image/icon-bag.webp";
 import { FloatingLabel } from "flowbite-react";
-import { ACCESSORY, BRAND } from "../constants/menu";
+import { MENU } from "../constants/menu";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -24,20 +25,17 @@ const Header = () => {
                 <img width={28} src={User} alt="user" />
                 <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
                   <li className="px-4 py-2 mb-2 hover:bg-slate-100">
-                    <a
-                      href="./Header.tsx"
-                      className="hover:block hover:text-[red]"
-                    >
+                    <Link to="./login" className="hover:block hover:text-[red]">
                       Đăng nhập
-                    </a>
+                    </Link>
                   </li>
                   <li className="px-4 py-2 hover:bg-slate-100">
-                    <a
-                      href="./Header.tsx"
+                    <Link
+                      to="./register"
                       className="hover:block hover:text-[red]"
                     >
                       Đăng kí
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -58,10 +56,54 @@ const Header = () => {
         <div className="mt-7">
           <nav>
             <ul className="flex gap-5 uppercase font-medium text-sm">
+              {MENU.map((item) => (
+                <li key={item.name} className="relative group">
+                  <Link to="/" className="hover:block hover:text-[red]">
+                    {item.name}
+                  </Link>
+                  {item.children && (
+                    <ul className="absolute top-full left-[-15px] z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                      {item.children.map((menu) => (
+                        <li
+                          key={menu.name}
+                          className="px-4 py-2 hover:bg-slate-100 cursor-pointer relative group"
+                        >
+                          <Link to="/" className="hover:block hover:text-[red]">
+                            {menu.name}
+                          </Link>
+                          {menu.children && (
+                            <ul className="absolute top-0 left-full z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                              {menu.children.map((subItem) => (
+                                <li
+                                  key={subItem.name}
+                                  className="px-4 py-2 hover:bg-slate-100 cursor-pointer"
+                                >
+                                  <Link
+                                    to="/"
+                                    className="hover:block hover:text-[red]"
+                                  >
+                                    {subItem.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+        {/* <div className="mt-7">
+          <nav>
+            <ul className="flex gap-5 uppercase font-medium text-sm">
               <li>
-                <a href="./Header.tsx" className="hover:block hover:text-[red]">
+                <Link to="/" className="hover:block hover:text-[red]">
                   trang chủ
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="./Header.tsx" className="hover:block hover:text-[red]">
@@ -237,7 +279,7 @@ const Header = () => {
               </li>
             </ul>
           </nav>
-        </div>
+        </div> */}
       </div>
     </header>
   );

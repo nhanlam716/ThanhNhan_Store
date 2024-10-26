@@ -1,5 +1,6 @@
 import React from "react";
 import logomini from "../../assets/image/logo_transparent.png";
+import { Link } from "react-router-dom";
 interface IProduct {
   image: string;
   name: string;
@@ -20,7 +21,7 @@ const Card = ({
 }: IProduct) => {
   return (
     <div className=" bg-white shadow-sm rounded-lg overflow-hidden duration-300">
-      <a href="./Card.tsx">
+      <Link to="./productPage/:id">
         <div className="relative overflow-hidden">
           <img
             src={image}
@@ -56,7 +57,7 @@ const Card = ({
             <img src={logomini} alt="..." className="w-16 h-4" />
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };
