@@ -40,12 +40,12 @@ const Header = () => {
                 </ul>
               </div>
               <div className="relative">
-                <a href="./Header.tsx">
+                <Link to="./shopping">
                   <img width={28} src={Bag} alt="bag" />
                   <span className="absolute top-[-2px] right-[-4px] text-[10px] text-center w-4 h-4 leading-4 bg-[#c54934] text-[#fff] rounded-full">
                     0
                   </span>
-                </a>
+                </Link>
               </div>
               <div>
                 <span className="uppercase cursor-pointer">eng</span>

@@ -6,6 +6,7 @@ import ProductPage from "../pages/productPage/ProductPage";
 import LoginPage from "../pages/adminPage/LoginPage";
 import Password from "../pages/adminPage/Password";
 import RegisterPage from "../pages/adminPage/RegisterPage";
+import ShoppingCard from "../pages/shoppingCardPage/ShoppingCard";
 
 const AllRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AllRouter = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/password" element={<Password />} />
+          <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
         </Route>
       </Routes>

@@ -1,5 +1,6 @@
 import React from "react";
 import ButtonQuantity from "../../components/button/ButtonQuantity";
+import { Link } from "react-router-dom";
 type CartItem = {
   id: number;
   image: string;
@@ -110,8 +111,8 @@ const ShoppingCard = () => {
                 </tbody>
               </table>
               <div className="p-6 pl-14">
-                <a
-                  href="./HomePage.tsx"
+                <Link
+                  to="/"
                   className="flex items-center uppercase text-lg font-semibold opacity-80"
                 >
                   <svg
@@ -130,7 +131,7 @@ const ShoppingCard = () => {
                     />
                   </svg>
                   tiếp tục mua sắm
-                </a>
+                </Link>
               </div>
             </div>
             <div className="w-full md:w-1/3 bg-white p-6 mt-4 md:mt-0 md:ml-4 rounded-lg shadow-md">
