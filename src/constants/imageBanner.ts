@@ -120,3 +120,12 @@ export const BANNER_ROUNDED = [
     description: "Dịch vụ giao hàng nhanh chóng (Grab & GHTK).",
   },
 ];
+
+export const VIDEO_BANNER = [
+  "https://www.youtube.com/embed/teHGtBYgcHc",
+  "https://www.youtube.com/embed/70634PlCaXo",
+  "https://www.youtube.com/embed/2F0rGzq3u1Q",
+  "https://www.youtube.com/embed/UOfaWGm3nCI",
+  "https://www.youtube.com/embed/XTk0isRuY_4",
+  "https://www.youtube.com/embed/3nxRD3x--6o",
+];

@@ -7,12 +7,16 @@ import {
   BANNER,
   BANNER_ROUNDED,
   IMAGE_BANNER,
+  VIDEO_BANNER,
 } from "../../constants/imageBanner";
 import BannerRounded from "../../components/banner/BannerRounded";
 import Button from "../../components/button/Button";
 import Footer from "../../layouts/Footer";
 import Header from "../../layouts/Header";
 import CardNews from "../../components/card/CardNews";
+import InputTitle from "../../components/inputForm/InputTitle";
+import Input from "../../components/inputForm/Input";
+import InputParam from "../../components/inputForm/InputParam";
 
 const products = [
   {
@@ -82,10 +86,80 @@ const news = [
       "Trước ngày “Messi Day” (10.10), adidas đã chính thức trình làng mẫu giày đá bóng...",
   },
 ];
+
 const HomePage = () => {
   return (
     <div>
       <Header />
+      <div className="bg-slate-100">
+        <div className="max-w-2xl mx-auto p-9">
+          <div className="p-10 bg-white">
+            <InputTitle title="Đăng nhập" />
+            <form action="">
+              <Input
+                label="email:"
+                types="text"
+                placeholder="Nhập email của bạn"
+              />
+              <Input
+                label="mật khẩu:"
+                types="password"
+                placeholder="Nhập mật khẩu"
+              />
+              <div className="flex mt-[-34px]">
+                <Button title="Đăng nhập" />
+              </div>
+              <InputParam
+                description="Bạn chưa có tài khoản?"
+                link="Đăng ký ngay"
+              />
+              <InputParam link="Quên mật khẩu ?" />
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className="bg-slate-100">
+        <div className="max-w-4xl mx-auto p-9">
+          <div className="p-14 bg-white">
+            <InputTitle title="Đăng ký" />
+            <form action="">
+              <div className="flex gap-10">
+                <div className="flex-1">
+                  <Input label="Họ" types="text" />
+                </div>
+                <div className="flex-1">
+                  <Input label="Tên" types="text" />
+                </div>
+              </div>
+              <Input label="email:" types="text" />
+              <Input label="mật khẩu:" types="password" />
+              <Input label="nhập lại mật khẩu:" types="password" />
+              <div className="flex mt-[-34px]">
+                <Button title="Đăng ký" />
+              </div>
+              <InputParam description="Bạn đã có tài khoản?" link="Đăng nhập" />
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className="bg-slate-100">
+        <div className="max-w-2xl mx-auto p-9">
+          <div className="p-14 bg-white">
+            <InputTitle title="Quên mật khẩu" />
+            <form action="">
+              <Input
+                label="email:"
+                types="text"
+                placeholder="Nhập email của bạn"
+              />
+              <div className="flex mt-[-34px]">
+                <Button title="Gửi" />
+              </div>
+              <InputParam description="Trở lại" link="Đăng nhập" />
+            </form>
+          </div>
+        </div>
+      </div>
       <Carrousel />
       <Title title="Sản phẩm mới ra mắt" />
       <Banner image="https://theme.hstatic.net/200000278317/1000929405/14/mustbuy_img_master.jpg?v=1859" />
@@ -139,12 +213,12 @@ const HomePage = () => {
         <div className="max-w-6xl my-0 mx-auto mt-6 ">
           <ul className="flex justify-center gap-2 pb-2 mb-8 uppercase">
             <li>
-              <a href="" className="p-4 text-4xl">
+              <a href="./HomePage.tsx" className="p-4 text-4xl">
                 Giày sân cỏ nhân tạo
               </a>
             </li>
             <li>
-              <a href="" className="p-4 text-4xl">
+              <a href="./HomePage.tsx" className="p-4 text-4xl">
                 Giày sân futsal
               </a>
             </li>
@@ -186,8 +260,8 @@ const HomePage = () => {
             ))}
           </div>
           <a
-            href=""
-            className="flex justify-center items-center my-8 text-lg font-medium uppercase"
+            href="./HomePage.tsx"
+            className="flex justify-center items-center pt-8 my-8 text-base font-bold uppercase"
           >
             Xem tất cả
             <svg
@@ -207,6 +281,22 @@ const HomePage = () => {
               />
             </svg>
           </a>
+        </div>
+      </div>
+      <div>
+        <div className="max-w-6xl my-0 mx-auto ">
+          <Title title="thanh hùng Futsal 's channel" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {VIDEO_BANNER.map((item, index) => (
+              <iframe
+                key={index}
+                src={item}
+                title="Youtube Page"
+                height="200"
+                className="border-none w-full overflow-hidden object-cover"
+              ></iframe>
+            ))}
+          </div>
         </div>
       </div>
       <Footer />

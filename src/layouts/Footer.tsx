@@ -17,10 +17,16 @@ const Footer = () => {
                     key={index}
                     className="hover:text-red-600 transition-colors duration-200 pb-2 tracking-tighter leading-[20px]"
                   >
-                    <a href="">{item}</a>
+                    <a href="./Footer.tsx">{item}</a>
                   </li>
                 ))}
               </ul>
+              <a href="./Footer.tsx">
+                <img
+                  src="https://theme.hstatic.net/200000278317/1000929405/14/logo-bct.png?v=1886"
+                  alt="logo"
+                />
+              </a>
             </div>
             <div className="text-left relative">
               <h2 className="font-semibold text-xl mb-8 text-gray-900 uppercase footerAfter">
@@ -32,7 +38,7 @@ const Footer = () => {
                     key={index}
                     className="hover:text-red-700 transition-colors duration-200 pb-2 tracking-tighter leading-[20px]"
                   >
-                    <a href="">{item}</a>
+                    <a href="./Footer.tsx">{item}</a>
                   </li>
                 ))}
               </ul>
@@ -44,11 +50,9 @@ const Footer = () => {
             </h4>
             <div className="relative w-full h-32 overflow-hidden rounded-lg shadow-lg">
               <iframe
+                src="https://web.facebook.com/v2.0/plugins/page.php?adapt_container_width=true&app_id=&channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dfe6da490c2df68473%26domain%3Dthanhhungfutsal.com%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fthanhhungfutsal.com%252Ff6252f01aa3f48d09%26relation%3Dparent.parent&container_width=354&height=70&hide_cover=false&href=https%3A%2F%2Fwww.facebook.com%2Fthanhhungfutsal%2F&locale=en_US&sdk=joey&show_facepile=false&small_header=false&tabs=timeline&width="
                 title="Facebook Page"
-                width="340"
-                height="500"
                 className="border-none overflow-hidden w-full h-full object-cover"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
               ></iframe>
             </div>
           </div>
