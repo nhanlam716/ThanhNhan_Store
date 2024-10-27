@@ -33,7 +33,7 @@ export type IMenu = {
 
 export const MENU: IMenu[] = [
   { name: "trang chủ", href: "/" },
-  { name: "tất cả sản phẩm", href: "/" },
+  { name: "tất cả sản phẩm", href: "/headerHomePage" },
   {
     name: "giày cỏ nhân tạo",
     href: "/",
@@ -109,10 +109,34 @@ export const MENU: IMenu[] = [
       },
     ],
   },
-  { name: "phụ kiện", href: "/" },
+  {
+    name: "phụ kiện",
+    href: "/",
+    children: [
+      { name: "phụ kiện nike", href: "/" },
+      { name: "phụ kiện adidas", href: "/" },
+      { name: "phụ kiện puma", href: "/" },
+      { name: "phụ kiện mizuno", href: "/" },
+      { name: "dép unbox", href: "/" },
+      { name: "starbalm", href: "/" },
+      { name: "grandsport", href: "/" },
+      { name: "bóng động lực", href: "/" },
+      { name: "bóng gerustar", href: "/" },
+      { name: "bóng desporte", href: "/" },
+      { name: "bóng zocker", href: "/" },
+      { name: "phụ kiện thanh hùng futsal", href: "/" },
+    ],
+  },
   { name: "tin tức giày", href: "/" },
   { name: "khách hàng", href: "/" },
   { name: "cửa hàng", href: "/" },
-  { name: "tuyển dụng", href: "/" },
+  {
+    name: "tuyển dụng",
+    href: "/",
+    children: [
+      { name: "cửa hàng trưởng", href: "/" },
+      { name: "nhân viên bán hàng", href: "/" },
+    ],
+  },
   { name: "liên hệ", href: "/" },
 ];

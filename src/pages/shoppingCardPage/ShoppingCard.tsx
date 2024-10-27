@@ -32,26 +32,6 @@ const cartItems: CartItem[] = [
     price: 90000,
     quantity: 1,
   },
-  {
-    id: 2,
-    image:
-      "https://product.hstatic.net/200000278317/product/balo-thanh-hung-futsal-mau-ngau-nhien-1_ab21fbd1f0e5420a8ed84a1fe9cac9a6_compact.jpg",
-    name: "BALO THANH HÙNG FUTSAL - MÀU NGẪU NHIÊN",
-    code: "Balongaunhien",
-    group: "Balo",
-    price: 90000,
-    quantity: 1,
-  },
-  {
-    id: 4,
-    image:
-      "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-1_8bbe68fb9d23471c8a8feb567aaa6555_compact.jpg",
-    name: "NIKE ZOOM MERCURIAL VAPOR 16 PRO TF - FQ8687-700 - XANH CHUỐI",
-    code: "FQ8687-700-38-5",
-    group: "38.5",
-    price: 2750000,
-    quantity: 1,
-  },
 ];
 const ShoppingCard = () => {
   const totalAmount = cartItems.reduce(

@@ -3,10 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import HomePage from "../layouts/homePage/HomePage";
 import ProductPage from "../pages/productPage/ProductPage";
-import LoginPage from "../pages/adminPage/LoginPage";
-import Password from "../pages/adminPage/Password";
-import RegisterPage from "../pages/adminPage/RegisterPage";
+import LoginPage from "../pages/adminHomePage/LoginPage";
+import Password from "../pages/adminHomePage/Password";
+import RegisterPage from "../pages/adminHomePage/RegisterPage";
 import ShoppingCard from "../pages/shoppingCardPage/ShoppingCard";
+import HeaderHomePage from "../pages/headerHomepage/HeaderHomePage";
 
 const AllRouter = () => {
   return (
@@ -19,6 +20,7 @@ const AllRouter = () => {
           <Route path="/password" element={<Password />} />
           <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
+          <Route path="/headerHomePage" element={<HeaderHomePage />} />
         </Route>
       </Routes>
     </div>

@@ -66,9 +66,9 @@ const Header = () => {
                       {item.children.map((menu) => (
                         <li
                           key={menu.name}
-                          className="px-4 py-2 hover:bg-slate-100 cursor-pointer relative group"
+                          className="px-4 py-2 hover:bg-slate-100 cursor-pointer relative group hover:text-[red]"
                         >
-                          <Link to="/" className="hover:block hover:text-[red]">
+                          <Link to="/" className="hover:block ">
                             {menu.name}
                           </Link>
                           {menu.children && (
@@ -78,10 +78,7 @@ const Header = () => {
                                   key={subItem.name}
                                   className="px-4 py-2 hover:bg-slate-100 cursor-pointer"
                                 >
-                                  <Link
-                                    to="/"
-                                    className="hover:block hover:text-[red]"
-                                  >
+                                  <Link to="/" className="hover:block">
                                     {subItem.name}
                                   </Link>
                                 </li>
