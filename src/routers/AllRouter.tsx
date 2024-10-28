@@ -8,6 +8,9 @@ import Password from "../pages/adminHomePage/Password";
 import RegisterPage from "../pages/adminHomePage/RegisterPage";
 import ShoppingCard from "../pages/shoppingCardPage/ShoppingCard";
 import HeaderHomePage from "../pages/headerHomepage/HeaderHomePage";
+import LoginPageAdmin from "../layouts/adminStore/loginPage/LoginPageAdmin";
+import LoginAdminStore from "../layouts/adminStore/loginPage/login/LoginAdminStore";
+import PasswordAdminStore from "../layouts/adminStore/loginPage/login/PasswordAdminStore";
 
 const AllRouter = () => {
   return (
@@ -21,6 +24,10 @@ const AllRouter = () => {
           <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
           <Route path="/headerHomePage" element={<HeaderHomePage />} />
+        </Route>
+        <Route element={<LoginPageAdmin />}>
+          <Route path="/loginAdminStore" element={<LoginAdminStore />} />
+          <Route path="/passwordAdminStore" element={<PasswordAdminStore />} />
         </Route>
       </Routes>
     </div>
