@@ -5,6 +5,12 @@ const LoginPageAdmin = () => {
   return (
     <div className="flex h-[100vh]">
       <div className="flex-[60%]">
+        <div className="p-6 border-b-[1px] border-[#ccc]">
+          <img
+            src="https://theme.hstatic.net/200000278317/1000929405/14/logo_medium.png?v=1891"
+            alt=""
+          />
+        </div>
         <Outlet />
       </div>
       <div className="flex-[40%] ">

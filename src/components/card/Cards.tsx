@@ -1,7 +1,8 @@
 import React from "react";
 import logomini from "../../assets/image/logo_transparent.png";
-import { Link } from "react-router-dom";
-interface IProduct {
+import { useNavigate } from "react-router-dom";
+export interface IProduct {
+  id?: string;
   image: string;
   name: string;
   originalPrice: string;
@@ -11,6 +12,7 @@ interface IProduct {
   badge: string;
 }
 const Card = ({
+  id,
   image,
   name,
   originalPrice,
@@ -19,9 +21,13 @@ const Card = ({
   installment,
   badge,
 }: IProduct) => {
+  const navigate = useNavigate();
   return (
     <div className=" bg-white shadow-sm rounded-lg overflow-hidden duration-300">
-      <Link to="./productPage/:id">
+      <div
+        className="cursor-pointer"
+        onClick={() => navigate(`/productPage/${id}`)}
+      >
         <div className="relative overflow-hidden">
           <img
             src={image}
@@ -52,12 +58,14 @@ const Card = ({
 
           <div className="flex gap-3 items-center">
             {installment && (
-              <p className="text-blue-500 text-sm mt-1">{installment}</p>
+              <p className="text-blue-500 text-sm mt-1">
+                Trả sau {installment} x2 kỳ
+              </p>
             )}
             <img src={logomini} alt="..." className="w-16 h-4" />
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

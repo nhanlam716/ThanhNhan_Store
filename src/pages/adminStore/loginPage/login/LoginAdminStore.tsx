@@ -1,21 +1,18 @@
 import React from "react";
-import Input from "../../../../components/inputForm/Input";
 import Button from "../../../../components/button/Button";
+import Input from "../../../../components/inputForm/Input";
 import InputTitle from "../../../../components/inputForm/InputTitle";
 import { Link } from "react-router-dom";
 
-const PasswordAdminStore = () => {
+const LoginAdminStore = () => {
   return (
     <>
-      <div className="p-6 border-b-[1px] border-[#ccc]">
-        <img
-          src="https://theme.hstatic.net/200000278317/1000929405/14/logo_medium.png?v=1891"
-          alt=""
-        />
-      </div>
       <div className="py-[40px] lg:py-[80px] px-[24px] lg:px-[160px] w-full flex justify-center text-left">
         <div className="w-full lg:w-auto">
-          <InputTitle title={"Quên mật khẩu"} />
+          <InputTitle title={"Đăng nhập"} />
+          <p className="text-[#060029] opacity-50 mt-3 z-10">
+            Vui lòng nhập thông tin để tiếp tục
+          </p>
           <form className="w-full lg:w-[352px] flex flex-col ">
             <div className="z-10 mt-[-22px]">
               <Input
@@ -24,12 +21,18 @@ const PasswordAdminStore = () => {
                 placeholder="Nhập email của bạn"
               />
             </div>
-
+            <div className="z-10 mt-[-18px]">
+              <Input
+                label="mật khẩu:"
+                types="password"
+                placeholder="Nhập mật khẩu"
+              />
+            </div>
             <p className="text-[14px] text-[#0B0A0F] w-full text-center mt-2 z-10">
-              <Link to="/loginAdminStore">Đăng nhập</Link>
+              <Link to="/passwordAdminStore">Quên mật khẩu?</Link>
             </p>
             <div className="mt-[-38px]">
-              <Button title="Lấy lại mật khẩu" />
+              <Button title="Đăng nhập" />
             </div>
           </form>
         </div>
@@ -38,4 +41,4 @@ const PasswordAdminStore = () => {
   );
 };
 
-export default PasswordAdminStore;
+export default LoginAdminStore;

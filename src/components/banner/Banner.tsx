@@ -1,19 +1,22 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface IImage {
-  image: string;
+  id?: string;
+  image?: string;
   description?: string;
 }
-const Banner = ({ image, description }: IImage) => {
+const Banner = ({ id, image, description }: IImage) => {
+  const navigate = useNavigate();
   return (
     <div className="max-w-6xl my-0 mx-auto">
       <div className="flex flex-col items-center justify-center gap-[6px]">
-        <a href="./Banner.tsx" className="block relative hover-zoom">
-          <img src={image} alt="banner" />
-        </a>
-        <a href="./Banner.tsx" className="text-[#288ad6] text-lg">
-          <span>{description}</span>
-        </a>
+        <div
+          onClick={() => navigate(`/bannerPage/${id}`)}
+          className="block relative hover-zoom cursor-pointer"
+        >
+          <img src={image} alt="banner" className="mb-1" />
+          <span className="text-[#288ad6] text-lg">{description}</span>
+        </div>
       </div>
     </div>
   );

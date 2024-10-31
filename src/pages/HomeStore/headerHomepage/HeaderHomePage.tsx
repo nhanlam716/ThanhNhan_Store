@@ -1,9 +1,10 @@
 import React from "react";
-import Banner from "../../components/banner/Banner";
+import Banner from "../../../components/banner/Banner";
 import { Link } from "react-router-dom";
-import { CATEGORY, PRICE } from "../../constants/headerCategories";
-import TitleProduct from "../../components/title/TitleProduct";
+import { CATEGORY, PRICE } from "../../../constants/headerCategories";
+import TitleProduct from "../../../components/title/TitleProduct";
 import { Checkbox, Label } from "flowbite-react";
+import InputLink from "../../../components/inputForm/InputLink";
 
 const HeaderHomePage = () => {
   return (
@@ -88,24 +89,9 @@ const HeaderHomePage = () => {
               <div className="my-4">
                 <div className="flex justify-between items-center">
                   <div>
-                    <Link
-                      className="border-solid border-[1px] border-[#ccc] p-[14px] text-base font-normal tracking-tighter mr-3"
-                      to="/"
-                    >
-                      Mad Voltage Pack
-                    </Link>
-                    <Link
-                      className="border-solid border-[1px] border-[#ccc] p-[14px] text-base font-normal tracking-tighter mr-3"
-                      to="/"
-                    >
-                      Vivid Horizon Pack
-                    </Link>
-                    <Link
-                      className="border-solid border-[1px] border-[#ccc] p-[14px] text-base font-normal tracking-tighter mr-3"
-                      to="/"
-                    >
-                      Kylian Mbappe SE
-                    </Link>
+                    <InputLink link="Mad Voltage Pack" />
+                    <InputLink link="Vivid Horizon Pack" />
+                    <InputLink link="Kylian Mbappe SE" />
                   </div>
                   <div>
                     <label htmlFor="" className="mr-3 font-semibold">
@@ -117,9 +103,9 @@ const HeaderHomePage = () => {
                       className="p-3 w-48 h-full border-solid border-[#0e1c22] text-[#0e1c22] text-base bg-none outline-none"
                     >
                       <option>Sản phẩm nổi bật</option>
-                      <option>Sản phẩm nổi bật</option>
-                      <option>Sản phẩm nổi bật</option>
-                      <option>Sản phẩm nổi bật</option>
+                      <option>Sản phẩm nổi bật1</option>
+                      <option>Sản phẩm nổi bật2</option>
+                      <option>Sản phẩm nổi bật3</option>
                     </select>
                   </div>
                 </div>

@@ -1,8 +1,8 @@
 import React from "react";
-import InputTitle from "../../components/inputForm/InputTitle";
-import Input from "../../components/inputForm/Input";
-import Button from "../../components/button/Button";
-import InputParam from "../../components/inputForm/InputParam";
+import InputTitle from "../../../components/inputForm/InputTitle";
+import Input from "../../../components/inputForm/Input";
+import Button from "../../../components/button/Button";
+import InputParam from "../../../components/inputForm/InputParam";
 
 const Password = () => {
   return (

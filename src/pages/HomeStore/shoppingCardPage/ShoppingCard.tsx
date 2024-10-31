@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonQuantity from "../../components/button/ButtonQuantity";
+import ButtonQuantity from "../../../components/button/ButtonQuantity";
 import { Link } from "react-router-dom";
 type CartItem = {
   id: number;

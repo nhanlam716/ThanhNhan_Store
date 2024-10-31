@@ -1,16 +1,17 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import HomePage from "../layouts/homePage/HomePage";
-import ProductPage from "../pages/productPage/ProductPage";
-import LoginPage from "../pages/adminHomePage/LoginPage";
-import Password from "../pages/adminHomePage/Password";
-import RegisterPage from "../pages/adminHomePage/RegisterPage";
-import ShoppingCard from "../pages/shoppingCardPage/ShoppingCard";
-import HeaderHomePage from "../pages/headerHomepage/HeaderHomePage";
-import LoginPageAdmin from "../layouts/adminStore/loginPage/LoginPageAdmin";
-import LoginAdminStore from "../layouts/adminStore/loginPage/login/LoginAdminStore";
-import PasswordAdminStore from "../layouts/adminStore/loginPage/login/PasswordAdminStore";
+import HomePage from "../pages/HomeStore/homePage/HomePage";
+import LoginPage from "../pages/HomeStore/accountHomePage/LoginPage";
+import RegisterPage from "../pages/HomeStore/accountHomePage/RegisterPage";
+import Password from "../pages/HomeStore/accountHomePage/Password";
+import ShoppingCard from "../pages/HomeStore/shoppingCardPage/ShoppingCard";
+import ProductPage from "../pages/HomeStore/productPage/ProductPage";
+import HeaderHomePage from "../pages/HomeStore/headerHomepage/HeaderHomePage";
+import LoginPageAdmin from "../pages/adminStore/loginPage/LoginPageAdmin";
+import LoginAdminStore from "../pages/adminStore/loginPage/login/LoginAdminStore";
+import PasswordAdminStore from "../pages/adminStore/loginPage/login/PasswordAdminStore";
+import BannerPage from "../pages/HomeStore/productPage/BannerPage";
 
 const AllRouter = () => {
   return (
@@ -23,6 +24,7 @@ const AllRouter = () => {
           <Route path="/password" element={<Password />} />
           <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
+          <Route path="/bannerPage/:id" element={<BannerPage />} />
           <Route path="/headerHomePage" element={<HeaderHomePage />} />
         </Route>
         <Route element={<LoginPageAdmin />}>
