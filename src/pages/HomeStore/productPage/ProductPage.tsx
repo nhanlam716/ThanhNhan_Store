@@ -6,6 +6,7 @@ import iconShoe from "../../../assets/image/pd_policy_2_img.webp";
 import iconOto from "../../../assets/image/pd_policy_3_img.webp";
 import iconcard from "../../../assets/image/pd_policy_4_img.webp";
 import ButtonQuantity from "../../../components/button/ButtonQuantity";
+import { useNavigate } from "react-router-dom";
 
 const ProductPage = () => {
   const images = [
@@ -16,6 +17,7 @@ const ProductPage = () => {
     "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
   ];
 
+  const navigate = useNavigate();
   return (
     <div>
       <div className="mt-16">
@@ -176,7 +178,10 @@ const ProductPage = () => {
                 </button>
               </div>
               <div className="mt-4">
-                <button className=" bg-black text-white px-6 py-3 rounded w-full text-lg">
+                <button
+                  onClick={() => navigate("/checkout")}
+                  className=" bg-black text-white px-6 py-3 rounded w-full text-lg"
+                >
                   MUA NGAY
                 </button>
               </div>

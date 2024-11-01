@@ -12,6 +12,7 @@ import LoginPageAdmin from "../pages/adminStore/loginPage/LoginPageAdmin";
 import LoginAdminStore from "../pages/adminStore/loginPage/login/LoginAdminStore";
 import PasswordAdminStore from "../pages/adminStore/loginPage/login/PasswordAdminStore";
 import BannerPage from "../pages/HomeStore/productPage/BannerPage";
+import Checkout from "../pages/HomeStore/checkout/Checkout";
 
 const AllRouter = () => {
   return (
@@ -25,12 +26,13 @@ const AllRouter = () => {
           <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
           <Route path="/bannerPage/:id" element={<BannerPage />} />
-          <Route path="/headerHomePage" element={<HeaderHomePage />} />
+          <Route path="/allProducts" element={<HeaderHomePage />} />
         </Route>
         <Route element={<LoginPageAdmin />}>
           <Route path="/loginAdminStore" element={<LoginAdminStore />} />
           <Route path="/passwordAdminStore" element={<PasswordAdminStore />} />
         </Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
       </Routes>
     </div>
   );

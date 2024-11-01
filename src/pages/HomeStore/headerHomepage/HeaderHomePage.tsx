@@ -1,12 +1,26 @@
 import React from "react";
 import Banner from "../../../components/banner/Banner";
-import { Link } from "react-router-dom";
-import { CATEGORY, PRICE } from "../../../constants/headerCategories";
+import { Link, useSearchParams } from "react-router-dom";
+import {
+  CATEGORY,
+  OUTSTANDING_PRODUCTS,
+  PRICE,
+} from "../../../constants/headerCategories";
 import TitleProduct from "../../../components/title/TitleProduct";
 import { Checkbox, Label } from "flowbite-react";
 import InputLink from "../../../components/inputForm/InputLink";
+import { CONTENT } from "../../../constants/allProducts";
 
 const HeaderHomePage = () => {
+  const [searchParams] = useSearchParams();
+
+  // const previousSearchParams = Object.fromEntries(
+  //   Array.from(searchParams.entries())
+  // );
+
+  const type = searchParams.get("type");
+  const brand = searchParams.get("brand");
+
   return (
     <div className="my-6">
       <div className="max-w-6xl my-0 mx-auto">
@@ -52,10 +66,10 @@ const HeaderHomePage = () => {
               </div>
             </div>
             <div className="flex-[70%]">
-              <Banner image="https://file.hstatic.net/200000278317/collection/main-category-banner-all_df361d5490c241baa6cf83475c785540_master.jpg" />
+              {type && brand && <Banner image={CONTENT[type][brand]?.banner} />}
               <div className="py-4 border-b border-[#333]">
                 <h1 className="text-5xl uppercase font-medium">
-                  tất cả sản phẩm
+                  {type && brand && CONTENT[type][brand]?.title}
                 </h1>
                 <p className="mt-5 text-[16px] tracking-tight">
                   Chọn một đôi giày đá bóng thích hợp sẽ giúp bạn tự tin thể
@@ -102,10 +116,9 @@ const HeaderHomePage = () => {
                       id=""
                       className="p-3 w-48 h-full border-solid border-[#0e1c22] text-[#0e1c22] text-base bg-none outline-none"
                     >
-                      <option>Sản phẩm nổi bật</option>
-                      <option>Sản phẩm nổi bật1</option>
-                      <option>Sản phẩm nổi bật2</option>
-                      <option>Sản phẩm nổi bật3</option>
+                      {OUTSTANDING_PRODUCTS.map((item, index) => (
+                        <option key={index}>{item}</option>
+                      ))}
                     </select>
                   </div>
                 </div>

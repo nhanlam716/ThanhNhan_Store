@@ -16,3 +16,14 @@ export const PRICE = [
   { name: "3,000,000₫ - 4,000,000₫", id: "price" },
   { name: "Trên 4,000,000₫", id: "price" },
 ];
+
+export const OUTSTANDING_PRODUCTS = [
+  "Sản phẩm nổi bật",
+  "Giá: Tăng dần",
+  "Giá: Giảm dần",
+  "Tên: A - Z",
+  "Tên: Z - A",
+  "Cũ nhất",
+  "Mới nhất",
+  "Bán chạy nhất",
+];

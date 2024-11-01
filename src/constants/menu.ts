@@ -33,35 +33,88 @@ export type IMenu = {
 
 export const MENU: IMenu[] = [
   { name: "trang chủ", href: "/" },
-  { name: "tất cả sản phẩm", href: "/headerHomePage" },
+  {
+    name: "tất cả sản phẩm",
+    href: "/allProducts?type=All-Products&brand=allProduct",
+  },
   {
     name: "giày cỏ nhân tạo",
-    href: "/",
+    href: "/allProducts?type=artificial-soccer-shoes&brand=artificialSoccerShoes",
     children: [
-      { name: "nike", href: "/" },
-      { name: "adidas", href: "/" },
-      { name: "puma", href: "/" },
-      { name: "mizuno", href: "/" },
-      { name: "kamito", href: "/" },
-      { name: "joma", href: "/" },
-      { name: "asics", href: "/" },
-      { name: "desporte", href: "/" },
-      { name: "zocker", href: "/" },
+      {
+        name: "nike",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=nike",
+      },
+      {
+        name: "adidas",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=adidas",
+      },
+      {
+        name: "puma",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=puma",
+      },
+      {
+        name: "mizuno",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=mizuno",
+      },
+      {
+        name: "kamito",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=kamito",
+      },
+      {
+        name: "joma",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=joma",
+      },
+      {
+        name: "asics",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=asics",
+      },
+      {
+        name: "desporte",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=desporte",
+      },
+      {
+        name: "zocker",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=zocker",
+      },
     ],
   },
   {
     name: "giày futsal",
-    href: "/",
+    href: "/allProducts/?type=futsal-soccer-shoes&brand=FutsalSoccerShoes",
     children: [
-      { name: "nike", href: "/" },
-      { name: "adidas", href: "/" },
-      { name: "puma", href: "/" },
-      { name: "mizuno", href: "/" },
-      { name: "kamito", href: "/" },
-      { name: "joma", href: "/" },
-      { name: "asics", href: "/" },
-      { name: "desporte", href: "/" },
-      { name: "zocker", href: "/" },
+      {
+        name: "nike",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalnike",
+      },
+      {
+        name: "adidas",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsaladidas",
+      },
+      {
+        name: "athleta",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalathleta",
+      },
+      {
+        name: "mizuno",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalmizuno",
+      },
+      {
+        name: "kamito",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalkamito",
+      },
+      {
+        name: "joma",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsaljoma",
+      },
+      {
+        name: "asics",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalasics",
+      },
+      {
+        name: "desporte",
+        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsaldesporte",
+      },
     ],
   },
   {

@@ -42,15 +42,18 @@ const Header = () => {
               <div className="relative group">
                 <img width={28} src={User} alt="user" />
                 <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
-                  <li className="px-4 py-2 mb-2 hover:bg-slate-100">
-                    <Link to="./login" className="hover:block hover:text-[red]">
+                  <li className="mb-2 hover:bg-slate-100">
+                    <Link
+                      to="./login"
+                      className="px-4 py-2 w-full block text-center hover:text-[red]"
+                    >
                       Đăng nhập
                     </Link>
                   </li>
-                  <li className="px-4 py-2 hover:bg-slate-100">
+                  <li className=" hover:bg-slate-100">
                     <Link
                       to="./register"
-                      className="hover:block hover:text-[red]"
+                      className="px-4 py-2 w-full block text-center hover:text-[red]"
                     >
                       Đăng kí
                     </Link>
@@ -75,31 +78,37 @@ const Header = () => {
           <nav>
             <ul className="flex gap-4 uppercase font-bold text-sm tracking-tighter">
               {MENU.map((item) => (
-                <li key={item.name} className="relative group pb-2">
+                <li key={item.name} className="relative group/parent pb-2">
                   <Link
                     to={item.href!}
-                    className="hover:block hover:text-[red]"
+                    className="block w-full hover:text-[red]"
                   >
                     {item.name}
                   </Link>
                   {item.children && (
-                    <ul className="absolute top-full left-[-15px] z-50 w-56 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                    <ul className="absolute top-full left-[-15px] z-50 w-56 bg-[#fff] border box-shadow border-top hidden group-hover/parent:block">
                       {item.children.map((menu) => (
                         <li
                           key={menu.name}
-                          className="px-4 py-2 hover:bg-slate-200 cursor-pointer relative group hover:text-[red]"
+                          className=" hover:bg-slate-200 cursor-pointer relative group/child "
                         >
-                          <Link to="/" className="hover:block ">
+                          <Link
+                            to={menu.href!}
+                            className="block w-full hover:text-[red] px-4 py-2"
+                          >
                             {menu.name}
                           </Link>
                           {menu.children && (
-                            <ul className="absolute top-0 left-full z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                            <ul className="absolute top-0 left-full z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover/child:block">
                               {menu.children.map((subItem) => (
                                 <li
                                   key={subItem.name}
-                                  className="px-4 py-2 hover:bg-slate-100 cursor-pointer relative group hover:text-[red]"
+                                  className=" hover:bg-slate-100 cursor-pointer relative group"
                                 >
-                                  <Link to="/" className="hover:block">
+                                  <Link
+                                    to="/"
+                                    className="block w-full hover:text-[red] px-4 py-2"
+                                  >
                                     {subItem.name}
                                   </Link>
                                 </li>

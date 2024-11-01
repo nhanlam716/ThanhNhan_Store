@@ -34,10 +34,6 @@ const cartItems: CartItem[] = [
   },
 ];
 const ShoppingCard = () => {
-  const totalAmount = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
   return (
     <>
       <div className="bg-gray-100">
@@ -117,9 +113,7 @@ const ShoppingCard = () => {
             <div className="w-full md:w-1/3 bg-white p-6 mt-4 md:mt-0 md:ml-4 rounded-lg shadow-md">
               <div className="flex justify-between mb-6">
                 <span className="text-gray-700 font-semibold">Thành tiền</span>
-                <span className="text-red-500 font-semibold text-xl">
-                  {totalAmount.toLocaleString()}₫
-                </span>
+                <span className="text-red-500 font-semibold text-xl">₫</span>
               </div>
               <div className="mt-4">
                 <button className=" bg-black text-white px-6 py-3 rounded w-full text-lg">
