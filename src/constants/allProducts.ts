@@ -1,19 +1,5 @@
 export const CONTENT: any = {
-  "All-Products": {
-    allProduct: {
-      title: "Tất cả sản phẩm",
-      description: "aaa",
-      banner:
-        "https://file.hstatic.net/200000278317/collection/main-category-banner-all_df361d5490c241baa6cf83475c785540_master.jpg",
-    },
-  },
   "artificial-soccer-shoes": {
-    artificialSoccerShoes: {
-      title: "giày cỏ nhân tạo",
-      description: "aaa",
-      banner:
-        "https://file.hstatic.net/200000278317/collection/main-category-banner-turf_60da9e81e1d944dca175cddd88eed20a_master.jpg",
-    },
     nike: {
       title: "nike",
       description: "aaa",

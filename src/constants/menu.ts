@@ -35,11 +35,11 @@ export const MENU: IMenu[] = [
   { name: "trang chủ", href: "/" },
   {
     name: "tất cả sản phẩm",
-    href: "/allProducts?type=All-Products&brand=allProduct",
+    href: "/allProducts",
   },
   {
     name: "giày cỏ nhân tạo",
-    href: "/allProducts?type=artificial-soccer-shoes&brand=artificialSoccerShoes",
+    href: "/allProducts?type=artificial-soccer-shoes",
     children: [
       {
         name: "nike",

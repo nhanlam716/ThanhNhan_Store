@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../../../components/banner/Banner";
 import { Link, useSearchParams } from "react-router-dom";
 import {
@@ -10,6 +10,8 @@ import TitleProduct from "../../../components/title/TitleProduct";
 import { Checkbox, Label } from "flowbite-react";
 import InputLink from "../../../components/inputForm/InputLink";
 import { CONTENT } from "../../../constants/allProducts";
+import { axiosClient } from "../../../api/axiosClient";
+import Cards, { IProduct } from "../../../components/card/Cards";
 
 const HeaderHomePage = () => {
   const [searchParams] = useSearchParams();
@@ -21,12 +23,30 @@ const HeaderHomePage = () => {
   const type = searchParams.get("type");
   const brand = searchParams.get("brand");
 
+  const [data, setData] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response: any = await axiosClient.get(
+          type && brand
+            ? `/productsCards?type=${type}&brand=${brand}`
+            : "/productsCards"
+        );
+        setData(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [type, brand]);
+
   return (
     <div className="my-6">
       <div className="max-w-6xl my-0 mx-auto">
         <div>
           <div className="flex gap-5">
-            <div className="flex-[30%]">
+            <div className="flex-[20%]">
               <h3 className="bg-black p-3 m-0 text-[#fff] uppercase font-semibold rounded">
                 danh mục
               </h3>
@@ -65,11 +85,21 @@ const HeaderHomePage = () => {
                 <TitleProduct title="size" />
               </div>
             </div>
-            <div className="flex-[70%]">
-              {type && brand && <Banner image={CONTENT[type][brand]?.banner} />}
+            <div className="flex-[80%]">
+              {type && brand ? (
+                <Banner image={CONTENT[type][brand]?.banner} />
+              ) : (
+                <Banner
+                  image={
+                    "https://file.hstatic.net/200000278317/collection/main-category-banner-all_df361d5490c241baa6cf83475c785540_master.jpg"
+                  }
+                />
+              )}
               <div className="py-4 border-b border-[#333]">
                 <h1 className="text-5xl uppercase font-medium">
-                  {type && brand && CONTENT[type][brand]?.title}
+                  {type && brand
+                    ? CONTENT[type][brand]?.title
+                    : "Tất cả sản phẩm"}
                 </h1>
                 <p className="mt-5 text-[16px] tracking-tight">
                   Chọn một đôi giày đá bóng thích hợp sẽ giúp bạn tự tin thể
@@ -121,6 +151,13 @@ const HeaderHomePage = () => {
                       ))}
                     </select>
                   </div>
+                </div>
+              </div>
+              <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {(data || []).map((item, index) => (
+                    <Cards key={index} {...item} />
+                  ))}
                 </div>
               </div>
             </div>

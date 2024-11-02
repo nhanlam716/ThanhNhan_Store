@@ -32,7 +32,7 @@ const Card = ({
           <img
             src={image}
             alt={name}
-            className="w-full h-72 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+            className="w-full h-60 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
           />
 
           <div className="absolute top-2 left-2 bg-[#fff] text-[red] text-lg px-2 py-1 rounded">
