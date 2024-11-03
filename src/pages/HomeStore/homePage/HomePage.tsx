@@ -13,6 +13,7 @@ import Button from "../../../components/button/Button";
 import CardNews from "../../../modules/homePage/components/card/CardNews";
 import { useEffect, useState } from "react";
 import { axiosClient } from "../../../api/axiosClient";
+import { Link } from "react-router-dom";
 
 // const products = [
 //   {
@@ -60,7 +61,9 @@ const HomePage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response: any = await axiosClient.get("/productsCards");
+        const response: any = await axiosClient.get(
+          "http://localhost:5000/productsCards?_page=1&_limit=4"
+        );
         setData(response);
       } catch (error) {
         console.log(error);
@@ -124,14 +127,20 @@ const HomePage = () => {
         <div className="max-w-6xl my-0 mx-auto mt-6 ">
           <ul className="flex justify-center gap-2 pb-2 mb-8 uppercase">
             <li>
-              <a href="./HomePage.tsx" className="p-4 text-4xl">
+              <Link
+                to="/allProducts?type=artificial-soccer-shoes"
+                className="p-4 text-4xl"
+              >
                 Giày sân cỏ nhân tạo
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="./HomePage.tsx" className="p-4 text-4xl">
+              <Link
+                to="/allProducts/?type=futsal-soccer-shoes"
+                className="p-4 text-4xl"
+              >
                 Giày sân futsal
-              </a>
+              </Link>
             </li>
           </ul>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

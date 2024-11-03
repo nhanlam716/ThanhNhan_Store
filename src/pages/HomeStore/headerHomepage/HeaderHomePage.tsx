@@ -28,11 +28,9 @@ const HeaderHomePage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response: any = await axiosClient.get(
-          type && brand
-            ? `/productsCards?type=${type}&brand=${brand}`
-            : "/productsCards"
-        );
+        const response: any = await axiosClient.get("/productsCards", {
+          params: { type, brand },
+        });
         setData(response);
       } catch (error) {
         console.log(error);
@@ -40,6 +38,47 @@ const HeaderHomePage = () => {
     }
     fetchData();
   }, [type, brand]);
+
+  const handleRenderTitle = () => {
+    // {type
+    //   ? brand
+    //     ? CONTENT[type][brand]?.title
+    //     : CONTENT[type]?.title
+    //   : ""}
+
+    if (type && brand) return CONTENT[type][brand]?.title;
+
+    if (type) return CONTENT[type]?.title;
+
+    return "Tất cả sản phẩm";
+  };
+
+  const handleRenderBanner = () => {
+    // {
+    //   type ? (
+    //     <Banner
+    //       image={brand ? CONTENT[type][brand].banner : CONTENT[type].banner}
+    //     />
+    //   ) : (
+    //     <Banner
+    //       image={
+    //         "https://file.hstatic.net/200000278317/collection/main-category-banner-all_df361d5490c241baa6cf83475c785540_master.jpg"
+    //       }
+    //     />
+    //   );
+    // }
+    if (type && brand) return <Banner image={CONTENT[type][brand].banner} />;
+
+    if (type) return <Banner image={CONTENT[type].banner} />;
+
+    return (
+      <Banner
+        image={
+          "https://file.hstatic.net/200000278317/collection/main-category-banner-all_df361d5490c241baa6cf83475c785540_master.jpg"
+        }
+      />
+    );
+  };
 
   return (
     <div className="my-6">
@@ -86,20 +125,10 @@ const HeaderHomePage = () => {
               </div>
             </div>
             <div className="flex-[80%]">
-              {type && brand ? (
-                <Banner image={CONTENT[type][brand]?.banner} />
-              ) : (
-                <Banner
-                  image={
-                    "https://file.hstatic.net/200000278317/collection/main-category-banner-all_df361d5490c241baa6cf83475c785540_master.jpg"
-                  }
-                />
-              )}
+              {handleRenderBanner()}
               <div className="py-4 border-b border-[#333]">
                 <h1 className="text-5xl uppercase font-medium">
-                  {type && brand
-                    ? CONTENT[type][brand]?.title
-                    : "Tất cả sản phẩm"}
+                  {handleRenderTitle()}
                 </h1>
                 <p className="mt-5 text-[16px] tracking-tight">
                   Chọn một đôi giày đá bóng thích hợp sẽ giúp bạn tự tin thể
@@ -153,7 +182,7 @@ const HeaderHomePage = () => {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="mt-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {(data || []).map((item, index) => (
                     <Cards key={index} {...item} />

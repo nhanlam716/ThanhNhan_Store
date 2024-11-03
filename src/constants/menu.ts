@@ -81,7 +81,7 @@ export const MENU: IMenu[] = [
   },
   {
     name: "giày futsal",
-    href: "/allProducts/?type=futsal-soccer-shoes&brand=FutsalSoccerShoes",
+    href: "/allProducts/?type=futsal-soccer-shoes",
     children: [
       {
         name: "nike",

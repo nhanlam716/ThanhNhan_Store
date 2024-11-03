@@ -1,5 +1,9 @@
 export const CONTENT: any = {
   "artificial-soccer-shoes": {
+    title: "Giày cỏ nhân tạo",
+    description: "aaa",
+    banner:
+      "https://file.hstatic.net/200000278317/collection/main-category-banner-turf_60da9e81e1d944dca175cddd88eed20a_master.jpg",
     nike: {
       title: "nike",
       description: "aaa",
@@ -56,6 +60,10 @@ export const CONTENT: any = {
     },
   },
   "futsal-soccer-shoes": {
+    title: "Giày Futsal",
+    description: "aaa",
+    banner:
+      "https://file.hstatic.net/200000278317/collection/main-category-banner-futsal_242b2485b3d54122ad46508c08b9aa8e_master.jpg",
     FutsalSoccerShoes: {
       title: "giày futsal",
       description: "aaa",

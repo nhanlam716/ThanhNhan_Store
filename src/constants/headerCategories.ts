@@ -23,7 +23,4 @@ export const OUTSTANDING_PRODUCTS = [
   "Giá: Giảm dần",
   "Tên: A - Z",
   "Tên: Z - A",
-  "Cũ nhất",
-  "Mới nhất",
-  "Bán chạy nhất",
 ];
