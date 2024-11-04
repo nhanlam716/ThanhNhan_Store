@@ -2,15 +2,20 @@ import React from "react";
 
 interface IButton {
   title?: string;
+  href?: string;
+  disabled?: string;
   width?: string;
   height?: string;
 }
 
-const Button = ({ title, height, width }: IButton) => {
+const Button = ({ title, href, height, width }: IButton) => {
   return (
-    <div className="flex justify-center mt-16" style={{ width, height }}>
+    <div
+      className="flex justify-center mt-16 cursor-pointer"
+      style={{ width, height }}
+    >
       <a
-        href="./Button.tsx"
+        href={href}
         className="relative inline-block px-6 py-2 font-semibold text-lg text-white transition-all duration-300 bg-black shadow-md hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-red-500 hover:shadow-lg hover:scale-105"
       >
         <span className="relative z-10 flex items-center justify-center space-x-2">

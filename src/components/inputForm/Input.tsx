@@ -5,9 +5,21 @@ interface IInput {
   label: string;
   placeholder?: string;
   types?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  value: string;
+  name: string;
 }
 
-const Input = ({ label, placeholder, types }: IInput) => {
+const Input = ({
+  label,
+  placeholder,
+  types,
+  onBlur,
+  onChange,
+  value,
+  name,
+}: IInput) => {
   return (
     <div className="mt-10">
       <label
@@ -23,6 +35,10 @@ const Input = ({ label, placeholder, types }: IInput) => {
         label={""}
         color="success"
         className="text-lg z-10"
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
+        name={name}
       />
     </div>
   );

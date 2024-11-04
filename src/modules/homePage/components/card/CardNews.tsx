@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface ICardNews {
   image: string;
@@ -10,15 +11,15 @@ const CardNews = ({ description, image, param }: ICardNews) => {
     <div>
       <div className="flex rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col">
         <div className="flex h-full flex-col justify-center">
-          <a href="">
+          <Link to="#">
             <img src={image} alt="ảnh news" />
-          </a>
+          </Link>
           <div className="px-6 py-3">
             <h4 className="h4 text-xl font-bold">
-              <a href="">{description}</a>
+              <Link to="#">{description}</Link>
             </h4>
             <p className="text-sm">
-              <a href="">{param}</a>
+              <Link to="#">{param}</Link>
             </p>
           </div>
         </div>

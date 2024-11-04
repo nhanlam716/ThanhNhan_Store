@@ -3,8 +3,23 @@ import InputTitle from "../../../components/inputForm/InputTitle";
 import Input from "../../../components/inputForm/Input";
 import Button from "../../../components/button/Button";
 import InputParam from "../../../components/inputForm/InputParam";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Password = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Địa chỉ email không hợp lệ")
+        .required("Bạn hãy nhập đầy đủ thông tin"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
   return (
     <>
       <div className="bg-slate-100">
@@ -16,7 +31,14 @@ const Password = () => {
                 label="email:"
                 types="text"
                 placeholder="Nhập email của bạn"
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
               />
+              {formik.touched.email && formik.errors.email ? (
+                <div style={{ color: "red" }}>{formik.errors.email}</div>
+              ) : null}
               <div className="flex mt-[-34px]">
                 <Button title="Gửi" />
               </div>

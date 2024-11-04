@@ -106,7 +106,7 @@ const Header = () => {
                                   className=" hover:bg-slate-100 cursor-pointer relative group"
                                 >
                                   <Link
-                                    to="/"
+                                    to={subItem.href!}
                                     className="block w-full hover:text-[red] px-4 py-2"
                                   >
                                     {subItem.name}

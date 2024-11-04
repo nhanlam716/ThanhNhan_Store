@@ -81,39 +81,39 @@ export const MENU: IMenu[] = [
   },
   {
     name: "giày futsal",
-    href: "/allProducts/?type=futsal-soccer-shoes",
+    href: "/allProducts?type=futsal-soccer-shoes",
     children: [
       {
         name: "nike",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalnike",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsalnike",
       },
       {
         name: "adidas",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsaladidas",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsaladidas",
       },
       {
         name: "athleta",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalathleta",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsalathleta",
       },
       {
         name: "mizuno",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalmizuno",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsalmizuno",
       },
       {
         name: "kamito",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalkamito",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsalkamito",
       },
       {
         name: "joma",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsaljoma",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsaljoma",
       },
       {
         name: "asics",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsalasics",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsalasics",
       },
       {
         name: "desporte",
-        href: "/allProducts/?type=futsal-soccer-shoes&brand=futsaldesporte",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsaldesporte",
       },
     ],
   },
@@ -121,63 +121,306 @@ export const MENU: IMenu[] = [
     name: "thương hiệu",
     href: "/",
     children: [
-      { name: "nike", href: "/" },
-      { name: "adidas", href: "/" },
-      { name: "puma", href: "/" },
-      { name: "mizuno", href: "/" },
-      { name: "kamito", href: "/" },
-      { name: "joma", href: "/" },
-      { name: "asics", href: "/" },
-      { name: "desporte", href: "/" },
-      { name: "zocker", href: "/" },
+      {
+        name: "nike",
+        href: "/",
+        children: [
+          {
+            name: "nike mercurial",
+            href: "",
+          },
+          {
+            name: "nike tiempo",
+            href: "",
+          },
+          {
+            name: "nike phantom",
+            href: "",
+          },
+          {
+            name: "nike react gato",
+            href: "",
+          },
+          {
+            name: "nike lunar gato",
+            href: "",
+          },
+          {
+            name: "nike street gato",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "adidas",
+        href: "/",
+        children: [
+          {
+            name: "adidas f50",
+            href: "",
+          },
+          {
+            name: "adidas x",
+            href: "",
+          },
+          {
+            name: "adidas predator",
+            href: "",
+          },
+          {
+            name: "adidas copa",
+            href: "",
+          },
+          {
+            name: "adidas top sala",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "puma",
+        href: "/",
+        children: [
+          {
+            name: "puma ultra",
+            href: "",
+          },
+          {
+            name: "puma future",
+            href: "",
+          },
+          {
+            name: "puma king",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "mizuno",
+        href: "/",
+        children: [
+          {
+            name: "mizuno monarcida",
+            href: "",
+          },
+          {
+            name: "mizuno alpha",
+            href: "",
+          },
+          {
+            name: "mizuno morelia",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "kamito",
+        href: "/",
+        children: [
+          {
+            name: "kamito TA 11",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "athleta",
+        href: "/",
+        children: [
+          {
+            name: "athleta o-rei",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "joma",
+        href: "/",
+        children: [
+          {
+            name: "joma top flex",
+            href: "",
+          },
+          {
+            name: "joma regate",
+            href: "",
+          },
+          {
+            name: "joma cancha",
+            href: "",
+          },
+          {
+            name: "joma mundial",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "asics",
+        href: "/",
+        children: [
+          {
+            name: "asics destaque",
+            href: "",
+          },
+          {
+            name: "asics calcetto",
+            href: "",
+          },
+          {
+            name: "asics ds light",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "desporte",
+        href: "/",
+        children: [
+          {
+            name: "desporte campinas",
+            href: "",
+          },
+          {
+            name: "desporte tessa light",
+            href: "",
+          },
+          {
+            name: "desporte boa vista",
+            href: "",
+          },
+          {
+            name: "desporte sao luis",
+            href: "",
+          },
+        ],
+      },
+      {
+        name: "zocker",
+        href: "/",
+        children: [
+          {
+            name: "zocker winner energy",
+            href: "",
+          },
+          {
+            name: "zocker inspire",
+            href: "",
+          },
+        ],
+      },
     ],
   },
   {
     name: "hot sales",
-    href: "/",
+    href: "#",
     children: [
       {
         name: "hot deal - giày nhân tạo",
-        href: "/",
+        href: "/allProducts?type=hotdeal",
         children: [
-          { name: "hot deal - nike", href: "/" },
-          { name: "hot deal - adidas", href: "/" },
-          { name: "hot deal - puma", href: "/" },
-          { name: "hot deal - mizuno", href: "/" },
-          { name: "hot deal - joma", href: "/" },
-          { name: "hot deal - kamito", href: "/" },
+          {
+            name: "hot deal - nike mercurial vapor 15 pro tf",
+            href: "/allProducts?type=hotdeal&brand=nikeMercurial",
+          },
+          {
+            name: "hot deal - adidas x crazyfast.3/league tf",
+            href: "/allProducts?type=hotdeal&brand=adidasX",
+          },
+          {
+            name: "hot deal - nike phantom gx academy tf",
+            href: "/allProducts?type=hotdeal&brand=nikePhantom",
+          },
+          {
+            name: "hot deal - giày đế tf trên 2tr",
+            href: "/allProducts?type=hotdeal&brand=TFT2tr",
+          },
+          {
+            name: "hot deal - giày đế tf dưới 2tr",
+            href: "/allProducts?type=hotdeal&brand=TF2tr",
+          },
+          {
+            name: "hot deal - giày đế tf dưới 1tr5",
+            href: "/allProducts?type=hotdeal&brand=TFD2tr",
+          },
         ],
       },
       {
         name: "hot deal - giày futsal",
-        href: "/",
+        href: "/allProducts?type=hotdeal",
         children: [
-          { name: "hot deal - nike", href: "/" },
-          { name: "hot deal - adidas", href: "/" },
-          { name: "hot deal - puma", href: "/" },
-          { name: "hot deal - mizuno", href: "/" },
-          { name: "hot deal - joma", href: "/" },
-          { name: "hot deal - kamito", href: "/" },
+          {
+            name: "hot deal - giày futsal trên 2tr",
+            href: "/allProducts?type=hotdeal&brand=futsalT2tr",
+          },
+          {
+            name: "hot deal - giày futsal dưới 2tr",
+            href: "/allProducts?type=hotdeal&brand=futsal2tr",
+          },
+          {
+            name: "hot deal - giày futsal dưới 1tr5",
+            href: "/allProducts?type=hotdeal&brand=futsalD2tr",
+          },
         ],
       },
     ],
   },
   {
     name: "phụ kiện",
-    href: "/",
+    href: "/allProducts?type=accessory",
     children: [
-      { name: "phụ kiện nike", href: "/" },
-      { name: "phụ kiện adidas", href: "/" },
-      { name: "phụ kiện puma", href: "/" },
-      { name: "phụ kiện mizuno", href: "/" },
-      { name: "dép unbox", href: "/" },
-      { name: "starbalm", href: "/" },
-      { name: "grandsport", href: "/" },
-      { name: "bóng động lực", href: "/" },
-      { name: "bóng gerustar", href: "/" },
-      { name: "bóng desporte", href: "/" },
-      { name: "bóng zocker", href: "/" },
-      { name: "phụ kiện thanh hùng futsal", href: "/" },
+      {
+        name: "phụ kiện activital",
+        href: "/allProducts?type=accessory&brand=activital",
+      },
+      {
+        name: "phụ kiện adidas",
+        href: "/allProducts?type=accessory&brand=adidas",
+      },
+      {
+        name: "phụ kiện joma",
+        href: "/allProducts?type=accessory&brand=joma",
+      },
+      {
+        name: "phụ kiện mizuno",
+        href: "/allProducts?type=accessory&brand=mizuno",
+      },
+      {
+        name: "phụ kiện zocker",
+        href: "/allProducts?type=accessory&brand=zocker",
+      },
+      {
+        name: "phụ kiện ligpro",
+        href: "/allProducts?type=accessory&brand=ligpro",
+      },
+      {
+        name: "phụ kiện lh goalkeeping",
+        href: "/allProducts?type=accessory&brand=goalkeeping",
+      },
+      {
+        name: "phụ kiện thanh hùng futsal",
+        href: "/allProducts?type=accessory&brand=thanhhungfutsal",
+      },
+      {
+        name: "dép unbox",
+        href: "/allProducts?type=accessory&brand=sandal",
+      },
+      {
+        name: "starbalm",
+        href: "/allProducts?type=accessory&brand=starbalm",
+      },
+      {
+        name: "grandsport",
+        href: "/allProducts?type=accessory&brand=grandsport",
+      },
+      {
+        name: "bóng động lực",
+        href: "/allProducts?type=accessory&brand=dongluc",
+      },
+      {
+        name: "bóng gerustar",
+        href: "/allProducts?type=accessory&brand=gerustar",
+      },
     ],
   },
   { name: "tin tức giày", href: "/" },
