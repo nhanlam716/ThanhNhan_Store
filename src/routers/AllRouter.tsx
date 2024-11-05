@@ -11,7 +11,6 @@ import HeaderHomePage from "../pages/HomeStore/headerHomepage/HeaderHomePage";
 import LoginPageAdmin from "../pages/adminStore/loginPage/LoginPageAdmin";
 import LoginAdminStore from "../pages/adminStore/loginPage/login/LoginAdminStore";
 import PasswordAdminStore from "../pages/adminStore/loginPage/login/PasswordAdminStore";
-import BannerPage from "../pages/HomeStore/productPage/BannerPage";
 import Checkout from "../pages/HomeStore/checkout/Checkout";
 
 const AllRouter = () => {
@@ -25,7 +24,6 @@ const AllRouter = () => {
           <Route path="/password" element={<Password />} />
           <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
-          <Route path="/bannerPage/:id" element={<BannerPage />} />
           <Route path="/allProducts" element={<HeaderHomePage />} />
         </Route>
         <Route element={<LoginPageAdmin />}>

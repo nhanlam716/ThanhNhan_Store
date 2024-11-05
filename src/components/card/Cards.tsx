@@ -10,6 +10,9 @@ export interface IProduct {
   discount: string;
   installment?: string;
   badge: string;
+  shoeType: string;
+  codeSP: string;
+  color: string;
 }
 const Card = ({
   id,
@@ -20,6 +23,9 @@ const Card = ({
   discount,
   installment,
   badge,
+  codeSP,
+  color,
+  shoeType,
 }: IProduct) => {
   const navigate = useNavigate();
   return (
@@ -45,7 +51,9 @@ const Card = ({
         </div>
 
         <div className="p-4">
-          <h3 className="text-gray-900 font-semibold text-sm">{name}</h3>
+          <h3 className="text-gray-900 font-semibold text-sm">
+            {name} - {codeSP} - {color}
+          </h3>
 
           <div className="flex items-center space-x-2 mt-2">
             <span className="text-red-600 font-bold text-lg">

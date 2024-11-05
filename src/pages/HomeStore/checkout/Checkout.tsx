@@ -94,12 +94,35 @@ const Checkout = () => {
                 </div>
               </div>
               <div className="flex justify-between items-center mt-3">
-                <Link to="/" className="text-[#338dbc]">
+                <Link to="/shopping" className="text-[#338dbc]">
                   Giỏ hàng
                 </Link>
                 <Button color="blue">
                   Tiếp tục đến phương thức thanh toán
                 </Button>
+              </div>
+              <div className="pt-8 pb-5">
+                <Link
+                  to="/"
+                  className="flex items-center uppercase text-lg font-semibold opacity-80"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M16 4L8 12L16 20"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  tiếp tục mua sắm
+                </Link>
               </div>
               <div className="mt-8 border-t border-solid border-[#ccc]">
                 <p className="p-3 text-center text-[#4B5563]">

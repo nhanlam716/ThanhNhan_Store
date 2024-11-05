@@ -1,10 +1,10 @@
 import React from "react";
 import InputTitle from "../../../components/inputForm/InputTitle";
 import Input from "../../../components/inputForm/Input";
-import Button from "../../../components/button/Button";
 import InputParam from "../../../components/inputForm/InputParam";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Button } from "flowbite-react";
 
 const Password = () => {
   const formik = useFormik({
@@ -39,8 +39,10 @@ const Password = () => {
               {formik.touched.email && formik.errors.email ? (
                 <div style={{ color: "red" }}>{formik.errors.email}</div>
               ) : null}
-              <div className="flex mt-[-34px]">
-                <Button title="Gửi" />
+              <div className="flex mt-5">
+                <Button color="dark" type="submit">
+                  Gửi
+                </Button>
               </div>
               <InputParam
                 description="Trở lại"

@@ -6,7 +6,7 @@ import iconShoe from "../../../assets/image/pd_policy_2_img.webp";
 import iconOto from "../../../assets/image/pd_policy_3_img.webp";
 import iconcard from "../../../assets/image/pd_policy_4_img.webp";
 import ButtonQuantity from "../../../components/button/ButtonQuantity";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IProduct } from "../../../components/card/Cards";
 import { axiosClient } from "../../../api/axiosClient";
@@ -19,23 +19,24 @@ const images = [
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
 ];
 const ProductPage = () => {
-  const [searchParams] = useSearchParams();
+  const params = useParams();
 
-  const id = searchParams.get("id");
+  const id = params?.id;
+  const [data, setData] = useState<IProduct>();
 
-  const [data, setData] = useState<IProduct[]>();
-
-  console.log(data);
   useEffect(() => {
     async function fetchData() {
       try {
         const response: any = await axiosClient.get(`/productsCards/${id}`);
+        console.log(response);
         setData(response);
       } catch (error) {
         console.log(error);
       }
     }
-    fetchData();
+    if (id) {
+      fetchData();
+    }
   }, [id]);
   const navigate = useNavigate();
   return (
@@ -89,47 +90,52 @@ const ProductPage = () => {
                     </svg>
                   </button>
                 </div>
-                <div className="relative pt-[14px]">
-                  <img
-                    src="https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg"
-                    alt="Main product"
-                    className="w-[400px] h-auto object-cover"
-                  />
-                  <span className="absolute mt-[14px] top-0 right-0 bg-red-500 text-white px-2 py-1 text-sm">
-                    -19%
-                  </span>
-                </div>
+                {data && (
+                  <div className="relative pt-[14px]">
+                    <img
+                      src={data?.image}
+                      alt="Main product"
+                      className="w-[400px] h-100% object-cover"
+                    />
+                    <span className="absolute mt-[14px] top-0 right-0 bg-red-500 text-white px-4 py-3 text-sm">
+                      {data?.discount}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             {data && (
               <div className="flex-1">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-6 mb-4">
                   <h1 className="text-[26px] font-normal uppercase">
-                    MIZUNO ALPHA PRO AS - P1GD236409
+                    {data?.name} - {data?.color}
                   </h1>
-                  <span className="text-gray-500 uppercase">XÁM-TRẮNG</span>
                 </div>
                 <ul className="relative flex gap-6">
-                  <li>
+                  <li className="befores">
                     Loại:{" "}
                     <span className="text-gray-500 text-sm">
-                      Giày Cỏ Nhân Tạo (Turf)
+                      {data?.shoeType}
                     </span>
                   </li>
-                  <li className="befores">
+                  <li>
                     Mã SP:{" "}
-                    <span className="text-gray-500 text-sm">P1GD236409</span>
+                    <span className="text-gray-500 text-sm">
+                      {data?.codeSP}
+                    </span>
                   </li>
                 </ul>
                 <div className="mt-6">
                   <div className="flex items-center space-x-4">
                     <span className="text-red-500 text-4xl font-bold">
-                      2,750,000₫
+                      {data?.discountedPrice}₫
                     </span>
                     <span className="text-2xl text-gray-400 line-through">
-                      3,390,000₫
+                      {data?.originalPrice}₫
                     </span>
-                    <span className="text-green-500">(Tiết kiệm 640,000₫)</span>
+                    <span className="text-green-500">
+                      (Tiết kiệm {data.installment}₫)
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 mt-6">
                     <p className="text-base">Trả sau đến 12 tháng với </p>

@@ -1,11 +1,20 @@
 import InputTitle from "../../../components/inputForm/InputTitle";
 import Input from "../../../components/inputForm/Input";
-import Button from "../../../components/button/Button";
 import InputParam from "../../../components/inputForm/InputParam";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Button } from "flowbite-react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../stores/store";
+import { registerUser } from "../../../stores/slices/authSlices";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { error, isLoading } = useSelector(
+    (state: RootState) => state.authState
+  );
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -21,19 +30,27 @@ const RegisterPage = () => {
         .email("Địa chỉ email không hợp lệ")
         .required("Bạn hãy nhập đầy đủ thông tin"),
       password: Yup.string()
-        .max(15, "Phải ít hơn hoặc bằng 15 ký tự")
-        .required("Bạn hãy nhập đầy đủ thông tin"),
+        .min(8, "Mật khẩu cần ít nhất 8 ký tự")
+        .matches(/[a-z]/, "Phải có ít nhất một chữ cái thường")
+        .matches(/[A-Z]/, "Phải có ít nhất một chữ cái hoa")
+        .matches(/[0-9]/, "Phải có ít nhất một chữ số")
+        .matches(/[@$!%*?&#]/, "Phải có ít nhất một ký tự đặc biệt")
+        .required("Mật khẩu là bắt buộc"),
       confirmPassword: Yup.string()
-        .max(15, "Phải ít hơn hoặc bằng 15 ký tự")
+        .oneOf([Yup.ref("password")], "Mật khẩu không khớp")
         .required("Bạn hãy nhập đầy đủ thông tin"),
     }),
-    onSubmit: (values) => {
-      // Object.keys(formik.errors).length === 0
-      //   ? console.log(values)
-      //   : alert(
-      //       "Vui lòng điền đầy đủ và chính xác thông tin trước khi đăng ký."
-      //     );
-      console.log(values);
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const resultAction = await dispatch(registerUser(values));
+
+        if (registerUser.fulfilled.match(resultAction)) {
+          navigate("/login");
+          resetForm();
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
     },
   });
 
@@ -43,7 +60,7 @@ const RegisterPage = () => {
         <div className="max-w-4xl mx-auto p-9">
           <div className="p-14 bg-white">
             <InputTitle title="Đăng ký" />
-            <form action="" onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
               <div className="flex gap-10">
                 <div className="flex-1">
                   <Input
@@ -110,8 +127,11 @@ const RegisterPage = () => {
                   {formik.errors.confirmPassword}
                 </div>
               ) : null}
-              <div className="flex mt-[-34px]">
-                <Button title="Đăng ký" />
+              {error && <div style={{ color: "red" }}>{error}</div>}
+              <div className="flex mt-5">
+                <Button color="dark" type="submit" disabled={isLoading}>
+                  {isLoading ? "Đang xử lý..." : "Đăng Ký"}
+                </Button>
               </div>
               <InputParam
                 description="Bạn đã có tài khoản?"

@@ -89,7 +89,7 @@ const HomePage = () => {
           <Title title="Bạn đang quan tâm" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {IMAGE_BANNER.map((item, index) => (
-              <Banner key={index} image={item} />
+              <Banner key={index} image={item.image} href={item.href} />
             ))}
           </div>
         </div>
@@ -160,7 +160,7 @@ const HomePage = () => {
             ))}
           </div>
         </div>
-        <Button title="Xem thêm" />
+        <Button title="Xem thêm" href="/allProducts?type=hotdeal" />
       </div>
       <div>
         <Title title="khách hàng của thf" />

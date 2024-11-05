@@ -1,8 +1,24 @@
 export const IMAGE_BANNER = [
-  "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_1_img_large.jpg?v=1886",
-  "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_2_img_large.jpg?v=1886",
-  "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_3_img_large.jpg?v=1886",
-  "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_4_img_large.jpg?v=1886",
+  {
+    image:
+      "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_1_img_large.jpg?v=1886",
+    href: "/allProducts?type=artificial-soccer-shoes",
+  },
+  {
+    image:
+      "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_2_img_large.jpg?v=1886",
+    href: "/allProducts?type=futsal-soccer-shoes",
+  },
+  {
+    image:
+      "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_3_img_large.jpg?v=1886",
+    href: "/allProducts?type=accessory",
+  },
+  {
+    image:
+      "https://theme.hstatic.net/200000278317/1000929405/14/newcoll_4_img_large.jpg?v=1886",
+    href: "/allProducts?type=hotdeal",
+  },
 ];
 
 export const BANNER = [
