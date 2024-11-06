@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../stores/slices/authSlices";
 import { RootState, AppDispatch } from "../../../stores/store";
 import { useNavigate } from "react-router-dom";
+import WithNotAuth from "../../../hocs/WithNotAuth";
 
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,9 +50,12 @@ const LoginPage = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         const resultAction = await dispatch(loginUser(values));
-
-        if (loginUser.fulfilled.match(resultAction)) {
-          navigate("/login");
+        if (resultAction?.payload) {
+          localStorage.setItem("user", JSON.stringify(resultAction.payload));
+          navigate("/account");
+          resetForm();
+        } else {
+          alert("Email hoặc mât khẩu của bạn không đúng");
           resetForm();
         }
       } catch (error) {
@@ -110,4 +114,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default WithNotAuth(LoginPage);

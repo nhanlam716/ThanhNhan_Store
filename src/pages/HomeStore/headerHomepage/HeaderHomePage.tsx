@@ -11,7 +11,8 @@ import { Checkbox, Label } from "flowbite-react";
 import InputLink from "../../../components/inputForm/InputLink";
 import { CONTENT } from "../../../constants/allProducts";
 import { axiosClient } from "../../../api/axiosClient";
-import Cards, { IProduct } from "../../../components/card/Cards";
+import Cards from "../../../components/card/Cards";
+import { IProduct } from "../../../types/types";
 
 const HeaderHomePage = () => {
   const [searchParams] = useSearchParams();

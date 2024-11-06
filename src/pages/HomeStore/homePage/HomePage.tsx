@@ -1,7 +1,7 @@
 import Carrousel from "../../../modules/homePage/components/carrousel/Carrousel";
 import Title from "../../../components/title/Title";
 import Banner from "../../../components/banner/Banner";
-import Cards, { IProduct } from "../../../components/card/Cards";
+import Cards from "../../../components/card/Cards";
 import {
   BANNER,
   BANNER_ROUNDED,
@@ -14,6 +14,7 @@ import CardNews from "../../../modules/homePage/components/card/CardNews";
 import { useEffect, useState } from "react";
 import { axiosClient } from "../../../api/axiosClient";
 import { Link } from "react-router-dom";
+import { IProduct } from "../../../types/types";
 
 // const products = [
 //   {

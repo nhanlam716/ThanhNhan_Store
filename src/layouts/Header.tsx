@@ -4,9 +4,21 @@ import User from "../assets/image/icon-user.webp";
 import Bag from "../assets/image/icon-bag.webp";
 import { FloatingLabel } from "flowbite-react";
 import { MENU } from "../constants/menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../stores/slices/authSlices";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    alert("bạn có chắc chắn muốn đăng xuất ??");
+    dispatch(logout());
+    window.localStorage.removeItem("user");
+    navigate("/");
+  };
+
   return (
     <header>
       <div className="mx-5 my-4">
@@ -41,24 +53,45 @@ const Header = () => {
             <div className="flex justify-center gap-4">
               <div className="relative group">
                 <img width={28} src={User} alt="user" />
-                <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
-                  <li className="mb-2 hover:bg-slate-100">
-                    <Link
-                      to="./login"
-                      className="px-4 py-2 w-full block text-center hover:text-[red]"
-                    >
-                      Đăng nhập
-                    </Link>
-                  </li>
-                  <li className=" hover:bg-slate-100">
-                    <Link
-                      to="./register"
-                      className="px-4 py-2 w-full block text-center hover:text-[red]"
-                    >
-                      Đăng kí
-                    </Link>
-                  </li>
-                </ul>
+                {localStorage.getItem("user") ? (
+                  <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                    <li className=" hover:bg-slate-100">
+                      <Link
+                        to="./account"
+                        className="px-4 py-2 w-full block text-center hover:text-[red]"
+                      >
+                        Tài Khoản
+                      </Link>
+                    </li>
+                    <li className=" hover:bg-slate-100">
+                      <div
+                        onClick={handleLogout}
+                        className="px-4 py-2 w-full block text-center hover:text-[red] cursor-pointer"
+                      >
+                        Đăng Xuất
+                      </div>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
+                    <li className=" hover:bg-slate-100">
+                      <Link
+                        to="./login"
+                        className="px-4 py-2 w-full block text-center hover:text-[red]"
+                      >
+                        Đăng Nhập
+                      </Link>
+                    </li>
+                    <li className=" hover:bg-slate-100">
+                      <Link
+                        to="./register"
+                        className="px-4 py-2 w-full block text-center hover:text-[red]"
+                      >
+                        Đăng Kí
+                      </Link>
+                    </li>
+                  </ul>
+                )}
               </div>
               <div className="relative">
                 <Link to="./shopping">

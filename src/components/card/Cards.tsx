@@ -1,19 +1,8 @@
 import React from "react";
 import logomini from "../../assets/image/logo_transparent.png";
 import { useNavigate } from "react-router-dom";
-export interface IProduct {
-  id?: string;
-  image: string;
-  name: string;
-  originalPrice: string;
-  discountedPrice: string;
-  discount: string;
-  installment?: string;
-  badge: string;
-  shoeType: string;
-  codeSP: string;
-  color: string;
-}
+import { IProduct } from "../../types/types";
+
 const Card = ({
   id,
   image,

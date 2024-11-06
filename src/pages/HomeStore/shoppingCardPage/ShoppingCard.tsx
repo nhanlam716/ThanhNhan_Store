@@ -56,7 +56,28 @@ const ShoppingCard = () => {
                       key={item.id}
                       className="border-b flex items-center py-6"
                     >
-                      <td className="flex-[8%] text-center"></td>
+                      <td className="flex-[8%] text-center flex justify-center cursor-pointer">
+                        <svg
+                          width="38"
+                          height="38"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M18 6L6 18"
+                            stroke="black"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                          <path
+                            d="M6 6L18 18"
+                            stroke="black"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </td>
                       <td className="flex-[42%] flex items-center p-2">
                         <img
                           src={item.image}
@@ -69,7 +90,7 @@ const ShoppingCard = () => {
                             Mã SP: {item.code}
                           </p>
                           <p className="text-gray-500 text-sm">
-                            Nhóm: {item.group}
+                            Size: {item.group}
                           </p>
                         </div>
                       </td>

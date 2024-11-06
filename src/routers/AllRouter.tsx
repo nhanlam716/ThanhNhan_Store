@@ -12,6 +12,7 @@ import LoginPageAdmin from "../pages/adminStore/loginPage/LoginPageAdmin";
 import LoginAdminStore from "../pages/adminStore/loginPage/login/LoginAdminStore";
 import PasswordAdminStore from "../pages/adminStore/loginPage/login/PasswordAdminStore";
 import Checkout from "../pages/HomeStore/checkout/Checkout";
+import AccountPage from "../pages/HomeStore/accountHomePage/AccountPage";
 
 const AllRouter = () => {
   return (
@@ -22,6 +23,7 @@ const AllRouter = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/password" element={<Password />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route path="/shopping" element={<ShoppingCard />} />
           <Route path="/productPage/:id" element={<ProductPage />} />
           <Route path="/allProducts" element={<HeaderHomePage />} />

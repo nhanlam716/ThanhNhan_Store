@@ -8,8 +8,8 @@ import iconcard from "../../../assets/image/pd_policy_4_img.webp";
 import ButtonQuantity from "../../../components/button/ButtonQuantity";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IProduct } from "../../../components/card/Cards";
 import { axiosClient } from "../../../api/axiosClient";
+import { IProduct } from "../../../types/types";
 
 const images = [
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
@@ -18,6 +18,7 @@ const images = [
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
 ];
+
 const ProductPage = () => {
   const params = useParams();
 

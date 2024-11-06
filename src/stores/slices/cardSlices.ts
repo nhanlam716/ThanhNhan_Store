@@ -5,46 +5,15 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { axiosClient } from "../../api/axiosClient";
-import { IProduct } from "../../components/card/Cards";
-
-// export const fetchProductAPI = () => {
-//   return async (dispatch: any) => {
-//      try {
-//         dispatch({
-//            type: SET_LOADING,
-//            payload: true,
-//         });
-//         /** https://jsonplaceholder.typicode.comhttps://dummyjson.com/products */
-//         const res: any = await axiosInstance.get(
-//            "https://dummyjson.com/products",
-//            {
-//               baseURL: "/",
-//            }
-//         );
-//         dispatch(setProducts(res.products));
-//      } catch (error) {}
-//   };
-// };
-
-/** Để gọi được API trong redux toolkit mình sẽ sử dụng hàm createAsyncThunk từ redux toolkit:
- * createAsyncThunk(tên, callback):
- * tên: tên slice / tên hàm
- * callback: async function dùng để mình gọi API, hàm này nó sẽ nhận vào 2 tham số
- *  1: payload: giá trị mà UI muốn gởi lên
- *  2: thunkAPI: Cái này là một object được cung cấp default bởi th redux toolkit cho phép user custom data trả về
- */
+import { IProduct } from "../../types/types";
 
 export const fetchCartItemsAPI = createAsyncThunk(
   "cartSlice/fetchCartItemsAPI",
   async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res: any = await axiosClient.get(
-        "http://localhost:5000/productsCards",
-        {
-          baseURL: "/",
-        }
-      );
+      const res: any = await axiosClient.get("/productsCards");
+      console.log(res);
       return res;
     } catch (error) {
       rejectWithValue(error);
@@ -84,16 +53,12 @@ const cartSlice = createSlice({
   initialState: initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<IAddToCart>) => {
-      /** Để lấy được state thì mình cần phải dùng current(state) để bọc state lại
-       * và sau đó sẽ chấm tới giá trị mình muốn lấy
-       */
       const cloneCartItems = [...current(state).cartItems];
 
       const existedCart = cloneCartItems.find((cart) => {
         return cart.id === action.payload.id;
       });
 
-      /** Kiểm tra nếu chưa có thì set quality bằng 1 */
       if (!existedCart) {
         const newCart = {
           ...action.payload,
@@ -101,16 +66,13 @@ const cartSlice = createSlice({
         };
         cloneCartItems.push(newCart);
       } else {
-        /** Nếu đã có rồi thì mình sẽ tăng quality của sản phẩm hiện tại (exitedCart) */
         const newCart = {
           ...existedCart,
           quality: existedCart.quality + 1,
         };
-        /** Tìm vị trí của sản phẩm hiện tại trong mảng to (cloneCartItems) */
         const index = cloneCartItems.findIndex(
           (cart) => cart.id === action.payload.id
         );
-        /** Sau khi có rồi thì mình sẽ replace vị trí index đó với sản phẩm vừa được update */
         cloneCartItems[index] = newCart;
       }
 

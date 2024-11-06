@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../stores/store";
 import { registerUser } from "../../../stores/slices/authSlices";
 import { useNavigate } from "react-router-dom";
+import WithNotAuth from "../../../hocs/WithNotAuth";
 
 const RegisterPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,8 +45,12 @@ const RegisterPage = () => {
       try {
         const resultAction = await dispatch(registerUser(values));
 
-        if (registerUser.fulfilled.match(resultAction)) {
+        if (resultAction?.payload) {
+          alert("Đăng kí thành công");
           navigate("/login");
+          resetForm();
+        } else {
+          alert("Thông tin của bạn đã được đăng kí");
           resetForm();
         }
       } catch (error) {
@@ -146,4 +151,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default WithNotAuth(RegisterPage);
