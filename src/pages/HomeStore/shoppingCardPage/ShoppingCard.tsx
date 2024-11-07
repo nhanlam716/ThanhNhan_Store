@@ -1,39 +1,34 @@
-import React from "react";
 import ButtonQuantity from "../../../components/button/ButtonQuantity";
-import { Link } from "react-router-dom";
-type CartItem = {
-  id: number;
-  image: string;
-  name: string;
-  code: string;
-  group: string;
-  price: number;
-  quantity: number;
-};
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../stores/store";
+import {
+  decreaseQuality,
+  increaseQuality,
+  removedFromCart,
+} from "../../../stores/slices/cardSlices";
 
-const cartItems: CartItem[] = [
-  {
-    id: 1,
-    image:
-      "https://product.hstatic.net/200000278317/product/balo-thanh-hung-futsal-mau-ngau-nhien-1_ab21fbd1f0e5420a8ed84a1fe9cac9a6_compact.jpg",
-    name: "BALO THANH HÙNG FUTSAL - MÀU NGẪU NHIÊN",
-    code: "Balongaunhien",
-    group: "Balo",
-    price: 90000,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    image:
-      "https://product.hstatic.net/200000278317/product/balo-thanh-hung-futsal-mau-ngau-nhien-1_ab21fbd1f0e5420a8ed84a1fe9cac9a6_compact.jpg",
-    name: "BALO THANH HÙNG FUTSAL - MÀU NGẪU NHIÊN",
-    code: "Balongaunhien",
-    group: "Balo",
-    price: 90000,
-    quantity: 1,
-  },
-];
 const ShoppingCard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const cartItems = useSelector((state: RootState) => {
+    return state.cartState.Items;
+  });
+
+  const onRemoveCart = (id: number) => {
+    alert("Bạn có chắc chắn muốn xóa sản phẩm ??");
+    dispatch(removedFromCart(id));
+  };
+
+  const onIncreaseCart = (id: number) => {
+    dispatch(increaseQuality(id));
+  };
+
+  const onDecreaseCart = (id: number) => {
+    dispatch(decreaseQuality(id));
+  };
+
   return (
     <>
       <div className="bg-gray-100">
@@ -57,26 +52,28 @@ const ShoppingCard = () => {
                       className="border-b flex items-center py-6"
                     >
                       <td className="flex-[8%] text-center flex justify-center cursor-pointer">
-                        <svg
-                          width="38"
-                          height="38"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M18 6L6 18"
-                            stroke="black"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                          />
-                          <path
-                            d="M6 6L18 18"
-                            stroke="black"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                          />
-                        </svg>
+                        <div onClick={() => onRemoveCart(item.id)}>
+                          <svg
+                            width="38"
+                            height="38"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M18 6L6 18"
+                              stroke="black"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                            />
+                            <path
+                              d="M6 6L18 18"
+                              stroke="black"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                            />
+                          </svg>
+                        </div>
                       </td>
                       <td className="flex-[42%] flex items-center p-2">
                         <img
@@ -87,21 +84,28 @@ const ShoppingCard = () => {
                         <div>
                           <p className="font-semibold">{item.name}</p>
                           <p className="text-gray-500 text-sm">
-                            Mã SP: {item.code}
+                            Mã SP: {item.codeSP}
                           </p>
-                          <p className="text-gray-500 text-sm">
-                            Size: {item.group}
-                          </p>
+                          <p className="text-gray-500 text-sm">Size:</p>
                         </div>
                       </td>
                       <td className="flex-[12%] text-right p-2 font-semibold">
-                        {item.price.toLocaleString()}₫
+                        {item.discountedPrice.toLocaleString()}₫
                       </td>
                       <td className="flex-[26%] text-center p-2">
-                        <ButtonQuantity decrease="-" increase="+" />
+                        <ButtonQuantity
+                          increaseBtn="+"
+                          decreaseBtn="-"
+                          quantity={item.quantity}
+                          onDecrease={() => onDecreaseCart(item.id)}
+                          onIncrease={() => onIncreaseCart(item.id)}
+                        />
                       </td>
                       <td className="flex-[12%] text-right p-2 font-semibold">
-                        {(item.price * item.quantity).toLocaleString()}₫
+                        {(
+                          item.discountedPrice * item.quantity
+                        ).toLocaleString()}
+                        ₫
                       </td>
                     </tr>
                   ))}
@@ -134,10 +138,13 @@ const ShoppingCard = () => {
             <div className="w-full md:w-1/3 bg-white p-6 mt-4 md:mt-0 md:ml-4 rounded-lg shadow-md">
               <div className="flex justify-between mb-6">
                 <span className="text-gray-700 font-semibold">Thành tiền</span>
-                <span className="text-red-500 font-semibold text-xl">₫</span>
+                <span className="text-red-500 font-semibold text-xl"> VND</span>
               </div>
               <div className="mt-4">
-                <button className=" bg-black text-white px-6 py-3 rounded w-full text-lg">
+                <button
+                  onClick={() => navigate("/checkout")}
+                  className=" bg-black text-white px-6 py-3 rounded w-full text-lg"
+                >
                   Thanh toán
                 </button>
               </div>

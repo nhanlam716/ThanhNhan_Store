@@ -10,6 +10,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosClient } from "../../../api/axiosClient";
 import { IProduct } from "../../../types/types";
+import { useDispatch } from "react-redux";
+
+import {
+  addToCart,
+  decreaseQuality,
+  increaseQuality,
+} from "../../../stores/slices/cardSlices";
 
 const images = [
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
@@ -20,7 +27,12 @@ const images = [
 ];
 
 const ProductPage = () => {
+  const navigate = useNavigate();
   const params = useParams();
+
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
 
   const id = params?.id;
   const [data, setData] = useState<IProduct>();
@@ -29,7 +41,6 @@ const ProductPage = () => {
     async function fetchData() {
       try {
         const response: any = await axiosClient.get(`/productsCards/${id}`);
-        console.log(response);
         setData(response);
       } catch (error) {
         console.log(error);
@@ -39,7 +50,31 @@ const ProductPage = () => {
       fetchData();
     }
   }, [id]);
-  const navigate = useNavigate();
+
+  const handleAddToCart = async () => {
+    if (data) {
+      try {
+        await axiosClient.post("/userProductCard", { ...data, quantity });
+
+        dispatch(addToCart({ ...data, quantity }));
+
+        setQuantity(1);
+
+        alert("them sp thanh cong");
+      } catch (error) {
+        console.error("Có lỗi xảy ra khi thêm sản phẩm:", error);
+      }
+    }
+  };
+
+  const onIncreaseCart = (id: number) => {
+    dispatch(increaseQuality(id));
+  };
+
+  const onDecreaseCart = (id: number) => {
+    dispatch(decreaseQuality(id));
+  };
+
   return (
     <div>
       <div className="mt-16">
@@ -203,8 +238,17 @@ const ProductPage = () => {
                   <span className=" flex-[0.5] text-lg text-slate-400">
                     Số lượng:{" "}
                   </span>
-                  <ButtonQuantity increase="+" decrease="-" />
-                  <button className="bg-red-500 text-white px-6 py-3 rounded w-full flex-1 text-lg">
+                  <ButtonQuantity
+                    increaseBtn="+"
+                    decreaseBtn="-"
+                    quantity={quantity}
+                    onDecrease={() => onDecreaseCart(data.id)}
+                    onIncrease={() => onIncreaseCart(data.id)}
+                  />
+                  <button
+                    onClick={handleAddToCart}
+                    className="bg-red-500 text-white px-6 py-3 rounded w-full flex-1 text-lg"
+                  >
                     Thêm vào giỏ
                   </button>
                 </div>

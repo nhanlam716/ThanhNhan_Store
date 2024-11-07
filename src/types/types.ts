@@ -1,9 +1,9 @@
 export interface IProduct {
-  id?: string;
+  id: number;
   image: string;
   name: string;
   originalPrice: string;
-  discountedPrice: string;
+  discountedPrice: number;
   discount: string;
   installment?: string;
   badge: string;

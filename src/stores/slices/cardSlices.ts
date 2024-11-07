@@ -13,7 +13,6 @@ export const fetchCartItemsAPI = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
     try {
       const res: any = await axiosClient.get("/productsCards");
-      console.log(res);
       return res;
     } catch (error) {
       rejectWithValue(error);
@@ -21,39 +20,27 @@ export const fetchCartItemsAPI = createAsyncThunk(
   }
 );
 
-interface IAddToCart {
-  id: number;
-  title: string;
-  price: number;
+export interface CardItems extends IProduct {
+  quantity: number;
 }
-
-export interface ICartItems {
-  id: number;
-  title: string;
-  price: number;
-  quality: number;
-}
-
 interface IInitialState {
-  cartItems: ICartItems[];
-  isLoggedIn: boolean;
-  products: IProduct[];
+  Items: CardItems[];
   isLoadingProduct: boolean;
+  data: IProduct[];
 }
 
 const initialState: IInitialState = {
-  cartItems: [],
-  isLoggedIn: false,
-  products: [],
+  Items: [],
   isLoadingProduct: false,
+  data: [],
 };
 
 const cartSlice = createSlice({
   name: "cartSlice",
   initialState: initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<IAddToCart>) => {
-      const cloneCartItems = [...current(state).cartItems];
+    addToCart: (state, action: PayloadAction<CardItems>) => {
+      const cloneCartItems = [...current(state).Items];
 
       const existedCart = cloneCartItems.find((cart) => {
         return cart.id === action.payload.id;
@@ -68,7 +55,7 @@ const cartSlice = createSlice({
       } else {
         const newCart = {
           ...existedCart,
-          quality: existedCart.quality + 1,
+          quality: existedCart.quantity + 1,
         };
         const index = cloneCartItems.findIndex(
           (cart) => cart.id === action.payload.id
@@ -76,53 +63,42 @@ const cartSlice = createSlice({
         cloneCartItems[index] = newCart;
       }
 
-      state.cartItems = cloneCartItems;
+      state.Items = cloneCartItems;
     },
-    setProducts: (state, action: PayloadAction<ICartItems[]>) => {},
-    setLoading: (state, action: PayloadAction<boolean>) => {},
     removedFromCart: (state, action: PayloadAction<number>) => {
-      const _cartItems = [...current(state).cartItems];
-      const newCartItems = _cartItems.filter((cart) => {
-        return cart.id !== action.payload;
+      const _cartItems = [...current(state).Items];
+
+      const newCartItems = _cartItems.filter((item) => {
+        return item.id !== action.payload;
       });
 
-      state.cartItems = newCartItems;
+      state.Items = newCartItems;
     },
     increaseQuality: (state, action: PayloadAction<number>) => {
-      /** Clone mảng cart ban đầu ra */
-      const _cartItemsIncrease = [...state.cartItems];
+      const _cartItemsIncrease = [...state.Items];
 
-      /** Tìm vị trí của cart nằm trong mảng đó */
       const cartIndex = _cartItemsIncrease.findIndex((cart) => {
         return cart.id === action.payload;
       });
 
-      /** Update vị trí của cart với quality mới */
-      _cartItemsIncrease[cartIndex].quality += 1;
+      _cartItemsIncrease[cartIndex].quantity += 1;
 
-      state.cartItems = _cartItemsIncrease;
+      state.Items = _cartItemsIncrease;
     },
     decreaseQuality: (state, action: PayloadAction<number>) => {
-      /** Clone mảng cart ban đầu ra */
-      const _cartItemsDecrease = [...state.cartItems];
+      const _cartItemsDecrease = [...state.Items];
 
-      /** Tìm vị trí của cart nằm trong mảng đó */
       const cartDecreaseIndex = _cartItemsDecrease.findIndex((cart) => {
         return cart.id === action.payload;
       });
 
-      /** Update vị trí của cart với quality mới */
       const currentCart = _cartItemsDecrease[cartDecreaseIndex];
 
-      /** Kiểm tra số lượng cart phải lớn hơn 1 thì mới cho trừ */
-      if (currentCart.quality > 1) {
-        _cartItemsDecrease[cartDecreaseIndex].quality -= 1;
+      if (currentCart.quantity > 1) {
+        _cartItemsDecrease[cartDecreaseIndex].quantity -= 1;
       }
 
-      state.cartItems = _cartItemsDecrease;
-    },
-    changeStatus: (state, action: PayloadAction<boolean>) => {
-      state.isLoggedIn = action.payload;
+      state.Items = _cartItemsDecrease;
     },
   },
   extraReducers: (builder) => {
@@ -130,24 +106,17 @@ const cartSlice = createSlice({
       state.isLoadingProduct = true;
     });
     builder.addCase(fetchCartItemsAPI.fulfilled, (state, action) => {
-      state.products = action.payload.products;
+      state.data = action.payload.data;
       state.isLoadingProduct = false;
     });
     builder.addCase(fetchCartItemsAPI.rejected, (state, action) => {
-      state.products = [];
+      state.data = [];
       state.isLoadingProduct = false;
     });
   },
 });
 
-export const {
-  addToCart,
-  changeStatus,
-  decreaseQuality,
-  increaseQuality,
-  removedFromCart,
-  setLoading,
-  setProducts,
-} = cartSlice.actions;
+export const { addToCart, decreaseQuality, increaseQuality, removedFromCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
