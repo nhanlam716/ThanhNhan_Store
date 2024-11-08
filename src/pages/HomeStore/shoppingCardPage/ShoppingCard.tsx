@@ -1,32 +1,65 @@
-import ButtonQuantity from "../../../components/button/ButtonQuantity";
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../stores/store";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosClient } from "../../../api/axiosClient";
+import ButtonQuantity from "../../../components/button/ButtonQuantity";
 import {
-  decreaseQuality,
-  increaseQuality,
-  removedFromCart,
+  CardItems,
+  decreaseCartItem,
+  increaseCartItem,
+  removedCartItem,
 } from "../../../stores/slices/cardSlices";
+import { AppDispatch, RootState } from "../../../stores/store";
 
 const ShoppingCard = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const cartItems = useSelector((state: RootState) => {
-    return state.cartState.Items;
+    return state.cartState.data;
   });
 
-  const onRemoveCart = (id: number) => {
-    alert("Bạn có chắc chắn muốn xóa sản phẩm ??");
-    dispatch(removedFromCart(id));
+  const onRemoveCart = async (data: any) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm ??")) {
+      dispatch(removedCartItem(data));
+    }
   };
 
-  const onIncreaseCart = (id: number) => {
-    dispatch(increaseQuality(id));
+  const onIncreaseCart = (item: CardItems) => {
+    const data = { ...item, quantity: Number(item?.quantity) + 1 };
+    dispatch(increaseCartItem(data));
   };
 
-  const onDecreaseCart = (id: number) => {
-    dispatch(decreaseQuality(id));
+  const onDecreaseCart = (item: CardItems) => {
+    if (item.quantity > 1) {
+      const data = { ...item, quantity: Number(item?.quantity) - 1 };
+      dispatch(decreaseCartItem(data));
+    }
+  };
+
+  const totalMoney = (Items: CardItems[]) => {
+    const resultWithReduce = Items.reduce((result, cart) => {
+      const money = cart.quantity * cart.discountedPrice;
+      result = result + money;
+      return result;
+    }, 0);
+    return resultWithReduce;
+  };
+
+  const handleCheckOut = async () => {
+    try {
+      const response = await axiosClient.post("/checkoutProduct", {
+        ...cartItems,
+        total: totalMoney(cartItems),
+      });
+
+      if (response.status === 201) {
+        navigate("/checkout");
+      } else {
+        console.log("co loi");
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
   };
 
   return (
@@ -46,69 +79,70 @@ const ShoppingCard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-b flex items-center py-6"
-                    >
-                      <td className="flex-[8%] text-center flex justify-center cursor-pointer">
-                        <div onClick={() => onRemoveCart(item.id)}>
-                          <svg
-                            width="38"
-                            height="38"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M18 6L6 18"
-                              stroke="black"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                            />
-                            <path
-                              d="M6 6L18 18"
-                              stroke="black"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                            />
-                          </svg>
-                        </div>
-                      </td>
-                      <td className="flex-[42%] flex items-center p-2">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-24 h-24 mr-4 rounded"
-                        />
-                        <div>
-                          <p className="font-semibold">{item.name}</p>
-                          <p className="text-gray-500 text-sm">
-                            Mã SP: {item.codeSP}
-                          </p>
-                          <p className="text-gray-500 text-sm">Size:</p>
-                        </div>
-                      </td>
-                      <td className="flex-[12%] text-right p-2 font-semibold">
-                        {item.discountedPrice.toLocaleString()}₫
-                      </td>
-                      <td className="flex-[26%] text-center p-2">
-                        <ButtonQuantity
-                          increaseBtn="+"
-                          decreaseBtn="-"
-                          quantity={item.quantity}
-                          onDecrease={() => onDecreaseCart(item.id)}
-                          onIncrease={() => onIncreaseCart(item.id)}
-                        />
-                      </td>
-                      <td className="flex-[12%] text-right p-2 font-semibold">
-                        {(
-                          item.discountedPrice * item.quantity
-                        ).toLocaleString()}
-                        ₫
-                      </td>
-                    </tr>
-                  ))}
+                  {cartItems &&
+                    cartItems.map((item: CardItems) => (
+                      <tr
+                        key={item?.id}
+                        className="border-b flex items-center py-6"
+                      >
+                        <td className="flex-[8%] text-center flex justify-center cursor-pointer">
+                          <div onClick={() => onRemoveCart(item)}>
+                            <svg
+                              width="38"
+                              height="38"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M18 6L6 18"
+                                stroke="black"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                              />
+                              <path
+                                d="M6 6L18 18"
+                                stroke="black"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                              />
+                            </svg>
+                          </div>
+                        </td>
+                        <td className="flex-[42%] flex items-center p-2">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-24 h-24 mr-4 rounded"
+                          />
+                          <div>
+                            <p className="font-semibold">{item.name}</p>
+                            <p className="text-gray-500 text-sm">
+                              Mã SP: {item.codeSP}
+                            </p>
+                            <p className="text-gray-500 text-sm">Size:</p>
+                          </div>
+                        </td>
+                        <td className="flex-[12%] text-right p-2 font-semibold">
+                          {item.discountedPrice.toLocaleString()}₫
+                        </td>
+                        <td className="flex-[26%] text-center p-2">
+                          <ButtonQuantity
+                            increaseBtn="+"
+                            decreaseBtn="-"
+                            quantity={item.quantity}
+                            onDecrease={() => onDecreaseCart(item)}
+                            onIncrease={() => onIncreaseCart(item)}
+                          />
+                        </td>
+                        <td className="flex-[12%] text-right p-2 font-semibold">
+                          {(
+                            item.discountedPrice * item.quantity
+                          ).toLocaleString()}
+                          ₫
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
               <div className="p-6 pl-14">
@@ -138,11 +172,13 @@ const ShoppingCard = () => {
             <div className="w-full md:w-1/3 bg-white p-6 mt-4 md:mt-0 md:ml-4 rounded-lg shadow-md">
               <div className="flex justify-between mb-6">
                 <span className="text-gray-700 font-semibold">Thành tiền</span>
-                <span className="text-red-500 font-semibold text-xl"> VND</span>
+                <span className="text-red-500 font-semibold text-xl">
+                  {totalMoney(cartItems).toLocaleString()} VND
+                </span>
               </div>
               <div className="mt-4">
                 <button
-                  onClick={() => navigate("/checkout")}
+                  onClick={handleCheckOut}
                   className=" bg-black text-white px-6 py-3 rounded w-full text-lg"
                 >
                   Thanh toán

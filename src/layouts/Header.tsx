@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../assets/image/logo_medium.webp";
 import User from "../assets/image/icon-user.webp";
 import Bag from "../assets/image/icon-bag.webp";
 import { FloatingLabel } from "flowbite-react";
 import { MENU } from "../constants/menu";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../stores/slices/authSlices";
+import { AppDispatch, RootState } from "../stores/store";
+import { fetchCartItemsAPI } from "../stores/slices/cardSlices";
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const cartItems = useSelector((state: RootState) => {
+    return state.cartState.data;
+  });
+  const isRefetch = useSelector((state: RootState) => {
+    return state.cartState.isRefetch;
+  });
 
   const handleLogout = () => {
     alert("bạn có chắc chắn muốn đăng xuất ??");
     dispatch(logout());
-    window.localStorage.removeItem("user");
     navigate("/");
   };
+
+  const user = JSON.parse(localStorage.getItem("user") || "");
+  useEffect(() => {
+    if (user?.id) {
+      const data = {
+        userId: user?.id,
+      };
+      dispatch(fetchCartItemsAPI(data));
+    }
+  }, [dispatch, user?.id, isRefetch]);
 
   return (
     <header>
@@ -53,7 +71,7 @@ const Header = () => {
             <div className="flex justify-center gap-4">
               <div className="relative group">
                 <img width={28} src={User} alt="user" />
-                {localStorage.getItem("user") ? (
+                {user ? (
                   <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
                     <li className=" hover:bg-slate-100">
                       <Link
@@ -94,12 +112,14 @@ const Header = () => {
                 )}
               </div>
               <div className="relative">
-                <Link to="./shopping">
-                  <img width={28} src={Bag} alt="bag" />
-                  <span className="absolute top-[-2px] right-[-4px] text-[10px] text-center w-4 h-4 leading-4 bg-[#c54934] text-[#fff] rounded-full">
-                    0
-                  </span>
-                </Link>
+                {user && (
+                  <Link to="./shopping">
+                    <img width={28} src={Bag} alt="bag" />
+                    <span className="absolute top-[-2px] right-[-4px] text-[10px] text-center w-4 h-4 leading-4 bg-[#c54934] text-[#fff] rounded-full">
+                      {cartItems?.length}
+                    </span>
+                  </Link>
+                )}
               </div>
               <div>
                 <span className="uppercase cursor-pointer">eng</span>

@@ -9,10 +9,54 @@ import { IProduct } from "../../types/types";
 
 export const fetchCartItemsAPI = createAsyncThunk(
   "cartSlice/fetchCartItemsAPI",
-  async (_, thunkAPI) => {
+  async (data: any, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res: any = await axiosClient.get("/productsCards");
+      const res: any = await axiosClient.get(
+        `/userProductCard?userId=${data?.userId}`
+      );
+      return res;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const increaseCartItem = createAsyncThunk<any, CardItems>(
+  "cartSlice/increaseCartItem",
+  async (data, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    const url = `/userProductCard/${data?.id}`;
+    try {
+      const res: any = await axiosClient.put(url, data);
+      return res;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const decreaseCartItem = createAsyncThunk<any, CardItems>(
+  "cartSlice/increaseCartItem",
+  async (data, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    const url = `/userProductCard/${data?.id}`;
+    try {
+      const res: any = await axiosClient.put(url, data);
+      return res;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const removedCartItem = createAsyncThunk<any, any>(
+  "cartSlice/removedCartItem",
+  async (data, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    const url = `/userProductCard/${data?.id}`;
+    try {
+      const res: any = await axiosClient.delete(url);
       return res;
     } catch (error) {
       rejectWithValue(error);
@@ -27,12 +71,14 @@ interface IInitialState {
   Items: CardItems[];
   isLoadingProduct: boolean;
   data: IProduct[];
+  isRefetch: boolean;
 }
 
 const initialState: IInitialState = {
   Items: [],
   isLoadingProduct: false,
   data: [],
+  isRefetch: false,
 };
 
 const cartSlice = createSlice({
@@ -74,6 +120,9 @@ const cartSlice = createSlice({
 
       state.Items = newCartItems;
     },
+    setIsRefetch: (state) => {
+      state.isRefetch = !current(state).isRefetch;
+    },
     increaseQuality: (state, action: PayloadAction<number>) => {
       const _cartItemsIncrease = [...state.Items];
 
@@ -94,7 +143,7 @@ const cartSlice = createSlice({
 
       const currentCart = _cartItemsDecrease[cartDecreaseIndex];
 
-      if (currentCart.quantity > 1) {
+      if (currentCart && currentCart.quantity > 1) {
         _cartItemsDecrease[cartDecreaseIndex].quantity -= 1;
       }
 
@@ -106,17 +155,52 @@ const cartSlice = createSlice({
       state.isLoadingProduct = true;
     });
     builder.addCase(fetchCartItemsAPI.fulfilled, (state, action) => {
-      state.data = action.payload.data;
+      state.data = action.payload;
       state.isLoadingProduct = false;
     });
     builder.addCase(fetchCartItemsAPI.rejected, (state, action) => {
       state.data = [];
       state.isLoadingProduct = false;
     });
+    builder.addCase(increaseCartItem.pending, (state, action) => {
+      state.isLoadingProduct = true;
+    });
+    builder.addCase(increaseCartItem.fulfilled, (state, action) => {
+      state.isRefetch = !current(state).isRefetch;
+    });
+    builder.addCase(increaseCartItem.rejected, (state, action) => {
+      state.data = [];
+      state.isLoadingProduct = false;
+    });
+    // builder.addCase(decreaseCartItem.pending, (state, action) => {
+    //   state.isLoadingProduct = false;
+    // });
+    // builder.addCase(decreaseCartItem.fulfilled, (state, action) => {
+    //   state.isRefetch = !current(state).isRefetch;
+    // });
+    // builder.addCase(decreaseCartItem.rejected, (state, action) => {
+    //   state.data = [];
+    //   state.isLoadingProduct = false;
+    // });
+    builder.addCase(removedCartItem.pending, (state, action) => {
+      state.isLoadingProduct = true;
+    });
+    builder.addCase(removedCartItem.fulfilled, (state, action) => {
+      state.isRefetch = !current(state).isRefetch;
+    });
+    builder.addCase(removedCartItem.rejected, (state, action) => {
+      state.data = [];
+      state.isLoadingProduct = false;
+    });
   },
 });
 
-export const { addToCart, decreaseQuality, increaseQuality, removedFromCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  decreaseQuality,
+  increaseQuality,
+  removedFromCart,
+  setIsRefetch,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

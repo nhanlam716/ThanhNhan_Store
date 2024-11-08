@@ -10,4 +10,5 @@ export interface IProduct {
   shoeType: string;
   codeSP: string;
   color: string;
+  quantity: number;
 }

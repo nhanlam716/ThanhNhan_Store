@@ -7,16 +7,18 @@ import iconOto from "../../../assets/image/pd_policy_3_img.webp";
 import iconcard from "../../../assets/image/pd_policy_4_img.webp";
 import ButtonQuantity from "../../../components/button/ButtonQuantity";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { axiosClient } from "../../../api/axiosClient";
 import { IProduct } from "../../../types/types";
 import { useDispatch } from "react-redux";
 
 import {
-  addToCart,
-  decreaseQuality,
-  increaseQuality,
+  setIsRefetch,
+  // addToCart,
+  // decreaseQuality,
+  // increaseQuality,
 } from "../../../stores/slices/cardSlices";
+import { AppDispatch } from "../../../stores/store";
 
 const images = [
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
@@ -29,37 +31,52 @@ const images = [
 const ProductPage = () => {
   const navigate = useNavigate();
   const params = useParams();
-
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [quantity, setQuantity] = useState(1);
 
   const id = params?.id;
   const [data, setData] = useState<IProduct>();
 
+  const fetchData = useCallback(async (id: string) => {
+    try {
+      const response: any = await axiosClient.get(`/productsCards/${id}`);
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response: any = await axiosClient.get(`/productsCards/${id}`);
-        setData(response);
-      } catch (error) {
-        console.log(error);
-      }
-    }
     if (id) {
-      fetchData();
+      fetchData(id);
     }
-  }, [id]);
+  }, [fetchData, id]);
 
   const handleAddToCart = async () => {
-    if (data) {
-      try {
-        await axiosClient.post("/userProductCard", { ...data, quantity });
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-        dispatch(addToCart({ ...data, quantity }));
+    if (data && user?.id) {
+      try {
+        const existedData: any = await axiosClient.get(
+          `/userProductCard?userId=${user.id}`
+        );
+        const hasProduct = existedData?.find(
+          (item: any) => item?.id === data?.id
+        );
+        if (hasProduct) {
+          const body = {
+            ...hasProduct,
+            quantity: Number(hasProduct?.quantity) + quantity,
+          };
+          await axiosClient.put(`/userProductCard/${id}`, body);
+        } else {
+          const body = { ...data, quantity, userId: user?.id };
+          await axiosClient.post("/userProductCard", body);
+        }
 
         setQuantity(1);
-
+        dispatch(setIsRefetch());
         alert("them sp thanh cong");
       } catch (error) {
         console.error("Có lỗi xảy ra khi thêm sản phẩm:", error);
@@ -67,12 +84,12 @@ const ProductPage = () => {
     }
   };
 
-  const onIncreaseCart = (id: number) => {
-    dispatch(increaseQuality(id));
+  const onIncreaseCart = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
-  const onDecreaseCart = (id: number) => {
-    dispatch(decreaseQuality(id));
+  const onDecreaseCart = () => {
+    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
   };
 
   return (
@@ -242,8 +259,8 @@ const ProductPage = () => {
                     increaseBtn="+"
                     decreaseBtn="-"
                     quantity={quantity}
-                    onDecrease={() => onDecreaseCart(data.id)}
-                    onIncrease={() => onIncreaseCart(data.id)}
+                    onDecrease={onDecreaseCart}
+                    onIncrease={onIncreaseCart}
                   />
                   <button
                     onClick={handleAddToCart}
