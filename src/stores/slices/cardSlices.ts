@@ -22,6 +22,19 @@ export const fetchCartItemsAPI = createAsyncThunk(
   }
 );
 
+export const handleCheckOutCard = createAsyncThunk(
+  "cartSlice/handleCheckOutcard",
+  async (data: any, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    try {
+      const res: any = await axiosClient.post("/checkoutProduct", data);
+      return res;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
 export const increaseCartItem = createAsyncThunk<any, CardItems>(
   "cartSlice/increaseCartItem",
   async (data, thunkAPI) => {

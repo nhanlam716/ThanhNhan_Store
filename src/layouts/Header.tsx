@@ -21,13 +21,7 @@ const Header = () => {
     return state.cartState.isRefetch;
   });
 
-  const handleLogout = () => {
-    alert("bạn có chắc chắn muốn đăng xuất ??");
-    dispatch(logout());
-    navigate("/");
-  };
-
-  const user = JSON.parse(localStorage.getItem("user") || "");
+  const user = JSON.parse(localStorage.getItem("user") || "[]");
   useEffect(() => {
     if (user?.id) {
       const data = {
@@ -37,6 +31,13 @@ const Header = () => {
     }
   }, [dispatch, user?.id, isRefetch]);
 
+  const handleLogout = () => {
+    if (window.confirm("bạn có chắc chắn muốn đăng xuất ??")) {
+      dispatch(logout());
+      navigate("/");
+      localStorage.removeItem("user");
+    }
+  };
   return (
     <header>
       <div className="mx-5 my-4">
@@ -71,7 +72,7 @@ const Header = () => {
             <div className="flex justify-center gap-4">
               <div className="relative group">
                 <img width={28} src={User} alt="user" />
-                {user ? (
+                {localStorage.getItem("user") ? (
                   <ul className="absolute top-full left-[-200%] z-50 w-36 bg-[#fff] border box-shadow border-top hidden group-hover:block">
                     <li className=" hover:bg-slate-100">
                       <Link

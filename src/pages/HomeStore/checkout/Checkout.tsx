@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import InputParam from "../../../components/inputForm/InputParam";
 import InputCheckOut from "../../../components/inputForm/InputCheckOut";
 import { Button, Label, Radio } from "flowbite-react";
+import { IProduct } from "../../../types/types";
+import { axiosClient } from "../../../api/axiosClient";
 
 const Checkout = () => {
+  const [data, setData] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response: any = await axiosClient.get("/checkoutProduct");
+        const checkoutItems = response.data.items;
+        // console.log(checkoutItems);
+        // setData(checkoutItems);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div>
       <div className="max-w-6xl my-0 mx-auto">
@@ -133,22 +151,24 @@ const Checkout = () => {
           </div>
           <div className="flex-1 pt-[4em] pl-[4em] border-l-2 border-solid border-[#ccc]">
             <div>
-              <div className="flex mb-4">
-                <img
-                  src="https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-1_a9b6c46a91374f6da090f8058878530b_small.jpg"
-                  alt="Product"
-                  className="w-16 h-16 rounded-md"
-                />
-                <div className="ml-4">
-                  <p className="font-medium">
-                    ADIDAS F50 LEAGUE TF - IF1335 - ĐỎ/CAM
-                  </p>
-                  <p className="text-gray-500">39 1/3</p>
+              {data.map((item) => (
+                <div className="flex mb-4">
+                  <img
+                    src="https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-1_a9b6c46a91374f6da090f8058878530b_small.jpg"
+                    alt="Product"
+                    className="w-16 h-16 rounded-md"
+                  />
+                  <div className="ml-4">
+                    <p className="font-medium">
+                      {item.name} - {item.codeSP} - {item.color}
+                    </p>
+                    <p className="text-gray-500">39 1/3</p>
+                  </div>
+                  <div className="ml-6">
+                    <p className="font-semibold">{item.discountedPrice}</p>
+                  </div>
                 </div>
-                <div className="ml-6">
-                  <p className="font-semibold">3,900,000₫</p>
-                </div>
-              </div>
+              ))}
               <div className="border-t py-6">
                 <div className="flex gap-4">
                   <div className="flex-[80%]">

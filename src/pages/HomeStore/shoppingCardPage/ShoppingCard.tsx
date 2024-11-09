@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosClient } from "../../../api/axiosClient";
 import ButtonQuantity from "../../../components/button/ButtonQuantity";
 import {
   CardItems,
   decreaseCartItem,
+  handleCheckOutCard,
   increaseCartItem,
   removedCartItem,
 } from "../../../stores/slices/cardSlices";
@@ -45,21 +45,10 @@ const ShoppingCard = () => {
     return resultWithReduce;
   };
 
-  const handleCheckOut = async () => {
-    try {
-      const response = await axiosClient.post("/checkoutProduct", {
-        ...cartItems,
-        total: totalMoney(cartItems),
-      });
-
-      if (response.status === 201) {
-        navigate("/checkout");
-      } else {
-        console.log("co loi");
-      }
-    } catch (error) {
-      console.error("Error during checkout:", error);
-    }
+  const handleCheckOut = () => {
+    const data = { ...cartItems, totalMoney: totalMoney(cartItems) };
+    dispatch(handleCheckOutCard(data));
+    navigate("/checkout");
   };
 
   return (
