@@ -13,22 +13,8 @@ import Button from "../../../components/button/Button";
 import CardNews from "../../../modules/homePage/components/card/CardNews";
 import { useEffect, useState } from "react";
 import { axiosClient } from "../../../api/axiosClient";
-import { Link } from "react-router-dom";
 import { IProduct } from "../../../types/types";
 
-// const products = [
-//   {
-//     id: "1",
-//     image:
-//       "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-1_a9b6c46a91374f6da090f8058878530b_large.jpg",
-//     name: "Nike Zoom Mercurial Superfly 10",
-//     originalPrice: "2,929,000đ",
-//     discountedPrice: "2,250,000đ",
-//     discount: "-23%",
-//     badge: "Mới ra mắt",
-//     installment: "1.125.000đ",
-//   },
-// ];
 const news = [
   {
     image:
@@ -58,12 +44,18 @@ const news = [
 
 const HomePage = () => {
   const [data, setData] = useState<IProduct[]>([]);
+  const [productType, setProductType] = useState<string>(
+    "artificial-soccer-shoes"
+  );
+  const [activeType, setActiveType] = useState<string>(
+    "artificial-soccer-shoes"
+  );
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response: any = await axiosClient.get(
-          "http://localhost:5000/productsCards?_page=1&_limit=4"
+          `/productsCards?type=${productType}&_page=1&_limit=4`
         );
         setData(response);
       } catch (error) {
@@ -71,7 +63,12 @@ const HomePage = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [productType]);
+
+  const handleFilter = (type: string) => {
+    setProductType(type);
+    setActiveType(type);
+  };
 
   return (
     <div>
@@ -126,22 +123,30 @@ const HomePage = () => {
       </div>
       <div className="mb-10 mt-28">
         <div className="max-w-6xl my-0 mx-auto mt-6 ">
-          <ul className="flex justify-center gap-2 pb-2 mb-8 uppercase">
+          <ul className="flex justify-center gap-2 pb-2 mb-8 ">
             <li>
-              <Link
-                to="/allProducts?type=artificial-soccer-shoes"
-                className="p-4 text-4xl"
+              <button
+                onClick={() => handleFilter("artificial-soccer-shoes")}
+                className={`p-4 text-4xl uppercase tracking-tighter font-medium ${
+                  activeType === "artificial-soccer-shoes"
+                    ? "border-b-2 border-[#333]"
+                    : ""
+                }`}
               >
                 Giày sân cỏ nhân tạo
-              </Link>
+              </button>
             </li>
             <li>
-              <Link
-                to="/allProducts/?type=futsal-soccer-shoes"
-                className="p-4 text-4xl"
+              <button
+                onClick={() => handleFilter("futsal-soccer-shoes")}
+                className={`p-4 text-4xl uppercase tracking-tighter font-medium ${
+                  activeType === "futsal-soccer-shoes"
+                    ? "border-b-2 border-[#333]"
+                    : ""
+                }`}
               >
                 Giày sân futsal
-              </Link>
+              </button>
             </li>
           </ul>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

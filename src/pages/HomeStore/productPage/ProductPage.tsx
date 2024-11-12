@@ -12,12 +12,7 @@ import { axiosClient } from "../../../api/axiosClient";
 import { IProduct } from "../../../types/types";
 import { useDispatch } from "react-redux";
 
-import {
-  setIsRefetch,
-  // addToCart,
-  // decreaseQuality,
-  // increaseQuality,
-} from "../../../stores/slices/cardSlices";
+import { setIsRefetch } from "../../../stores/slices/cardSlices";
 import { AppDispatch } from "../../../stores/store";
 
 const images = [
@@ -34,6 +29,11 @@ const ProductPage = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  const handleClickSize = (size: any) => {
+    setSelectedSize(size);
+  };
 
   const id = params?.id;
   const [data, setData] = useState<IProduct>();
@@ -71,13 +71,19 @@ const ProductPage = () => {
           };
           await axiosClient.put(`/userProductCard/${id}`, body);
         } else {
-          const body = { ...data, quantity, userId: user?.id };
+          const body = {
+            ...data,
+            quantity,
+            userId: user?.id,
+            size: selectedSize,
+          };
           await axiosClient.post("/userProductCard", body);
         }
 
         setQuantity(1);
+        setSelectedSize(null);
         dispatch(setIsRefetch());
-        alert("them sp thanh cong");
+        alert("Thêm sản phẩm thành công!!!");
       } catch (error) {
         console.error("Có lỗi xảy ra khi thêm sản phẩm:", error);
       }
@@ -224,7 +230,12 @@ const ProductPage = () => {
                     ].map((size) => (
                       <button
                         key={size}
-                        className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-100"
+                        onClick={() => handleClickSize(size)}
+                        className={`border px-4 py-2 rounded ${
+                          selectedSize === size
+                            ? "bg-blue-500 text-white"
+                            : "border-gray-300 hover:bg-gray-100"
+                        }`}
                       >
                         {size}
                       </button>

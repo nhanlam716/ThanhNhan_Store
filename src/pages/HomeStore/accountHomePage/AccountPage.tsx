@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const AccountPage = () => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
   return (
     <div className="bg-slate-100 py-12">
       <div className="max-w-6xl my-0 mx-auto">
@@ -21,15 +23,17 @@ const AccountPage = () => {
             <div className="p-4 mt-2">
               <div className="flex justify-between flex-wrap text-xl text-[#868282] mb-4">
                 <span className="w-[101px]">Họ tên</span>
-                <span className="w-[220px]">: Nhân lâm</span>
+                <span className="w-[220px]">
+                  : {user.firstName} {user.lastName}
+                </span>
               </div>
               <div className="flex justify-between flex-wrap text-xl text-[#868282] mb-4">
                 <span className="w-[101px]">Điện thoại</span>
-                <span className="w-[220px]">: 0372353359</span>
+                <span className="w-[220px]">: </span>
               </div>
               <div className="flex justify-between flex-wrap text-xl text-[#868282] mb-4">
                 <span className="w-[101px]">Email</span>
-                <span className="w-[220px]">: Nhan@gmail.com</span>
+                <span className="w-[220px]">: {user.email}</span>
               </div>
             </div>
             <div className="p-4 mb-5">

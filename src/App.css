@@ -92,7 +92,7 @@
   width: 6px;
   height: 12px;
   bottom: 0px;
-  left: 11%;
+  left: 9%;
 }
 .before::before {
   position: absolute;
@@ -102,5 +102,5 @@
   width: 6px;
   height: 12px;
   bottom: 0px;
-  right: 62%;
+  right: 69%;
 }

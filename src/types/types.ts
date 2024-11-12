@@ -1,4 +1,6 @@
 export interface IProduct {
+  totalMoney: number;
+  size: number;
   id: number;
   image: string;
   name: string;

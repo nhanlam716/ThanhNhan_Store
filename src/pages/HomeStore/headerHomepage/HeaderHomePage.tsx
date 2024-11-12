@@ -25,6 +25,13 @@ const HeaderHomePage = () => {
   const brand = searchParams.get("brand");
 
   const [data, setData] = useState<IProduct[]>([]);
+  const [showPrice, setShowPrice] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 16;
+  const totalItems = data.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentData = data.slice(startIndex, startIndex + itemsPerPage);
 
   useEffect(() => {
     async function fetchData() {
@@ -81,6 +88,14 @@ const HeaderHomePage = () => {
     );
   };
 
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleTogglePrice = () => {
+    setShowPrice(!showPrice);
+  };
+
   return (
     <div className="my-6">
       <div className="max-w-6xl my-0 mx-auto">
@@ -103,20 +118,57 @@ const HeaderHomePage = () => {
                 ))}
               </div>
               <div className="mb-4">
-                <TitleProduct title="giá" />
-                <div className="mb-4 border-[1px] border-solid border-[#ccc] p-4 rounded">
-                  <ul>
-                    {PRICE.map((item) => (
-                      <li
-                        key={item.name}
-                        className="flex items-center gap-3 mb-[10px]"
+                <div onClick={handleTogglePrice}>
+                  <h3 className="bg-black p-3 m-0 text-[#fff] uppercase font-semibold rounded flex items-center justify-between cursor-pointer">
+                    giá{" "}
+                    {showPrice ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#fff]"
                       >
-                        <Checkbox id={item.id} />
-                        <Label htmlFor={item.id}>{item.name}</Label>
-                      </li>
-                    ))}
-                  </ul>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 15l7-7 7 7"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#fff]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    )}
+                  </h3>
                 </div>
+                {showPrice && (
+                  <div className="mb-4 border-[1px] border-solid border-[#ccc] p-4 rounded">
+                    <ul>
+                      {PRICE.map((item) => (
+                        <li
+                          key={item.name}
+                          className="flex items-center gap-3 mb-[10px]"
+                        >
+                          <Checkbox id={item.id} />
+                          <Label htmlFor={item.id}>{item.name}</Label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
               <div className="mb-4">
                 <TitleProduct title="thương hiệu" />
@@ -185,10 +237,37 @@ const HeaderHomePage = () => {
               </div>
               <div className="mt-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {(data || []).map((item, index) => (
+                  {(currentData || []).map((item, index) => (
                     <Cards key={index} {...item} />
                   ))}
                 </div>
+              </div>
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 mx-1 border rounded disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`px-4 py-2 mx-1 border rounded ${
+                      currentPage === index + 1 ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 mx-1 border rounded disabled:opacity-50"
+                >
+                  Next
+                </button>
               </div>
             </div>
           </div>
