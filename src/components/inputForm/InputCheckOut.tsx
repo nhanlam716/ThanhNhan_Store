@@ -3,14 +3,17 @@ import React from "react";
 
 interface IInput {
   type: string;
-  placeholder: string;
+  placeholder?: string;
+  children?: React.ReactNode;
 }
 
-const InputCheckOut = ({ placeholder, type }: IInput) => {
+const InputCheckOut = ({ placeholder, type, children }: IInput) => {
   return (
     <div>
       <div>
-        <TextInput type={type} placeholder={placeholder} required />
+        <TextInput type={type} placeholder={placeholder} required>
+          {children}
+        </TextInput>
       </div>
     </div>
   );

@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import InputParam from "../../../components/inputForm/InputParam";
 import InputCheckOut from "../../../components/inputForm/InputCheckOut";
 import { Button, Label, Radio } from "flowbite-react";
-import { IProduct } from "../../../types/types";
 import { axiosClient } from "../../../api/axiosClient";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../stores/store";
+import { CardItems } from "../../../stores/slices/cardSlices";
 interface Location {
   code: string;
   name: string;
 }
 
 const Checkout = () => {
-  const [data, setData] = useState<IProduct[]>([]);
   const [provinces, setProvinces] = useState<Location[]>([]);
   const [districts, setDistricts] = useState<Location[]>([]);
   const [wards, setWards] = useState<Location[]>([]);
@@ -19,16 +20,20 @@ const Checkout = () => {
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
   const [deliveryOption, setDeliveryOption] = useState<string>("delivery");
 
+  const cartItems = useSelector((state: RootState) => {
+    return state.cartState.data;
+  });
+
+  const totalMoney = (Items: CardItems[]) => {
+    const resultWithReduce = Items.reduce((result, cart) => {
+      const money = cart.quantity * cart.discountedPrice;
+      result = result + money;
+      return result;
+    }, 0);
+    return resultWithReduce;
+  };
+
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axiosClient.get("/CheckoutProductCard/checkout");
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchData();
     getProvinces();
   }, []);
 
@@ -86,6 +91,8 @@ const Checkout = () => {
     setDeliveryOption(e.target.value);
   };
 
+  const user = JSON.parse(localStorage.getItem("user") || "[]");
+
   return (
     <div>
       <div className="max-w-6xl my-0 mx-auto">
@@ -107,24 +114,66 @@ const Checkout = () => {
               <div className="mt-3">
                 <h3 className="text-lg opacity-80">Thông tin giao hàng</h3>
               </div>
-              <div className="opacity-80">
-                <InputParam
-                  description="Bạn đã có tài khoản?"
-                  link="Đăng nhập"
-                  href="./login"
-                />
-              </div>
-              <form action="" className="mt-4">
-                <InputCheckOut placeholder="Họ và tên" type="text" />
-                <div className="flex gap-3 mt-3">
-                  <div className="flex-[70%]">
-                    <InputCheckOut placeholder="Email" type="email" />
+              {user ? (
+                <>
+                  <div className="flex gap-4 mt-4">
+                    <div>
+                      <img
+                        className="rounded-md"
+                        src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48dGl0bGU+QXJ0Ym9hcmQ8L3RpdGxlPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTAgMGg1MHY1MEgwVjB6IiBmaWxsPSIjRDhEOEQ4Ii8+PHBhdGggZD0iTTI1LjEwMyAyNi4yNDJjMy4yMTIgMCA1LjY0Mi0yLjkyIDUuNjQyLTYuNzg3IDAtMy4wODYtMi41OC01LjcwNS01LjY0Mi01LjcwNS0zLjA2IDAtNS42NCAyLjYyLTUuNjQgNS43MDUgMCAzLjg2NiAyLjQzIDYuNzg3IDUuNjQgNi43ODd6bTAtMTAuNTRjMS45NTIgMCAzLjY3OCAxLjc2MyAzLjY3OCAzLjc1MyAwIDIuNzU3LTEuNTc0IDQuODM1LTMuNjc3IDQuODM1LTIuMTAzIDAtMy42NzctMi4wNzgtMy42NzctNC44MzUgMC0xLjk5IDEuNzI2LTMuNzUzIDMuNjc3LTMuNzUzem0tOC40NSAyMC42MTVsLjE3Ny0xLjg3N2MuMzktMy43NzggNC42OTctNC42MSA4LjI3My00LjYxIDMuNTc3IDAgNy44ODQuODMyIDguMjc0IDQuNTk4bC4xNzYgMS44OWgyLjAxNWwtLjE3Ni0yLjA4Yy0uNDQtNC4xMTctNC4wNjgtNi4zODQtMTAuMjktNi4zODQtNi4yMiAwLTkuODQ2IDIuMjY3LTEwLjI4NyA2LjM5N2wtLjE3NiAyLjA2N2gyLjAxNHoiIGZpbGw9IiNGRkYiLz48L2c+PC9zdmc+"
+                        alt="avatar"
+                      />
+                    </div>
+                    <div>
+                      <p>
+                        {user.lastName} {user.firstName} ({user.email})
+                      </p>
+                      <p className="text-[#4239a9] cursor-pointer">Đăng xuất</p>
+                    </div>
                   </div>
-                  <div className="flex-[30%]">
-                    <InputCheckOut placeholder="Số điện thoại" type="text" />
+                  <form action="" className="mt-4">
+                    <InputCheckOut type="text">
+                      {user.lastName} {user.firstName}
+                    </InputCheckOut>
+                    <div className="flex gap-3 mt-3">
+                      <div className="flex-[70%]">
+                        <InputCheckOut type="email">{user.email}</InputCheckOut>
+                      </div>
+                      <div className="flex-[30%]">
+                        <InputCheckOut
+                          placeholder="Số điện thoại"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <>
+                  <div className="opacity-80">
+                    <InputParam
+                      description="Bạn đã có tài khoản?"
+                      link="Đăng nhập"
+                      href="./login"
+                    />
                   </div>
-                </div>
-              </form>
+                  <form action="" className="mt-4">
+                    <InputCheckOut placeholder="Họ và tên" type="text" />
+                    <div className="flex gap-3 mt-3">
+                      <div className="flex-[70%]">
+                        <InputCheckOut placeholder="Email" type="email" />
+                      </div>
+                      <div className="flex-[30%]">
+                        <InputCheckOut
+                          placeholder="Số điện thoại"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </>
+              )}
+
               <div className="border-solid border border-[#ccc] rounded-lg mt-6">
                 <div className="flex items-center gap-2 border-solid border-b border-[#ccc] p-4">
                   <Radio
@@ -252,7 +301,7 @@ const Checkout = () => {
           </div>
           <div className="flex-1 pt-[4em] pl-[4em] border-l-2 border-solid border-[#ccc]">
             <div>
-              {data.map((item) => (
+              {cartItems.map((item) => (
                 <div key={item.id} className="flex mb-4 relative">
                   <img
                     src={item.image}
@@ -263,13 +312,15 @@ const Checkout = () => {
                     {item.quantity}
                   </span>
                   <div className="ml-4">
-                    <p className="font-medium">
+                    <p className="font-normal leading-[119%]">
                       {item.name} - {item.codeSP} - {item.color}
                     </p>
                     <p className="text-gray-500">{item.size}</p>
                   </div>
-                  <div className="ml-6">
-                    <p className="font-semibold">{item.discountedPrice}</p>
+                  <div className="ml-6 flex items-center">
+                    <p className="font-semibold opacity-85">
+                      {item.discountedPrice}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -286,14 +337,7 @@ const Checkout = () => {
               <div className="mt-4 px-0 py-7 border-t border-b border-solid border-[#ccc]">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Tạm tính</span>
-                  <span>
-                    {data.reduce(
-                      (total, item) =>
-                        total + parseFloat(String(item.discountedPrice)),
-                      0
-                    )}
-                    ₫
-                  </span>
+                  <span>{totalMoney(cartItems).toLocaleString()} ₫</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Phí vận chuyển</span>
@@ -302,14 +346,7 @@ const Checkout = () => {
               </div>
               <div className="flex justify-between text-xl font-semibold mt-6">
                 <span>Tổng cộng</span>
-                <span>
-                  {data.reduce(
-                    (total, item) =>
-                      total + parseFloat(String(item.discountedPrice)),
-                    0
-                  )}
-                  VND
-                </span>
+                <span>{totalMoney(cartItems).toLocaleString()} VND</span>
               </div>
             </div>
           </div>

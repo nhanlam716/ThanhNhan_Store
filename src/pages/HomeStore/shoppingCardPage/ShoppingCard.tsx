@@ -9,8 +9,6 @@ import {
   removedCartItem,
 } from "../../../stores/slices/cardSlices";
 import { AppDispatch, RootState } from "../../../stores/store";
-import { useEffect, useState } from "react";
-import { axiosClient } from "../../../api/axiosClient";
 
 const ShoppingCard = () => {
   const navigate = useNavigate();
@@ -53,31 +51,23 @@ const ShoppingCard = () => {
   //   navigate("/checkout");
   // };
 
-  const [initialCartItems, setInitialCartItems] = useState<CardItems[]>([]);
-  console.log("initialCartItems", initialCartItems);
-
-  useEffect(() => {
-    setInitialCartItems(cartItems);
-  }, [cartItems]);
-
   const handleCheckOut = async () => {
-    const data = { ...cartItems, totalMoney: totalMoney(cartItems) };
-    const hasQuantityChanged = cartItems.some(
-      (item, index) => item.quantity !== initialCartItems[index]?.quantity
-    );
-    try {
-      if (hasQuantityChanged) {
-        for (const item of cartItems) {
-          await axiosClient.put(`/CheckoutProductCard/${item.id}`, data);
-        }
-        alert("Số lượng đã được cập nhật!");
-      } else {
-        await axiosClient.post("/CheckoutProductCard", data);
-        alert("Thanh toán thành công!");
-      }
-    } catch (error) {
-      console.error("Xử lý thanh toán thất bại:", error);
-    }
+    // const data = { checkout: cartItems, totalMoney: totalMoney(cartItems) };
+    // const hasQuantityChanged = cartItems.some(
+    //   (item, index) => item.quantity !== cartItems[index]?.quantity
+    // );
+    // try {
+    //   if (hasQuantityChanged) {
+    //     for (const item of cartItems) {
+    //       await axiosClient.put(`/CheckoutProductCard/${item.id}`, data);
+    //     }
+    //     alert("Số lượng đã được cập nhật!");
+    //   } else {
+    //     await axiosClient.post("/CheckoutProductCard", data);
+    //   }
+    // } catch (error) {
+    //   console.error("Xử lý thanh toán thất bại:", error);
+    // }
 
     navigate("/checkout");
   };
