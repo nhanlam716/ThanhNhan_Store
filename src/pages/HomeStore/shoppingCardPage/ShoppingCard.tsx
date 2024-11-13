@@ -140,7 +140,9 @@ const ShoppingCard = () => {
                             <p className="text-gray-500 text-sm">
                               Mã SP: {item.codeSP}
                             </p>
-                            <p className="text-gray-500 text-sm">Size:</p>
+                            <p className="text-gray-500 text-sm">
+                              Size: {item.size}
+                            </p>
                           </div>
                         </td>
                         <td className="flex-[12%] text-right p-2 font-semibold">
