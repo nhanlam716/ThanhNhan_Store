@@ -132,12 +132,10 @@ const Checkout = () => {
                     </div>
                   </div>
                   <form action="" className="mt-4">
-                    <InputCheckOut type="text">
-                      {user.lastName} {user.firstName}
-                    </InputCheckOut>
+                    <InputCheckOut placeholder="Họ tên" type="text" />
                     <div className="flex gap-3 mt-3">
                       <div className="flex-[70%]">
-                        <InputCheckOut type="email">{user.email}</InputCheckOut>
+                        <InputCheckOut placeholder="Email" type="email" />
                       </div>
                       <div className="flex-[30%]">
                         <InputCheckOut
