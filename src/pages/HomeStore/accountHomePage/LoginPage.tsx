@@ -35,18 +35,7 @@ const LoginPage = () => {
         .matches(/[@$!%*?&#]/, "Phải có ít nhất một ký tự đặc biệt")
         .required("Mật khẩu là bắt buộc"),
     }),
-    // onSubmit: async (_values, { resetForm }) => {
-    //   try {
-    //     const resultAction = dispatch(loginUser);
 
-    //     if (loginUser.fulfilled.match(resultAction)) {
-    //       navigate("/shopping");
-    //       resetForm();
-    //     }
-    //   } catch (error) {
-    //     console.error("Login failed:", error);
-    //   }
-    // },
     onSubmit: async (values, { resetForm }) => {
       try {
         const resultAction = await dispatch(loginUser(values));

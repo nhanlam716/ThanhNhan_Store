@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Banner from "../../../components/banner/Banner";
 import { Link, useSearchParams } from "react-router-dom";
 import {
+  BRANDS,
   CATEGORY,
   OUTSTANDING_PRODUCTS,
   PRICE,
+  SIZES,
 } from "../../../constants/headerCategories";
-import TitleProduct from "../../../components/title/TitleProduct";
 import { Checkbox, Label } from "flowbite-react";
 import InputLink from "../../../components/inputForm/InputLink";
 import { CONTENT } from "../../../constants/allProducts";
@@ -26,6 +27,8 @@ const HeaderHomePage = () => {
 
   const [data, setData] = useState<IProduct[]>([]);
   const [showPrice, setShowPrice] = useState(false);
+  const [showBrand, setShowBrand] = useState(false);
+  const [showSize, setShowSize] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
   const totalItems = data.length;
@@ -94,6 +97,12 @@ const HeaderHomePage = () => {
 
   const handleTogglePrice = () => {
     setShowPrice(!showPrice);
+  };
+  const handleToggleBrand = () => {
+    setShowBrand(!showBrand);
+  };
+  const handleToggleSize = () => {
+    setShowSize(!showSize);
   };
 
   return (
@@ -171,10 +180,110 @@ const HeaderHomePage = () => {
                 )}
               </div>
               <div className="mb-4">
-                <TitleProduct title="thương hiệu" />
+                <div onClick={handleToggleBrand}>
+                  <h3 className="bg-black p-3 m-0 text-[#fff] uppercase font-semibold rounded flex items-center justify-between cursor-pointer">
+                    thương hiệu{" "}
+                    {showBrand ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#fff]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 15l7-7 7 7"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#fff]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    )}
+                  </h3>
+                </div>
+                {showBrand && (
+                  <div className="mb-4 border-[1px] border-solid border-[#ccc] p-2 rounded">
+                    <ul className="p-2 max-h-[270px] overflow-y-auto space-y-3 uppercase scrollbar-custom">
+                      {BRANDS.map((item) => (
+                        <li
+                          key={item.name}
+                          className="flex items-center gap-3 mb-[10px]"
+                        >
+                          <Checkbox id={item.id} />
+                          <Label htmlFor={item.id}>{item.name}</Label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
               <div className="mb-4">
-                <TitleProduct title="size" />
+                <div onClick={handleToggleSize}>
+                  <h3 className="bg-black p-3 m-0 text-[#fff] uppercase font-semibold rounded flex items-center justify-between cursor-pointer">
+                    size{" "}
+                    {showSize ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#fff]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 15l7-7 7 7"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#fff]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    )}
+                  </h3>
+                </div>
+                {showSize && (
+                  <div className="mb-4 border-[1px] border-solid border-[#ccc] p-2 rounded">
+                    <ul className="grid grid-cols-2 gap-4 p-2 max-h-[270px] overflow-y-auto space-y-3 uppercase scrollbar-custom">
+                      {SIZES.map((item) => (
+                        <li
+                          key={item.name}
+                          className="flex items-center gap-3 mb-[10px]"
+                        >
+                          <Checkbox id={item.id} />
+                          <Label htmlFor={item.id}>{item.name}</Label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex-[80%]">

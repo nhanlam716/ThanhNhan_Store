@@ -4,15 +4,18 @@ import InputParam from "../../../components/inputForm/InputParam";
 import InputCheckOut from "../../../components/inputForm/InputCheckOut";
 import { Button, Label, Radio } from "flowbite-react";
 import { axiosClient } from "../../../api/axiosClient";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../stores/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../stores/store";
 import { CardItems } from "../../../stores/slices/cardSlices";
+import { logout } from "../../../stores/slices/authSlices";
 interface Location {
   code: string;
   name: string;
 }
 
 const Checkout = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [provinces, setProvinces] = useState<Location[]>([]);
   const [districts, setDistricts] = useState<Location[]>([]);
   const [wards, setWards] = useState<Location[]>([]);
@@ -93,6 +96,13 @@ const Checkout = () => {
 
   const user = JSON.parse(localStorage.getItem("user") || "[]");
 
+  const handleLogout = () => {
+    if (window.confirm("bạn có chắc chắn muốn đăng xuất ??")) {
+      dispatch(logout());
+      localStorage.removeItem("user");
+    }
+  };
+
   return (
     <div>
       <div className="max-w-6xl my-0 mx-auto">
@@ -114,8 +124,8 @@ const Checkout = () => {
               <div className="mt-3">
                 <h3 className="text-lg opacity-80">Thông tin giao hàng</h3>
               </div>
-              {user ? (
-                <>
+              {localStorage.getItem("user") ? (
+                <div>
                   <div className="flex gap-4 mt-4">
                     <div>
                       <img
@@ -126,28 +136,38 @@ const Checkout = () => {
                     </div>
                     <div>
                       <p>
-                        {user.lastName} {user.firstName} ({user.email})
+                        {`${user.lastName} ${user.firstName} (${user.email})`}
                       </p>
-                      <p className="text-[#4239a9] cursor-pointer">Đăng xuất</p>
+                      <p
+                        onClick={handleLogout}
+                        className="text-[#4239a9] cursor-pointer"
+                      >
+                        Đăng xuất
+                      </p>
                     </div>
                   </div>
                   <form action="" className="mt-4">
-                    <InputCheckOut placeholder="Họ tên" type="text" />
-                    <div className="flex gap-3 mt-3">
-                      <div className="flex-[70%]">
-                        <InputCheckOut placeholder="Email" type="email" />
-                      </div>
-                      <div className="flex-[30%]">
-                        <InputCheckOut
-                          placeholder="Số điện thoại"
-                          type="text"
-                        />
-                      </div>
+                    <div className="mt-2">
+                      <InputCheckOut
+                        placeholder="Họ tên"
+                        type="text"
+                        value={`${user.lastName} ${user.firstName}`}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <InputCheckOut
+                        placeholder="email"
+                        type="email"
+                        value={user.email}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <InputCheckOut placeholder="Số điện thoại" type="text" />
                     </div>
                   </form>
-                </>
+                </div>
               ) : (
-                <>
+                <div>
                   <div className="opacity-80">
                     <InputParam
                       description="Bạn đã có tài khoản?"
@@ -169,7 +189,7 @@ const Checkout = () => {
                       </div>
                     </div>
                   </form>
-                </>
+                </div>
               )}
 
               <div className="border-solid border border-[#ccc] rounded-lg mt-6">

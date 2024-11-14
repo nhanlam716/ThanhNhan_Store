@@ -122,7 +122,7 @@ const ProductPage = () => {
                       />
                     </svg>
                   </button>
-                  <div className="flex flex-col items-center space-y-4 overflow-auto h-96 p-2 rounded-lg shadow-md hide-scrollbar">
+                  <div className="flex flex-col items-center space-y-4 overflow-y-auto scrollbar-custom h-96 p-2 rounded-lg shadow-md">
                     {images.map((image, index) => (
                       <img
                         key={index}
