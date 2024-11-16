@@ -2,6 +2,7 @@ import React from "react";
 import logomini from "../../assets/image/logo_transparent.png";
 import { useNavigate } from "react-router-dom";
 import { IProduct } from "../../types/types";
+import { formatPrice } from "../../utils/helper";
 
 const Card = ({
   id,
@@ -46,7 +47,7 @@ const Card = ({
 
           <div className="flex items-center space-x-2 mt-2">
             <span className="text-red-600 font-bold text-lg">
-              {discountedPrice}
+              {formatPrice(discountedPrice)}
             </span>
             <span className="text-gray-500 text-sm line-through">
               {originalPrice}

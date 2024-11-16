@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 
 import { setIsRefetch } from "../../../stores/slices/cardSlices";
 import { AppDispatch } from "../../../stores/store";
+import { formatPrice } from "../../../utils/helper";
 
 const images = [
   "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
@@ -187,7 +188,7 @@ const ProductPage = () => {
                 <div className="mt-6">
                   <div className="flex items-center space-x-4">
                     <span className="text-red-500 text-4xl font-bold">
-                      {data?.discountedPrice}₫
+                      {formatPrice(data?.discountedPrice)}
                     </span>
                     <span className="text-2xl text-gray-400 line-through">
                       {data?.originalPrice}₫

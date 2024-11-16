@@ -135,9 +135,22 @@ const Header = () => {
                 <li key={item.name} className="relative group/parent pb-2">
                   <Link
                     to={item.href!}
-                    className="block w-full hover:text-[red]"
+                    className="flex items-center w-full hover:text-[red]"
                   >
-                    {item.name}
+                    <span>{item.name}</span>
+                    {item.children && (
+                      <span className="ml-1">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                        >
+                          <path d="M7 10l5 5 5-5H7z" />
+                        </svg>
+                      </span>
+                    )}
                   </Link>
                   {item.children && (
                     <ul className="absolute top-full left-[-15px] z-50 w-56 bg-[#fff] border box-shadow border-top hidden group-hover/parent:block">
@@ -148,9 +161,22 @@ const Header = () => {
                         >
                           <Link
                             to={menu.href!}
-                            className="block w-full hover:text-[red] px-4 py-2"
+                            className="flex items-center justify-between w-full hover:text-[red] px-4 py-2"
                           >
-                            {menu.name}
+                            <span>{menu.name}</span>
+                            {menu.children && (
+                              <span className="ml-1">
+                                <svg
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="currentColor"
+                                >
+                                  <path d="M10 7l5 5-5 5V7z" />
+                                </svg>
+                              </span>
+                            )}
                           </Link>
                           {menu.children && (
                             <ul className="absolute top-0 left-full z-50 w-64 bg-[#fff] border box-shadow border-top hidden group-hover/child:block">

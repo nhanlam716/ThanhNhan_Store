@@ -4,11 +4,11 @@ import ButtonQuantity from "../../../components/button/ButtonQuantity";
 import {
   CardItems,
   decreaseCartItem,
-  // handleCheckOutCard,
   increaseCartItem,
   removedCartItem,
 } from "../../../stores/slices/cardSlices";
 import { AppDispatch, RootState } from "../../../stores/store";
+import { formatPrice } from "../../../utils/helper";
 
 const ShoppingCard = () => {
   const navigate = useNavigate();
@@ -38,37 +38,14 @@ const ShoppingCard = () => {
 
   const totalMoney = (Items: CardItems[]) => {
     const resultWithReduce = Items.reduce((result, cart) => {
-      const money = cart.quantity * cart.discountedPrice;
+      const money = +cart.quantity * +cart.discountedPrice;
       result = result + money;
       return result;
     }, 0);
     return resultWithReduce;
   };
 
-  // const handleCheckOut = () => {
-  //   const data = { ...cartItems, totalMoney: totalMoney(cartItems) };
-  //   dispatch(handleCheckOutCard(data));
-  //   navigate("/checkout");
-  // };
-
   const handleCheckOut = async () => {
-    // const data = { checkout: cartItems, totalMoney: totalMoney(cartItems) };
-    // const hasQuantityChanged = cartItems.some(
-    //   (item, index) => item.quantity !== cartItems[index]?.quantity
-    // );
-    // try {
-    //   if (hasQuantityChanged) {
-    //     for (const item of cartItems) {
-    //       await axiosClient.put(`/CheckoutProductCard/${item.id}`, data);
-    //     }
-    //     alert("Số lượng đã được cập nhật!");
-    //   } else {
-    //     await axiosClient.post("/CheckoutProductCard", data);
-    //   }
-    // } catch (error) {
-    //   console.error("Xử lý thanh toán thất bại:", error);
-    // }
-
     navigate("/checkout");
   };
 
@@ -136,7 +113,7 @@ const ShoppingCard = () => {
                           </div>
                         </td>
                         <td className="flex-[12%] text-right p-2 font-semibold">
-                          {item.discountedPrice.toLocaleString()}₫
+                          {formatPrice(item.discountedPrice)}
                         </td>
                         <td className="flex-[26%] text-center p-2">
                           <ButtonQuantity
@@ -148,10 +125,7 @@ const ShoppingCard = () => {
                           />
                         </td>
                         <td className="flex-[12%] text-right p-2 font-semibold">
-                          {(
-                            item.discountedPrice * item.quantity
-                          ).toLocaleString()}
-                          ₫
+                          {formatPrice(+item.discountedPrice * +item.quantity)}
                         </td>
                       </tr>
                     ))}

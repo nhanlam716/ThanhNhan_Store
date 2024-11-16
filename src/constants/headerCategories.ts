@@ -10,11 +10,11 @@ export const CATEGORY = [
 ];
 
 export const PRICE = [
-  { name: "Tất cả", id: "all" },
-  { name: "1,000,000₫ - 2,000,000₫", id: "price" },
-  { name: "2,000,000₫ - 3,000,000₫", id: "price" },
-  { name: "3,000,000₫ - 4,000,000₫", id: "price" },
-  { name: "Trên 4,000,000₫", id: "price" },
+  { name: "Dưới 1.000.000₫", id: "all" },
+  { name: "1,000,000₫ - 2,000,000₫", id: "price1T" },
+  { name: "2,000,000₫ - 3,000,000₫", id: "price2T" },
+  { name: "3,000,000₫ - 4,000,000₫", id: "price3T" },
+  { name: "Trên 4,000,000₫", id: "price4T" },
 ];
 
 export const BRANDS = [

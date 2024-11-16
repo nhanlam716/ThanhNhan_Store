@@ -62,9 +62,11 @@ const Footer = () => {
             </h4>
             <div className="grid grid-cols-3 gap-2">
               {IMAGE_FOOTER.map((imgUrl, index) => (
-                <a href="https://www.instagram.com/thanhhungfutsal/">
+                <a
+                  key={index}
+                  href="https://www.instagram.com/thanhhungfutsal/"
+                >
                   <img
-                    key={index}
                     className="w-full h-24 object-cover rounded-lg shadow-sm"
                     src={imgUrl}
                     alt={`Instagram ${index + 1}`}

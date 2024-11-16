@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../stores/store";
 import { CardItems } from "../../../stores/slices/cardSlices";
 import { logout } from "../../../stores/slices/authSlices";
+import { formatPrice } from "../../../utils/helper";
 interface Location {
   code: string;
   name: string;
@@ -337,7 +338,7 @@ const Checkout = () => {
                   </div>
                   <div className="ml-6 flex items-center">
                     <p className="font-semibold opacity-85">
-                      {item.discountedPrice}
+                      {formatPrice(item.discountedPrice)}
                     </p>
                   </div>
                 </div>
