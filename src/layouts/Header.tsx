@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../assets/image/logo_medium.webp";
 import User from "../assets/image/icon-user.webp";
 import Bag from "../assets/image/icon-bag.webp";
@@ -13,6 +13,7 @@ import { fetchCartItemsAPI } from "../stores/slices/cardSlices";
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const cartItems = useSelector((state: RootState) => {
     return state.cartState.data;
@@ -38,6 +39,21 @@ const Header = () => {
       localStorage.removeItem("user");
     }
   };
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return;
+    // try {
+    //   const res: any = await axiosClient.get(
+    //     `/productsCards?name_like=${searchQuery}`
+    //   );
+    //   setSearchQuery(res);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    navigate(`/search?query=${searchQuery}`);
+    setSearchQuery("");
+  };
+
   return (
     <header>
       <div className="mx-5 my-4">
@@ -48,9 +64,14 @@ const Header = () => {
             </a>
           </div>
           <div className="flex-[2.5] relative">
-            <FloatingLabel variant="filled" label="Bạn đang tìm kiếm ..." />
+            <FloatingLabel
+              variant="filled"
+              label="Bạn đang tìm kiếm ..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <div className="absolute top-0 right-[2px]">
-              <button className="px-5 py-3">
+              <button onClick={handleSearch} className="px-5 py-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="26"

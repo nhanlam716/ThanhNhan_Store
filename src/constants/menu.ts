@@ -123,7 +123,7 @@ export const MENU: IMenu[] = [
     children: [
       {
         name: "nike",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=nike",
         children: [
           {
             name: "nike mercurial",
@@ -153,7 +153,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "adidas",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=adidas",
         children: [
           {
             name: "adidas f50",
@@ -179,7 +179,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "puma",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=puma",
         children: [
           {
             name: "puma ultra",
@@ -197,7 +197,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "mizuno",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=mizuno",
         children: [
           {
             name: "mizuno monarcida",
@@ -215,7 +215,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "kamito",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=kamito",
         children: [
           {
             name: "kamito TA 11",
@@ -225,7 +225,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "athleta",
-        href: "/",
+        href: "/allProducts?type=futsal-soccer-shoes&brand=futsalathleta",
         children: [
           {
             name: "athleta o-rei",
@@ -235,7 +235,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "joma",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=joma",
         children: [
           {
             name: "joma top flex",
@@ -257,7 +257,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "asics",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=asics",
         children: [
           {
             name: "asics destaque",
@@ -275,7 +275,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "desporte",
-        href: "/",
+        href: "/allProducts?type=artificial-soccer-shoes&brand=desporte",
         children: [
           {
             name: "desporte campinas",
@@ -297,7 +297,7 @@ export const MENU: IMenu[] = [
       },
       {
         name: "zocker",
-        href: "/",
+        href: "/allProducts?type=fu&brand=zocker",
         children: [
           {
             name: "zocker winner energy",

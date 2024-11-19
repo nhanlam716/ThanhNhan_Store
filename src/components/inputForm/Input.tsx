@@ -1,14 +1,14 @@
 import { FloatingLabel } from "flowbite-react";
 import React from "react";
 
-interface IInput {
-  label: string;
+export interface IInput {
+  label?: string;
   placeholder?: string;
   types?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  value: string;
-  name: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  value?: string;
+  name?: string;
 }
 
 const Input = ({

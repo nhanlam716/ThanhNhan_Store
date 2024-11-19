@@ -3,7 +3,7 @@ import { ADDRESS, IMAGE_FOOTER, POLICY } from "../constants/footer";
 
 const Footer = () => {
   return (
-    <footer className="mt-40">
+    <footer className="mt-12">
       <div className="max-w-6xl mx-auto">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 py-8">
           <div className="grid grid-cols-2 gap-8">

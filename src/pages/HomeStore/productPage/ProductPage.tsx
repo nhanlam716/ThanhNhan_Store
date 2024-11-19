@@ -17,11 +17,11 @@ import { AppDispatch } from "../../../stores/store";
 import { formatPrice } from "../../../utils/helper";
 
 const images = [
-  "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
-  "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
-  "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
-  "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
-  "https://product.hstatic.net/200000278317/product/thanh-hung-futsal-giay-da-bong-adidas-f50-league-tf-if1335-do-cam-5_b1f50c8362474b6a90434df301028fbf_master.jpg",
+  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-1_8bbe68fb9d23471c8a8feb567aaa6555_master.jpg",
+  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-2_7788fffed91e467a8fcdede9419ab1a3_master.jpg",
+  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-3_cb99c37971d44a559006f6f72a8de4ca_master.jpg",
+  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-4_3a59e8d0f83e4f5280894d407904c904_master.jpg",
+  "https://product.hstatic.net/200000278317/product/giay-da-bong-puma-future-7-match-vol-up-tt-108075-01-trang-xanh-hong-5_9939457d58b746738722d4d9c19e59fb_master.jpg",
 ];
 
 const ProductPage = () => {
@@ -31,6 +31,7 @@ const ProductPage = () => {
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [mainImage, setMainImage] = useState<string | null>(null);
 
   const handleClickSize = (size: any) => {
     setSelectedSize(size);
@@ -38,11 +39,13 @@ const ProductPage = () => {
 
   const id = params?.id;
   const [data, setData] = useState<IProduct>();
+  console.log(data?.Thumbnail);
 
   const fetchData = useCallback(async (id: string) => {
     try {
       const response: any = await axiosClient.get(`/productsCards/${id}`);
       setData(response);
+      setMainImage(response?.image || images[0]);
     } catch (error) {
       console.log(error);
     }
@@ -55,6 +58,11 @@ const ProductPage = () => {
   }, [fetchData, id]);
 
   const handleAddToCart = async () => {
+    if (!selectedSize) {
+      alert("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng!");
+      return;
+    }
+
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     if (data && user?.id) {
@@ -99,6 +107,24 @@ const ProductPage = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
   };
 
+  const handleMoveUp = () => {
+    setMainImage((prev) => {
+      const currentIndex = images.indexOf(prev || images[0]);
+      return currentIndex === 0
+        ? images[images.length - 1]
+        : images[currentIndex - 1];
+    });
+  };
+
+  const handleMoveDown = () => {
+    setMainImage((prev) => {
+      const currentIndex = images.indexOf(prev || images[0]);
+      return currentIndex === images.length - 1
+        ? images[0]
+        : images[currentIndex + 1];
+    });
+  };
+
   return (
     <div>
       <div className="mt-16">
@@ -107,7 +133,10 @@ const ProductPage = () => {
             <div className="flex-1 max-w-[50%] px-3">
               <div className="flex space-x-4">
                 <div className="flex flex-col items-center space-y-2">
-                  <button className="bg-gray-200 p-2 rounded h-[30px] w-full flex justify-center items-center text-xl opacity-80">
+                  <button
+                    onClick={handleMoveUp}
+                    className="bg-gray-200 p-2 rounded h-[30px] w-full flex justify-center items-center text-xl opacity-80 hover:bg-blue-500 text-white duration-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -123,17 +152,25 @@ const ProductPage = () => {
                       />
                     </svg>
                   </button>
-                  <div className="flex flex-col items-center space-y-4 overflow-y-auto scrollbar-custom h-96 p-2 rounded-lg shadow-md">
-                    {images.map((image, index) => (
+                  <div className="flex flex-col items-center space-y-4 overflow-y-auto scrollbar-custom h-[22rem] p-2 rounded-lg shadow-md">
+                    {images.map((item, index) => (
                       <img
                         key={index}
-                        src={image}
+                        src={item}
                         alt={`Thumbnail ${index + 1}`}
-                        className="w-20 h-20 rounded-lg object-cover cursor-pointer transition-transform transform hover:scale-110 hover:shadow-lg duration-300 border-2 "
+                        className={`w-20 h-20 mt-1 rounded object-cover cursor-pointer transition-transform transform hover:scale-110 hover:shadow-lg duration-300 border-4 ${
+                          mainImage === item
+                            ? "border-blue-500"
+                            : "border-transparent"
+                        }`}
+                        onClick={() => setMainImage(item)}
                       />
                     ))}
                   </div>
-                  <button className="bg-gray-200 p-2 rounded h-[30px] w-full flex justify-center items-center text-xl opacity-80">
+                  <button
+                    onClick={handleMoveDown}
+                    className="bg-gray-200 p-2 rounded h-[30px] w-full flex justify-center items-center text-xl opacity-80 hover:bg-blue-500 text-white duration-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -153,9 +190,9 @@ const ProductPage = () => {
                 {data && (
                   <div className="relative pt-[14px]">
                     <img
-                      src={data?.image}
+                      src={mainImage || images[0]}
                       alt="Main product"
-                      className="w-[400px] h-100% object-cover"
+                      className="w-[400px] h-full object-cover opacity-100"
                     />
                     <span className="absolute mt-[14px] top-0 right-0 bg-red-500 text-white px-4 py-3 text-sm">
                       {data?.discount}
@@ -167,7 +204,7 @@ const ProductPage = () => {
             {data && (
               <div className="flex-1">
                 <div className="flex items-center gap-6 mb-4">
-                  <h1 className="text-[26px] font-normal uppercase">
+                  <h1 className="text-[26px] font-medium uppercase">
                     {data?.name} - {data?.color}
                   </h1>
                 </div>
@@ -193,7 +230,7 @@ const ProductPage = () => {
                     <span className="text-2xl text-gray-400 line-through">
                       {data?.originalPrice}₫
                     </span>
-                    <span className="text-green-500">
+                    <span className="text-green-500 text-2xl">
                       (Tiết kiệm {data.installment}₫)
                     </span>
                   </div>

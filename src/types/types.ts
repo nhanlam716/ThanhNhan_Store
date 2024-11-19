@@ -1,4 +1,5 @@
 export interface IProduct {
+  Thumbnail: any;
   totalMoney: number;
   size: number;
   id: number;

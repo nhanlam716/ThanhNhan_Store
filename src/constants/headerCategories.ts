@@ -3,18 +3,36 @@ export const CATEGORY = [
   { name: "Adidas Vivid Horizon Pack", href: "/" },
   { name: "Adidas F50", href: "/" },
   { name: "Nike Mercurial", href: "/" },
-  { name: "Sản phẩm Hot Deals", href: "/" },
-  { name: "Giày sân Cỏ Nhân Tạo", href: "/" },
-  { name: "Giày sân Futsal", href: "/" },
-  { name: "Dép Unbox", href: "/" },
+  { name: "Sản phẩm Hot Deals", href: "/allProducts?type=hotdeal" },
+  {
+    name: "Giày sân Cỏ Nhân Tạo",
+    href: "/allProducts?type=artificial-soccer-shoes",
+  },
+  { name: "Giày sân Futsal", href: "/allProducts?type=futsal-soccer-shoes" },
+  { name: "Dép Unbox", href: "/allProducts?type=accessory&brand=sandal" },
 ];
 
 export const PRICE = [
-  { name: "Dưới 1.000.000₫", id: "all" },
-  { name: "1,000,000₫ - 2,000,000₫", id: "price1T" },
-  { name: "2,000,000₫ - 3,000,000₫", id: "price2T" },
-  { name: "3,000,000₫ - 4,000,000₫", id: "price3T" },
-  { name: "Trên 4,000,000₫", id: "price4T" },
+  { name: "Dưới 1.000.000₫", id: "all", gte: 560000, lte: 990000 },
+  {
+    name: "1,000,000₫ - 2,000,000₫",
+    id: "price1T",
+    gte: 1000000,
+    lte: 2000000,
+  },
+  {
+    name: "2,000,000₫ - 3,000,000₫",
+    id: "price2T",
+    gte: 2000000,
+    lte: 3000000,
+  },
+  {
+    name: "3,000,000₫ - 4,000,000₫",
+    id: "price3T",
+    gte: 3000000,
+    lte: 4000000,
+  },
+  { name: "Trên 4,000,000₫", id: "price4T", gte: 4000000, lte: 7000000 },
 ];
 
 export const BRANDS = [

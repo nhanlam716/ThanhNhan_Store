@@ -15,20 +15,30 @@ import { axiosClient } from "../../../api/axiosClient";
 import Cards from "../../../components/card/Cards";
 import { IProduct } from "../../../types/types";
 
+type ProductParams = {
+  type?: string | null;
+  brand?: string | null;
+  discountedPrice_gte?: number;
+  discountedPrice_lte?: number;
+};
+
 const HeaderHomePage = () => {
   const [searchParams] = useSearchParams();
-
   // const previousSearchParams = Object.fromEntries(
   //   Array.from(searchParams.entries())
   // );
-
   const type = searchParams.get("type");
   const brand = searchParams.get("brand");
 
   const [data, setData] = useState<IProduct[]>([]);
+  const [selectedPrice, setSelectedPrice] = useState<{
+    gte: number;
+    lte: number;
+  } | null>(null);
   const [showPrice, setShowPrice] = useState(false);
   const [showBrand, setShowBrand] = useState(false);
   const [showSize, setShowSize] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
   const totalItems = data.length;
@@ -36,19 +46,54 @@ const HeaderHomePage = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = data.slice(startIndex, startIndex + itemsPerPage);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response: any = await axiosClient.get("/productsCards", {
+  //         params: { type, brand },
+  //       });
+  //       setData(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, [type, brand]);
   useEffect(() => {
     async function fetchData() {
       try {
+        const params: ProductParams = { type, brand };
+
+        if (selectedPrice) {
+          params.discountedPrice_gte = selectedPrice.gte;
+          params.discountedPrice_lte = selectedPrice.lte;
+        }
+
         const response: any = await axiosClient.get("/productsCards", {
-          params: { type, brand },
+          params,
         });
+
         setData(response);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     fetchData();
-  }, [type, brand]);
+  }, [type, brand, selectedPrice]);
+
+  const handlePriceChange = (priceId: string | null) => {
+    if (priceId) {
+      const selectedRange = PRICE.find((item) => item.id === priceId);
+      if (selectedRange) {
+        setSelectedPrice({
+          gte: selectedRange.gte,
+          lte: selectedRange.lte,
+        });
+      }
+    } else {
+      setSelectedPrice(null);
+    }
+  };
 
   const handleRenderTitle = () => {
     // {type
@@ -171,7 +216,14 @@ const HeaderHomePage = () => {
                           key={item.name}
                           className="flex items-center gap-3 mb-[10px]"
                         >
-                          <Checkbox id={item.id} />
+                          <Checkbox
+                            id={item.id}
+                            checked={
+                              selectedPrice?.gte === item.gte &&
+                              selectedPrice?.lte === item.lte
+                            }
+                            onChange={() => handlePriceChange(item.id)}
+                          />
                           <Label htmlFor={item.id}>{item.name}</Label>
                         </li>
                       ))}

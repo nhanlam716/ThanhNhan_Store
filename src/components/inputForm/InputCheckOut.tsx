@@ -1,20 +1,24 @@
 import { TextInput } from "flowbite-react";
-import React from "react";
+import { IInput } from "./Input";
 
-interface IInput {
-  type: string;
-  placeholder?: string;
-  value?: string;
-}
-
-const InputCheckOut = ({ placeholder, type, value }: IInput) => {
+const InputCheckOut = ({
+  placeholder,
+  types,
+  onBlur,
+  onChange,
+  value,
+  name,
+}: IInput) => {
   return (
     <div>
       <div>
         <TextInput
-          type={type}
+          type={types}
           placeholder={placeholder}
           value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
           required
         />
       </div>

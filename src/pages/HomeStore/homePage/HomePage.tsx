@@ -44,12 +44,22 @@ const news = [
 
 const HomePage = () => {
   const [data, setData] = useState<IProduct[]>([]);
+  const [upComming, setUpComming] = useState<IProduct[]>([]);
   const [productType, setProductType] = useState<string>(
     "artificial-soccer-shoes"
   );
   const [activeType, setActiveType] = useState<string>(
     "artificial-soccer-shoes"
   );
+
+  const getUpCommingProduct = async () => {
+    try {
+      const res: any = await axiosClient.get("/productsCards?badge=Sắp ra mắt");
+      setUpComming(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -63,6 +73,7 @@ const HomePage = () => {
       }
     }
     fetchData();
+    getUpCommingProduct();
   }, [productType]);
 
   const handleFilter = (type: string) => {
@@ -77,7 +88,7 @@ const HomePage = () => {
       <Banner image="https://theme.hstatic.net/200000278317/1000929405/14/mustbuy_img_master.jpg?v=1859" />
       <div className="max-w-6xl mx-auto mt-6 mb-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {(data || []).map((item, index) => (
+          {(upComming || []).map((item, index) => (
             <Cards key={index} {...item} />
           ))}
         </div>

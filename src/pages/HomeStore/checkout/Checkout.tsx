@@ -9,6 +9,9 @@ import { AppDispatch, RootState } from "../../../stores/store";
 import { CardItems } from "../../../stores/slices/cardSlices";
 import { logout } from "../../../stores/slices/authSlices";
 import { formatPrice } from "../../../utils/helper";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 interface Location {
   code: string;
   name: string;
@@ -16,6 +19,9 @@ interface Location {
 
 const Checkout = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { error, isLoading } = useSelector(
+    (state: RootState) => state.authState
+  );
 
   const [provinces, setProvinces] = useState<Location[]>([]);
   const [districts, setDistricts] = useState<Location[]>([]);
@@ -104,6 +110,28 @@ const Checkout = () => {
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      address: "",
+    },
+    validationSchema: Yup.object({
+      fullName: Yup.string().required("Vui lòng nhập họ tên"),
+      email: Yup.string()
+        .email("Email không hợp lệ")
+        .required("Vui lòng nhập email"),
+      phoneNumber: Yup.string()
+        .matches(/^[0-9]{10}$/, "SĐT không hợp lệ")
+        .required("Vui lòng nhập SĐT"),
+      address: Yup.string().required("Vui lòng nhập thông tin địa chỉ"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
     <div>
       <div className="max-w-6xl my-0 mx-auto">
@@ -147,24 +175,41 @@ const Checkout = () => {
                       </p>
                     </div>
                   </div>
-                  <form action="" className="mt-4">
+                  <form
+                    action=""
+                    onSubmit={formik.handleSubmit}
+                    className="mt-4"
+                  >
                     <div className="mt-2">
                       <InputCheckOut
                         placeholder="Họ tên"
-                        type="text"
+                        types="text"
                         value={`${user.lastName} ${user.firstName}`}
                       />
                     </div>
                     <div className="mt-3">
                       <InputCheckOut
                         placeholder="email"
-                        type="email"
+                        types="email"
                         value={user.email}
                       />
                     </div>
                     <div className="mt-3">
-                      <InputCheckOut placeholder="Số điện thoại" type="text" />
+                      <InputCheckOut
+                        placeholder="Số điện thoại"
+                        types="text"
+                        name="phoneNumber"
+                        value={formik.values.phoneNumber}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
                     </div>
+                    {formik.touched.phoneNumber &&
+                      formik.errors.phoneNumber && (
+                        <p className="text-red-500">
+                          {formik.errors.phoneNumber}
+                        </p>
+                      )}
                   </form>
                 </div>
               ) : (
@@ -177,16 +222,46 @@ const Checkout = () => {
                     />
                   </div>
                   <form action="" className="mt-4">
-                    <InputCheckOut placeholder="Họ và tên" type="text" />
+                    <InputCheckOut
+                      placeholder="Họ và tên"
+                      types="text"
+                      name="fullName"
+                      value={formik.values.fullName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.fullName && formik.errors.fullName && (
+                      <p className="text-red-500">{formik.errors.fullName}</p>
+                    )}
                     <div className="flex gap-3 mt-3">
                       <div className="flex-[70%]">
-                        <InputCheckOut placeholder="Email" type="email" />
+                        <InputCheckOut
+                          placeholder="Email"
+                          types="email"
+                          name="email"
+                          value={formik.values.email}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        {formik.touched.email && formik.errors.email && (
+                          <p className="text-red-500">{formik.errors.email}</p>
+                        )}
                       </div>
                       <div className="flex-[30%]">
                         <InputCheckOut
                           placeholder="Số điện thoại"
-                          type="text"
+                          types="text"
+                          name="phoneNumber"
+                          value={formik.values.phoneNumber}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                         />
+                        {formik.touched.phoneNumber &&
+                          formik.errors.phoneNumber && (
+                            <p className="text-red-500">
+                              {formik.errors.phoneNumber}
+                            </p>
+                          )}
                       </div>
                     </div>
                   </form>
@@ -205,7 +280,11 @@ const Checkout = () => {
                   <Label htmlFor="delivery">Giao tận nơi</Label>
                 </div>
                 {deliveryOption === "delivery" && (
-                  <form action="" className="my-4 p-4">
+                  <form
+                    action=""
+                    onSubmit={formik.handleSubmit}
+                    className="my-4 p-4"
+                  >
                     <div className="flex gap-3 mb-3">
                       <select
                         onChange={handleProvinceChange}
@@ -245,8 +324,15 @@ const Checkout = () => {
                     </div>
                     <InputCheckOut
                       placeholder="Địa chỉ: Thôn, xóm, đường, số nhà"
-                      type="text"
+                      types="text"
+                      name="address"
+                      value={formik.values.address}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                     />
+                    {formik.touched.address && formik.errors.address && (
+                      <p className="text-red-500">{formik.errors.address}</p>
+                    )}
                   </form>
                 )}
                 <div className="flex items-center gap-2 border-solid border-t border-[#ccc] p-4">
@@ -284,9 +370,16 @@ const Checkout = () => {
                 <Link to="/shopping" className="text-[#338dbc]">
                   Giỏ hàng
                 </Link>
-                <Button color="blue">
-                  Tiếp tục đến phương thức thanh toán
-                </Button>
+                <form action="" onSubmit={formik.handleSubmit}>
+                  {error && <div style={{ color: "red" }}>{error}</div>}
+                  <div className="flex mt-5">
+                    <Button color="blue" type="submit" disabled={isLoading}>
+                      {isLoading
+                        ? "Đang xử lý..."
+                        : "Tiếp tục đến phương thức thanh toán"}
+                    </Button>
+                  </div>
+                </form>
               </div>
               <div className="pt-8 pb-5">
                 <Link
@@ -346,7 +439,7 @@ const Checkout = () => {
               <div className="border-t py-6">
                 <div className="flex gap-4">
                   <div className="flex-[75%]">
-                    <InputCheckOut placeholder="Mã giảm giá" type="text" />
+                    <InputCheckOut placeholder="Mã giảm giá" types="text" />
                   </div>
                   <div className="flex-[25%]">
                     <Button color="blue">Sử dụng</Button>

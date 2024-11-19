@@ -21,23 +21,28 @@ const AccountPage = () => {
               <p className="text-base font-medium">Thông tin tài khoản</p>
             </div>
             <div className="p-4 mt-2">
-              <div className="flex justify-between flex-wrap text-xl text-[#868282] mb-4">
-                <span className="w-[101px]">Họ tên</span>
-                <span className="w-[220px]">
+              <div className="flex justify-between flex-wrap text-xl mb-4">
+                <span className="w-[101px] text-[#868282]">Họ tên</span>
+                <span className="w-[220px] font-medium text-[black]">
                   : {user.firstName} {user.lastName}
                 </span>
               </div>
-              <div className="flex justify-between flex-wrap text-xl text-[#868282] mb-4">
-                <span className="w-[101px]">Điện thoại</span>
-                <span className="w-[220px]">: </span>
+              <div className="flex justify-between flex-wrap text-xl mb-4">
+                <span className="w-[101px] text-[#868282]">Điện thoại</span>
+                <span className="w-[220px] font-medium text-[black]">: </span>
               </div>
-              <div className="flex justify-between flex-wrap text-xl text-[#868282] mb-4">
-                <span className="w-[101px]">Email</span>
-                <span className="w-[220px]">: {user.email}</span>
+              <div className="flex justify-between flex-wrap text-xl mb-4">
+                <span className="w-[101px] text-[#868282]">Email</span>
+                <span className="w-[220px] font-medium text-[black]">
+                  : {user.email}
+                </span>
               </div>
             </div>
             <div className="p-4 mb-5">
-              <Link to="/" className="uppercase text-[14px] font-medium">
+              <Link
+                to="/information"
+                className="uppercase text-[14px] font-medium"
+              >
                 xem địa chỉ
               </Link>
             </div>
