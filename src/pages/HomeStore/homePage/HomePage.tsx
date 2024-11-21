@@ -45,6 +45,7 @@ const news = [
 const HomePage = () => {
   const [data, setData] = useState<IProduct[]>([]);
   const [upComming, setUpComming] = useState<IProduct[]>([]);
+  const [saleProduct, setSaleProduct] = useState<IProduct[]>([]);
   const [productType, setProductType] = useState<string>(
     "artificial-soccer-shoes"
   );
@@ -56,6 +57,17 @@ const HomePage = () => {
     try {
       const res: any = await axiosClient.get("/productsCards?badge=Sắp ra mắt");
       setUpComming(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSaleProducts = async () => {
+    try {
+      const res: any = await axiosClient.get(
+        "/productsCards?discount_gte=-40%&discount_lte=-55%"
+      );
+      setSaleProduct(res);
     } catch (error) {
       console.log(error);
     }
@@ -74,6 +86,7 @@ const HomePage = () => {
     }
     fetchData();
     getUpCommingProduct();
+    getSaleProducts();
   }, [productType]);
 
   const handleFilter = (type: string) => {
@@ -172,7 +185,7 @@ const HomePage = () => {
         <Title title="sản phẩm hot Sale" />
         <div className="max-w-6xl mx-auto mt-6 mb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(data || []).map((item, index) => (
+            {saleProduct.map((item, index) => (
               <Cards key={index} {...item} />
             ))}
           </div>

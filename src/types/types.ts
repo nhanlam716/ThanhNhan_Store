@@ -1,5 +1,5 @@
 export interface IProduct {
-  Thumbnail: any;
+  Thumbnail: string[];
   totalMoney: number;
   size: number;
   id: number;

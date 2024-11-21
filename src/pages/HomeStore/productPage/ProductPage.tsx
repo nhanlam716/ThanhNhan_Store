@@ -16,14 +16,6 @@ import { setIsRefetch } from "../../../stores/slices/cardSlices";
 import { AppDispatch } from "../../../stores/store";
 import { formatPrice } from "../../../utils/helper";
 
-const images = [
-  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-1_8bbe68fb9d23471c8a8feb567aaa6555_master.jpg",
-  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-2_7788fffed91e467a8fcdede9419ab1a3_master.jpg",
-  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-3_cb99c37971d44a559006f6f72a8de4ca_master.jpg",
-  "https://product.hstatic.net/200000278317/product/da-bong-nike-zoom-mercurial-vapor-15-pro-16-tf-fq8687-700-xanh-chuoi-4_3a59e8d0f83e4f5280894d407904c904_master.jpg",
-  "https://product.hstatic.net/200000278317/product/giay-da-bong-puma-future-7-match-vol-up-tt-108075-01-trang-xanh-hong-5_9939457d58b746738722d4d9c19e59fb_master.jpg",
-];
-
 const ProductPage = () => {
   const navigate = useNavigate();
   const params = useParams();
@@ -39,13 +31,12 @@ const ProductPage = () => {
 
   const id = params?.id;
   const [data, setData] = useState<IProduct>();
-  console.log(data?.Thumbnail);
 
   const fetchData = useCallback(async (id: string) => {
     try {
       const response: any = await axiosClient.get(`/productsCards/${id}`);
       setData(response);
-      setMainImage(response?.image || images[0]);
+      setMainImage(response?.image || response?.Thumbnail?.[0] || null);
     } catch (error) {
       console.log(error);
     }
@@ -109,6 +100,7 @@ const ProductPage = () => {
 
   const handleMoveUp = () => {
     setMainImage((prev) => {
+      const images = data?.Thumbnail || [];
       const currentIndex = images.indexOf(prev || images[0]);
       return currentIndex === 0
         ? images[images.length - 1]
@@ -118,6 +110,7 @@ const ProductPage = () => {
 
   const handleMoveDown = () => {
     setMainImage((prev) => {
+      const images = data?.Thumbnail || [];
       const currentIndex = images.indexOf(prev || images[0]);
       return currentIndex === images.length - 1
         ? images[0]
@@ -153,19 +146,20 @@ const ProductPage = () => {
                     </svg>
                   </button>
                   <div className="flex flex-col items-center space-y-4 overflow-y-auto scrollbar-custom h-[22rem] p-2 rounded-lg shadow-md">
-                    {images.map((item, index) => (
-                      <img
-                        key={index}
-                        src={item}
-                        alt={`Thumbnail ${index + 1}`}
-                        className={`w-20 h-20 mt-1 rounded object-cover cursor-pointer transition-transform transform hover:scale-110 hover:shadow-lg duration-300 border-4 ${
-                          mainImage === item
-                            ? "border-blue-500"
-                            : "border-transparent"
-                        }`}
-                        onClick={() => setMainImage(item)}
-                      />
-                    ))}
+                    {data?.Thumbnail &&
+                      data?.Thumbnail.map((item: any, index: any) => (
+                        <img
+                          key={index}
+                          src={item}
+                          alt={`Thumbnail ${index + 1}`}
+                          className={`w-20 h-20 mt-1 rounded object-cover cursor-pointer transition-transform transform hover:scale-110 hover:shadow-lg duration-300 border-4 ${
+                            mainImage === item
+                              ? "border-blue-500"
+                              : "border-transparent"
+                          }`}
+                          onClick={() => setMainImage(item)}
+                        />
+                      ))}
                   </div>
                   <button
                     onClick={handleMoveDown}
@@ -190,7 +184,7 @@ const ProductPage = () => {
                 {data && (
                   <div className="relative pt-[14px]">
                     <img
-                      src={mainImage || images[0]}
+                      src={mainImage || data?.Thumbnail[0]}
                       alt="Main product"
                       className="w-[400px] h-full object-cover opacity-100"
                     />

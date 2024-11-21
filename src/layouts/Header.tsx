@@ -9,11 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../stores/slices/authSlices";
 import { AppDispatch, RootState } from "../stores/store";
 import { fetchCartItemsAPI } from "../stores/slices/cardSlices";
+import { axiosClient } from "../api/axiosClient";
+import { IProduct } from "../types/types";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<IProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const cartItems = useSelector((state: RootState) => {
     return state.cartState.data;
@@ -40,19 +44,53 @@ const Header = () => {
     }
   };
 
+  const fetchSuggestions = async (input: string) => {
+    if (!input.trim()) return setSuggestions([]);
+    setIsLoading(true);
+    try {
+      const res: any = await axiosClient.get(
+        `/productsCards?name_like=${input}`
+      );
+      setSuggestions(res);
+    } catch (error) {
+      console.error("Lỗi khi gọi API:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (searchQuery) {
+        fetchSuggestions(searchQuery);
+      } else {
+        setSuggestions([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
+
   const handleSearch = () => {
     if (!searchQuery.trim()) return;
-    // try {
-    //   const res: any = await axiosClient.get(
-    //     `/productsCards?name_like=${searchQuery}`
-    //   );
-    //   setSearchQuery(res);
-    // } catch (error) {
-    //   console.log(error);
-    // }
     navigate(`/search?query=${searchQuery}`);
+    setSuggestions([]);
     setSearchQuery("");
   };
+
+  // const handleSearch = async () => {
+  //   if (!searchQuery.trim()) return;
+  //   try {
+  //     const res: any = await axiosClient.get(
+  //       `/productsCards?name_like=${searchQuery}`
+  //     );
+  //     setSearchQuery(res);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   navigate(`/search?query=${searchQuery}`);
+  //   setSearchQuery("");
+  // };
 
   return (
     <header>
@@ -70,6 +108,29 @@ const Header = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <ul className="absolute top-full left-0 w-full mt-1 bg-white border rounded-lg shadow-lg z-10">
+                {isLoading ? (
+                  <li className="px-4 py-2 text-gray-500">Đang tải...</li>
+                ) : suggestions.length > 0 ? (
+                  suggestions.map((item, index) => (
+                    <li
+                      key={index}
+                      className="px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer"
+                      onClick={() => {
+                        navigate(`/search?query=${item.name}`);
+                        setSearchQuery("");
+                        setSuggestions([]);
+                      }}
+                    >
+                      {item.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-4 py-2 text-gray-500">Không có kết quả</li>
+                )}
+              </ul>
+            )}
             <div className="absolute top-0 right-[2px]">
               <button onClick={handleSearch} className="px-5 py-3">
                 <svg
