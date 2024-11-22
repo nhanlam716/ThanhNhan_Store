@@ -11,6 +11,9 @@ import { AppDispatch, RootState } from "../stores/store";
 import { fetchCartItemsAPI } from "../stores/slices/cardSlices";
 import { axiosClient } from "../api/axiosClient";
 import { IProduct } from "../types/types";
+import { Button, Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { formatPrice } from "../utils/helper";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +21,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<IProduct[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const cartItems = useSelector((state: RootState) => {
     return state.cartState.data;
@@ -36,12 +40,15 @@ const Header = () => {
     }
   }, [dispatch, user?.id, isRefetch]);
 
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
   const handleLogout = () => {
-    if (window.confirm("bạn có chắc chắn muốn đăng xuất ??")) {
-      dispatch(logout());
-      navigate("/");
-      localStorage.removeItem("user");
-    }
+    dispatch(logout());
+    navigate("/");
+    localStorage.removeItem("user");
+    setOpenModal(false);
   };
 
   const fetchSuggestions = async (input: string) => {
@@ -116,14 +123,22 @@ const Header = () => {
                   suggestions.map((item, index) => (
                     <li
                       key={index}
-                      className="px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer"
+                      className="flex justify-between items-center px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer"
                       onClick={() => {
                         navigate(`/search?query=${item.name}`);
                         setSearchQuery("");
                         setSuggestions([]);
                       }}
                     >
-                      {item.name}
+                      <div>{item.name}</div>
+                      <div className="flex items-center gap-14">
+                        <span>{formatPrice(item.discountedPrice)}</span>
+                        <img
+                          className="w-24 h-20 mr-4 rounded"
+                          src={item.image}
+                          alt="ảnh sp"
+                        />
+                      </div>
                     </li>
                   ))
                 ) : (
@@ -166,11 +181,38 @@ const Header = () => {
                     </li>
                     <li className=" hover:bg-slate-100">
                       <div
-                        onClick={handleLogout}
+                        onClick={handleOpenModal}
                         className="px-4 py-2 w-full block text-center hover:text-[red] cursor-pointer"
                       >
                         Đăng Xuất
                       </div>
+                      <Modal
+                        show={openModal}
+                        size="md"
+                        onClose={() => setOpenModal(false)}
+                        popup
+                      >
+                        <Modal.Header />
+                        <Modal.Body>
+                          <div className="text-center">
+                            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                              Bạn có chắc chắn muốn đăng xuất ???
+                            </h3>
+                            <div className="flex justify-center gap-4">
+                              <Button color="failure" onClick={handleLogout}>
+                                Đồng ý
+                              </Button>
+                              <Button
+                                color="gray"
+                                onClick={() => setOpenModal(false)}
+                              >
+                                Từ chối
+                              </Button>
+                            </div>
+                          </div>
+                        </Modal.Body>
+                      </Modal>
                     </li>
                   </ul>
                 ) : (

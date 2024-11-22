@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setIsRefetch } from "../../../stores/slices/cardSlices";
 import { AppDispatch } from "../../../stores/store";
 import { formatPrice } from "../../../utils/helper";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -49,11 +50,6 @@ const ProductPage = () => {
   }, [fetchData, id]);
 
   const handleAddToCart = async () => {
-    if (!selectedSize) {
-      alert("Vui lòng chọn kích thước trước khi thêm vào giỏ hàng!");
-      return;
-    }
-
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     if (data && user?.id) {
@@ -83,9 +79,9 @@ const ProductPage = () => {
         setQuantity(1);
         setSelectedSize(null);
         dispatch(setIsRefetch());
-        alert("Thêm sản phẩm thành công!!!");
+        toast.success("Thêm sản phẩm thành công!!!");
       } catch (error) {
-        console.error("Có lỗi xảy ra khi thêm sản phẩm:", error);
+        toast.error("Có lỗi xảy ra khi thêm sản phẩm:");
       }
     }
   };
@@ -152,7 +148,7 @@ const ProductPage = () => {
                           key={index}
                           src={item}
                           alt={`Thumbnail ${index + 1}`}
-                          className={`w-20 h-20 mt-1 rounded object-cover cursor-pointer transition-transform transform hover:scale-110 hover:shadow-lg duration-300 border-4 ${
+                          className={`w-20 h-20 mt-1 rounded object-cover cursor-pointer border-4 ${
                             mainImage === item
                               ? "border-blue-500"
                               : "border-transparent"

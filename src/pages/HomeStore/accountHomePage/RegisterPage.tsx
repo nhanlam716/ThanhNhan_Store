@@ -9,6 +9,10 @@ import { AppDispatch, RootState } from "../../../stores/store";
 import { registerUser } from "../../../stores/slices/authSlices";
 import { useNavigate } from "react-router-dom";
 import WithNotAuth from "../../../hocs/WithNotAuth";
+import { toast } from "react-toastify";
+import { Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { useState } from "react";
 
 const RegisterPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +20,8 @@ const RegisterPage = () => {
   const { error, isLoading } = useSelector(
     (state: RootState) => state.authState
   );
+  const [openModal, setOpenModal] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -46,11 +52,12 @@ const RegisterPage = () => {
         const resultAction = await dispatch(registerUser(values));
 
         if (resultAction?.payload) {
-          alert("Đăng kí thành công");
+          toast.success("Đăng kí thành công");
           navigate("/login");
           resetForm();
         } else {
-          alert("Thông tin của bạn đã được đăng kí");
+          // toast.error("Thông tin của bạn đã được đăng kí");
+          setOpenModal(true);
           resetForm();
         }
       } catch (error) {
@@ -58,6 +65,11 @@ const RegisterPage = () => {
       }
     },
   });
+
+  const handleGoToLogin = () => {
+    navigate("/login");
+    setOpenModal(false);
+  };
 
   return (
     <>
@@ -145,6 +157,30 @@ const RegisterPage = () => {
               />
             </form>
           </div>
+          <Modal
+            show={openModal}
+            size="md"
+            onClose={() => setOpenModal(false)}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body>
+              <div className="text-center">
+                <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                  Thông tin của bạn đã được đăng kí !!!
+                </h3>
+                <div className="flex justify-center gap-4">
+                  <Button color="failure" onClick={handleGoToLogin}>
+                    Đi đến trang đăng nhập
+                  </Button>
+                  <Button color="gray" onClick={() => setOpenModal(false)}>
+                    Ở lại trang đăng kí
+                  </Button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
         </div>
       </div>
     </>

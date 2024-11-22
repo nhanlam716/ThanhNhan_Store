@@ -10,6 +10,7 @@ import { loginUser } from "../../../stores/slices/authSlices";
 import { RootState, AppDispatch } from "../../../stores/store";
 import { useNavigate } from "react-router-dom";
 import WithNotAuth from "../../../hocs/WithNotAuth";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,7 +45,7 @@ const LoginPage = () => {
           navigate("/account");
           resetForm();
         } else {
-          alert("Email hoặc mât khẩu của bạn không đúng");
+          toast.error("Email hoặc mât khẩu của bạn không đúng!!!");
           resetForm();
         }
       } catch (error) {

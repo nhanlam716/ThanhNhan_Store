@@ -9,20 +9,33 @@ import {
 } from "../../../stores/slices/cardSlices";
 import { AppDispatch, RootState } from "../../../stores/store";
 import { formatPrice } from "../../../utils/helper";
+import { Button, Modal } from "flowbite-react";
+import { useState } from "react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const ShoppingCard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<CardItems | null>(null);
 
   const cartItems = useSelector((state: RootState) => {
     return state.cartState.data;
   });
 
-  const onRemoveCart = async (data: CardItems) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm ??")) {
-      dispatch(removedCartItem(data));
+  const onRemoveCart = async () => {
+    if (selectedItem) {
+      dispatch(removedCartItem(selectedItem));
+      setOpenModal(false);
+      setSelectedItem(null);
     }
   };
+
+  // const onRemoveCart = async (data: CardItems) => {
+  //   if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm ??")) {
+  //     dispatch(removedCartItem(data));
+  //   }
+  // };
 
   const onIncreaseCart = (item: CardItems) => {
     const data = { ...item, quantity: Number(item?.quantity) + 1 };
@@ -73,7 +86,12 @@ const ShoppingCard = () => {
                         className="border-b flex items-center py-6"
                       >
                         <td className="flex-[8%] text-center flex justify-center cursor-pointer">
-                          <div onClick={() => onRemoveCart(item)}>
+                          <div
+                            onClick={() => {
+                              setSelectedItem(item);
+                              setOpenModal(true);
+                            }}
+                          >
                             <svg
                               width="38"
                               height="38"
@@ -172,6 +190,30 @@ const ShoppingCard = () => {
               </div>
             </div>
           </div>
+          <Modal
+            show={openModal}
+            size="md"
+            onClose={() => setOpenModal(false)}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body>
+              <div className="text-center">
+                <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                  Bạn có chắc chắn muốn xóa sản phẩm?
+                </h3>
+                <div className="flex justify-center gap-4">
+                  <Button color="failure" onClick={onRemoveCart}>
+                    Đồng ý
+                  </Button>
+                  <Button color="gray" onClick={() => setOpenModal(false)}>
+                    Từ chối
+                  </Button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
         </div>
       </div>
     </>
