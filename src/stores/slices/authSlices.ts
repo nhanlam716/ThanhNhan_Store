@@ -68,24 +68,6 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-// export const registerUser = createAsyncThunk<
-//   UserData,
-//   {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     password: string;
-//     confirmPassword: string;
-//   }
-// >("auth/registerUser", async (userData, { rejectWithValue }) => {
-//   try {
-//     const response = await axiosClient.post("/users", userData);
-//     return response.data;
-//   } catch (error) {
-//     return rejectWithValue(error);
-//   }
-// });
-
 const authSlice = createSlice({
   name: "auth",
   initialState: initialState,

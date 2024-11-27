@@ -16,6 +16,7 @@ import { setIsRefetch } from "../../../stores/slices/cardSlices";
 import { AppDispatch } from "../../../stores/store";
 import { formatPrice } from "../../../utils/helper";
 import { toast } from "react-toastify";
+import Modals from "../../../components/modal/Modals";
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [mainImage, setMainImage] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleClickSize = (size: any) => {
     setSelectedSize(size);
@@ -51,6 +53,12 @@ const ProductPage = () => {
 
   const handleAddToCart = async () => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+    if (!user?.id) {
+      // toast.error("Vui lòng đăng nhập trước khi chọn sản phẩm!");
+      setOpenModal(true);
+      return;
+    }
 
     if (data && user?.id) {
       try {
@@ -84,6 +92,11 @@ const ProductPage = () => {
         toast.error("Có lỗi xảy ra khi thêm sản phẩm:");
       }
     }
+  };
+
+  const handleGoToLogin = () => {
+    navigate("/login");
+    setOpenModal(false);
   };
 
   const onIncreaseCart = () => {
@@ -411,6 +424,16 @@ const ProductPage = () => {
               </div>
             )}
           </div>
+          <Modals
+            btnTitle="Đi đến trang đăng nhập"
+            btnTitle2="Ở lại trang sản phẩm"
+            title="Vui lòng đăng nhập trước khi chọn sản phẩm!"
+            isOpen={openModal}
+            onClose={() => setOpenModal(false)}
+            onclick={handleGoToLogin}
+            onclick2={() => setOpenModal(false)}
+          />
+          ;
         </div>
       </div>
     </div>

@@ -11,9 +11,8 @@ import { AppDispatch, RootState } from "../stores/store";
 import { fetchCartItemsAPI } from "../stores/slices/cardSlices";
 import { axiosClient } from "../api/axiosClient";
 import { IProduct } from "../types/types";
-import { Button, Modal } from "flowbite-react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { formatPrice } from "../utils/helper";
+import Modals from "../components/modal/Modals";
 
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -186,33 +185,15 @@ const Header = () => {
                       >
                         Đăng Xuất
                       </div>
-                      <Modal
-                        show={openModal}
-                        size="md"
+                      <Modals
+                        title="Bạn có chắc chắn muốn đăng xuất ???"
+                        btnTitle="Đồng ý"
+                        btnTitle2="Từ chối"
+                        isOpen={openModal}
                         onClose={() => setOpenModal(false)}
-                        popup
-                      >
-                        <Modal.Header />
-                        <Modal.Body>
-                          <div className="text-center">
-                            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                              Bạn có chắc chắn muốn đăng xuất ???
-                            </h3>
-                            <div className="flex justify-center gap-4">
-                              <Button color="failure" onClick={handleLogout}>
-                                Đồng ý
-                              </Button>
-                              <Button
-                                color="gray"
-                                onClick={() => setOpenModal(false)}
-                              >
-                                Từ chối
-                              </Button>
-                            </div>
-                          </div>
-                        </Modal.Body>
-                      </Modal>
+                        onclick2={() => setOpenModal(false)}
+                        onclick={handleLogout}
+                      />
                     </li>
                   </ul>
                 ) : (

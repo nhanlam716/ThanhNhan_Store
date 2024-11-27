@@ -1,104 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import InputParam from "../../../components/inputForm/InputParam";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import InputCheckOut from "../../../components/inputForm/InputCheckOut";
 import { Button, Label, Radio } from "flowbite-react";
-import { axiosClient } from "../../../api/axiosClient";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../stores/store";
-import { CardItems } from "../../../stores/slices/cardSlices";
 import { logout } from "../../../stores/slices/authSlices";
 import { formatPrice } from "../../../utils/helper";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Modal } from "flowbite-react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
-
-interface Location {
-  code: string;
-  name: string;
-}
+import {
+  HiOutlineCheckCircle,
+  HiOutlineExclamationCircle,
+} from "react-icons/hi";
+import TotalCheckout from "./totalCheckout/TotalCheckout";
+import FormProvinces from "./formProvinces/FormProvinces";
+import { axiosClient } from "../../../api/axiosClient";
+import { toast } from "react-toastify";
+import WithAuth from "../../../hocs/WithAuth";
 
 const Checkout = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { error, isLoading } = useSelector(
     (state: RootState) => state.authState
   );
+  const cartItems = useSelector((state: RootState) => {
+    return state.cartState.data;
+  });
+  const navigate = useNavigate();
 
-  const [provinces, setProvinces] = useState<Location[]>([]);
-  const [districts, setDistricts] = useState<Location[]>([]);
-  const [wards, setWards] = useState<Location[]>([]);
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
-  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
   const [deliveryOption, setDeliveryOption] = useState<string>("delivery");
   const [cashOption, setCashOption] = useState<string>("cash");
   const [openModal, setOpenModal] = useState(false);
   const [showPaymentMethod, setShowPaymentMethod] = useState(false);
+  const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
 
-  const cartItems = useSelector((state: RootState) => {
-    return state.cartState.data;
+  const user = JSON.parse(localStorage.getItem("user") || "[]");
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: `${user.lastName} ${user.firstName}`,
+      email: user?.email,
+      phoneNumber: "",
+      address: "",
+    },
+    validationSchema: Yup.object({
+      phoneNumber: Yup.string()
+        .matches(/^[0-9]{10}$/, "SĐT không hợp lệ")
+        .required("Vui lòng nhập SĐT"),
+      address: Yup.string().required("Vui lòng nhập thông tin địa chỉ"),
+    }),
+    onSubmit: () => {
+      setShowPaymentMethod(true);
+    },
   });
-
-  const totalMoney = (Items: CardItems[]) => {
-    const resultWithReduce = Items.reduce((result, cart) => {
-      const money = cart.quantity * cart.discountedPrice;
-      result = result + money;
-      return result;
-    }, 0);
-    return resultWithReduce;
-  };
-
-  useEffect(() => {
-    getProvinces();
-  }, []);
-
-  const getProvinces = async () => {
-    try {
-      const response = await axiosClient.get(
-        "https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1"
-      );
-      setProvinces(response.data.data);
-    } catch (error) {
-      console.error("Lỗi khi lấy danh sách tỉnh:", error);
-    }
-  };
-
-  const getDistricts = async (provinceCode: string) => {
-    try {
-      const response = await axiosClient.get(
-        `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${provinceCode}&limit=-1`
-      );
-      setDistricts(response.data.data);
-    } catch (error) {
-      console.error("Lỗi khi lấy danh sách huyện:", error);
-    }
-  };
-
-  const getWards = async (districtCode: string) => {
-    try {
-      const response = await axiosClient.get(
-        `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${districtCode}&limit=-1`
-      );
-      setWards(response.data.data);
-    } catch (error) {
-      console.error("Lỗi khi lấy danh sách xã:", error);
-    }
-  };
-
-  const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const provinceId = e.target.value;
-    setSelectedProvince(provinceId);
-    setDistricts([]);
-    setWards([]);
-    getDistricts(provinceId);
-  };
-
-  const handleDistrictChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const districtId = e.target.value;
-    setSelectedDistrict(districtId);
-    setWards([]);
-    getWards(districtId);
-  };
 
   const handleDeliveryOptionChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -110,7 +65,48 @@ const Checkout = () => {
     setCashOption(e.target.value);
   };
 
-  const user = JSON.parse(localStorage.getItem("user") || "[]");
+  const handleCompleteCheckout = async () => {
+    if (!cartItems || cartItems.length === 0) {
+      toast.error(
+        "Giỏ hàng trống. Vui lòng thêm sản phẩm trước khi thanh toán."
+      );
+      return;
+    }
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "[]");
+
+      const orderData = {
+        userId: user.id,
+        fullName: `${user.lastName} ${user.firstName}`,
+        email: user.email,
+        phoneNumber: formik.values.phoneNumber,
+        address: formik.values.address,
+        products: cartItems,
+        paymentMethod: cashOption,
+        deliveryOption: deliveryOption,
+        status: "Pending",
+        orderDate: new Date(),
+      };
+
+      await axiosClient.post(
+        "http://localhost:3000/CheckoutProductCard",
+        orderData
+      );
+
+      setIsCheckoutSuccess(true);
+    } catch (error) {
+      console.error("Lỗi khi hoàn tất thanh toán:", error);
+    }
+  };
+
+  // const resetCheckoutInfo = () => {
+  //   setShowPaymentMethod(false);
+  //   setCashOption("cash");
+  //   setDeliveryOption("delivery");
+  //   formik.resetForm();
+  //   dispatch(resetCart());
+  // };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -121,28 +117,6 @@ const Checkout = () => {
   const handleOpenModal = () => {
     setOpenModal(true);
   };
-
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      address: "",
-    },
-    validationSchema: Yup.object({
-      fullName: Yup.string().required("Vui lòng nhập họ tên"),
-      email: Yup.string()
-        .email("Email không hợp lệ")
-        .required("Vui lòng nhập email"),
-      phoneNumber: Yup.string()
-        .matches(/^[0-9]{10}$/, "SĐT không hợp lệ")
-        .required("Vui lòng nhập SĐT"),
-      address: Yup.string().required("Vui lòng nhập thông tin địa chỉ"),
-    }),
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
 
   return (
     <div>
@@ -165,12 +139,12 @@ const Checkout = () => {
                 </div>
                 {!showPaymentMethod ? (
                   <>
-                    <div className="mt-3">
-                      <h3 className="text-lg opacity-80">
-                        Thông tin giao hàng
-                      </h3>
-                    </div>
-                    {localStorage.getItem("user") ? (
+                    <form onSubmit={formik.handleSubmit}>
+                      <div className="mt-3">
+                        <h3 className="text-lg opacity-80">
+                          Thông tin giao hàng
+                        </h3>
+                      </div>
                       <div>
                         <div className="flex gap-4 mt-4">
                           <div>
@@ -222,23 +196,19 @@ const Checkout = () => {
                             </Modal>
                           </div>
                         </div>
-                        <form
-                          action=""
-                          onSubmit={formik.handleSubmit}
-                          className="mt-4"
-                        >
+                        <div className="mt-4">
                           <div className="mt-2">
                             <InputCheckOut
                               placeholder="Họ tên"
                               types="text"
-                              value={`${user.lastName} ${user.firstName}`}
+                              value={formik.values.fullName}
                             />
                           </div>
                           <div className="mt-3">
                             <InputCheckOut
                               placeholder="email"
                               types="email"
-                              value={user.email}
+                              value={formik.values.email}
                             />
                           </div>
                           <div className="mt-3">
@@ -257,186 +227,71 @@ const Checkout = () => {
                                 {formik.errors.phoneNumber}
                               </p>
                             )}
-                        </form>
-                      </div>
-                    ) : (
-                      <div>
-                        <div className="opacity-80">
-                          <InputParam
-                            description="Bạn đã có tài khoản?"
-                            link="Đăng nhập"
-                            href="./login"
-                          />
                         </div>
-                        <form action="" className="mt-4">
-                          <InputCheckOut
-                            placeholder="Họ và tên"
-                            types="text"
-                            name="fullName"
-                            value={formik.values.fullName}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
+                      </div>
+                      <div className="border-solid border border-[#ccc] rounded-lg mt-6">
+                        <div className="flex items-center gap-2 border-solid border-b border-[#ccc] p-4">
+                          <Radio
+                            id="delivery"
+                            name="deliveryOption"
+                            value="delivery"
+                            checked={deliveryOption === "delivery"}
+                            onChange={handleDeliveryOptionChange}
                           />
-                          {formik.touched.fullName &&
-                            formik.errors.fullName && (
-                              <p className="text-red-500">
-                                {formik.errors.fullName}
-                              </p>
-                            )}
-                          <div className="flex gap-3 mt-3">
-                            <div className="flex-[70%]">
-                              <InputCheckOut
-                                placeholder="Email"
-                                types="email"
-                                name="email"
-                                value={formik.values.email}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                          <Label htmlFor="delivery">Giao tận nơi</Label>
+                        </div>
+                        {deliveryOption === "delivery" && (
+                          <FormProvinces formik={formik} />
+                        )}
+                        <div className="flex items-center gap-2 border-solid border-t border-[#ccc] p-4">
+                          <Radio
+                            id="pickup"
+                            name="deliveryOption"
+                            value="pickup"
+                            checked={deliveryOption === "pickup"}
+                            onChange={handleDeliveryOptionChange}
+                          />
+                          <Label htmlFor="pickup">Nhận tại shop</Label>
+                        </div>
+                        {deliveryOption === "pickup" && (
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 border-solid border border-[#ccc] p-4 rounded">
+                              <Radio
+                                id="D52"
+                                name="deliveryOption"
+                                value="D52"
                               />
-                              {formik.touched.email && formik.errors.email && (
-                                <p className="text-red-500">
-                                  {formik.errors.email}
-                                </p>
-                              )}
+                              <Label htmlFor="D52">
+                                <strong>D52, Tân Bình: </strong>
+                                27 Đường D52, P. 12, Q. Tân Bình, TP. HCM |
+                                Hotline: 0901 377 722, Quận Tân Bình, Hồ Chí
+                                Minh
+                              </Label>
                             </div>
-                            <div className="flex-[30%]">
-                              <InputCheckOut
-                                placeholder="Số điện thoại"
-                                types="text"
-                                name="phoneNumber"
-                                value={formik.values.phoneNumber}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                            <div className="flex items-center gap-2 border-solid border border-[#ccc] p-4 rounded">
+                              <Radio
+                                id="PVB"
+                                name="deliveryOption"
+                                value="PVB"
                               />
-                              {formik.touched.phoneNumber &&
-                                formik.errors.phoneNumber && (
-                                  <p className="text-red-500">
-                                    {formik.errors.phoneNumber}
-                                  </p>
-                                )}
+                              <Label htmlFor="PVB">
+                                <strong>Phạm Văn Bạch, Tân Bình: </strong>
+                                48 Phạm Văn Bạch, P. 15, Q. Tân Bình, TP. HCM |
+                                Hotline: 0901 710 780, Quận Tân Bình, Hồ Chí
+                                Minh
+                              </Label>
                             </div>
                           </div>
-                        </form>
+                        )}
                       </div>
-                    )}
-                    <div className="border-solid border border-[#ccc] rounded-lg mt-6">
-                      <div className="flex items-center gap-2 border-solid border-b border-[#ccc] p-4">
-                        <Radio
-                          id="delivery"
-                          name="deliveryOption"
-                          value="delivery"
-                          checked={deliveryOption === "delivery"}
-                          onChange={handleDeliveryOptionChange}
-                        />
-                        <Label htmlFor="delivery">Giao tận nơi</Label>
-                      </div>
-                      {deliveryOption === "delivery" && (
-                        <form
-                          action=""
-                          onSubmit={formik.handleSubmit}
-                          className="my-4 p-4"
-                        >
-                          <div className="flex gap-3 mb-3">
-                            <select
-                              onChange={handleProvinceChange}
-                              className="flex-1 border-solid border rounded-md border-[#ccc]"
-                            >
-                              <option value="">Chọn Tỉnh/Thành phố</option>
-                              {provinces.map((province) => (
-                                <option
-                                  key={province.code}
-                                  value={province.code}
-                                >
-                                  {province.name}
-                                </option>
-                              ))}
-                            </select>
-                            <select
-                              onChange={handleDistrictChange}
-                              className="flex-1 border-solid border rounded-md border-[#ccc]"
-                              disabled={!selectedProvince}
-                            >
-                              <option value="">Chọn Quận/Huyện</option>
-                              {districts.map((district) => (
-                                <option
-                                  key={district.code}
-                                  value={district.code}
-                                >
-                                  {district.name}
-                                </option>
-                              ))}
-                            </select>
-                            <select
-                              onChange={(e) =>
-                                setSelectedDistrict(e.target.value)
-                              }
-                              className="flex-1 border-solid border rounded-md border-[#ccc]"
-                              disabled={!selectedDistrict}
-                            >
-                              <option value="">Chọn Phường/Xã</option>
-                              {wards.map((ward) => (
-                                <option key={ward.code} value={ward.code}>
-                                  {ward.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <InputCheckOut
-                            placeholder="Địa chỉ: Thôn, xóm, đường, số nhà"
-                            types="text"
-                            name="address"
-                            value={formik.values.address}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                          {formik.touched.address && formik.errors.address && (
-                            <p className="text-red-500">
-                              {formik.errors.address}
-                            </p>
-                          )}
-                        </form>
-                      )}
-                      <div className="flex items-center gap-2 border-solid border-t border-[#ccc] p-4">
-                        <Radio
-                          id="pickup"
-                          name="deliveryOption"
-                          value="pickup"
-                          checked={deliveryOption === "pickup"}
-                          onChange={handleDeliveryOptionChange}
-                        />
-                        <Label htmlFor="pickup">Nhận tại shop</Label>
-                      </div>
-                      {deliveryOption === "pickup" && (
-                        <div className="p-4">
-                          <div className="flex items-center gap-2 border-solid border border-[#ccc] p-4 rounded">
-                            <Radio id="D52" name="deliveryOption" value="D52" />
-                            <Label htmlFor="D52">
-                              <strong>D52, Tân Bình: </strong>
-                              27 Đường D52, P. 12, Q. Tân Bình, TP. HCM |
-                              Hotline: 0901 377 722, Quận Tân Bình, Hồ Chí Minh
-                            </Label>
-                          </div>
-                          <div className="flex items-center gap-2 border-solid border border-[#ccc] p-4 rounded">
-                            <Radio id="PVB" name="deliveryOption" value="PVB" />
-                            <Label htmlFor="PVB">
-                              <strong>Phạm Văn Bạch, Tân Bình: </strong>
-                              48 Phạm Văn Bạch, P. 15, Q. Tân Bình, TP. HCM |
-                              Hotline: 0901 710 780, Quận Tân Bình, Hồ Chí Minh
-                            </Label>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex justify-between items-center mt-3">
-                      <Link to="/shopping" className="text-[#338dbc]">
-                        Giỏ hàng
-                      </Link>
-                      <form action="" onSubmit={formik.handleSubmit}>
+                      <div className="flex justify-between items-center mt-3">
+                        <Link to="/shopping" className="text-[#338dbc]">
+                          Giỏ hàng
+                        </Link>
                         {error && <div style={{ color: "red" }}>{error}</div>}
                         <div className="flex mt-5">
                           <Button
                             color="blue"
-                            onClick={() => setShowPaymentMethod(true)}
                             type="submit"
                             disabled={isLoading}
                           >
@@ -445,31 +300,31 @@ const Checkout = () => {
                               : "Tiếp tục đến phương thức thanh toán"}
                           </Button>
                         </div>
-                      </form>
-                    </div>
-                    <div className="pt-8 pb-5">
-                      <Link
-                        to="/"
-                        className="flex items-center uppercase text-lg font-semibold opacity-80"
-                      >
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                      </div>
+                      <div className="pt-8 pb-5">
+                        <Link
+                          to="/"
+                          className="flex items-center uppercase text-lg font-semibold opacity-80"
                         >
-                          <path
-                            d="M16 4L8 12L16 20"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                        tiếp tục mua sắm
-                      </Link>
-                    </div>
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M16 4L8 12L16 20"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          tiếp tục mua sắm
+                        </Link>
+                      </div>
+                    </form>
                   </>
                 ) : (
                   <div className="flex-1 pt-5">
@@ -479,7 +334,13 @@ const Checkout = () => {
                     <div className="border-solid border border-[#ccc] rounded-lg mt-6">
                       <div className="flex items-center justify-between gap-2 p-4 cursor-pointer">
                         <div>
-                          <Radio id="ship" name="shipOption" value="ship" />
+                          <Radio
+                            id="ship"
+                            name="shipOption"
+                            value="ship"
+                            checked={true}
+                            readOnly
+                          />
                           <Label className="ml-2" htmlFor="ship">
                             Giao tận nơi
                           </Label>
@@ -614,8 +475,47 @@ const Checkout = () => {
                       >
                         Quay lại
                       </Button>
-                      <Button color="blue">Hoàn tất thanh toán</Button>
+                      <Button
+                        color="blue"
+                        disabled={isLoading}
+                        onClick={handleCompleteCheckout}
+                      >
+                        {isLoading ? "Đang xử lý..." : "Hoàn tất thanh toán"}
+                      </Button>
                     </div>
+                    <Modal
+                      show={isCheckoutSuccess}
+                      size="md"
+                      onClose={() => {
+                        setIsCheckoutSuccess(false);
+                        // resetCheckoutInfo();
+                      }}
+                      popup
+                    >
+                      <Modal.Header />
+                      <Modal.Body>
+                        <div className="text-center">
+                          <HiOutlineCheckCircle className="mx-auto mb-4 h-14 w-14 text-green-500" />
+                          <h3 className="mb-5 text-lg font-normal text-gray-500">
+                            Thanh toán thành công!
+                          </h3>
+                          <p>
+                            Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi.
+                          </p>
+                          <div className="flex justify-center mt-4">
+                            <Button
+                              color="green"
+                              onClick={() => {
+                                navigate("/account");
+                                setIsCheckoutSuccess(false);
+                              }}
+                            >
+                              Quay lại trang chủ
+                            </Button>
+                          </div>
+                        </div>
+                      </Modal.Body>
+                    </Modal>
                   </div>
                 )}
                 <div className="mt-8 border-t border-solid border-[#ccc]">
@@ -627,55 +527,11 @@ const Checkout = () => {
             </div>
           </>
           <div className="w-[40%] pt-[4em] pl-[4em] border-l-2 border-solid border-[#ccc]">
-            <div>
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex mb-4 relative">
-                  <img
-                    src={item.image}
-                    alt=""
-                    className="w-16 h-16 rounded-md"
-                  />
-                  <span className="absolute top-[-6px] left-[53px] text-[10px] text-center w-4 h-4 leading-4 bg-[#c54934] text-[#fff] rounded-full">
-                    {item.quantity}
-                  </span>
-                  <div className="ml-4">
-                    <p className="font-normal leading-[119%]">
-                      {item.name} - {item.codeSP} - {item.color}
-                    </p>
-                    <p className="text-gray-500">{item.size}</p>
-                  </div>
-                  <div className="ml-6 flex items-center">
-                    <p className="font-semibold opacity-85">
-                      {formatPrice(item.discountedPrice)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-              <div className="border-t py-6">
-                <div className="flex gap-4">
-                  <div className="flex-[75%]">
-                    <InputCheckOut placeholder="Mã giảm giá" types="text" />
-                  </div>
-                  <div className="flex-[25%]">
-                    <Button color="blue">Sử dụng</Button>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 px-0 py-7 border-t border-b border-solid border-[#ccc]">
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Tạm tính</span>
-                  <span>{totalMoney(cartItems).toLocaleString()} ₫</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Phí vận chuyển</span>
-                  <span>-</span>
-                </div>
-              </div>
-              <div className="flex justify-between text-xl font-semibold mt-6">
-                <span>Tổng cộng</span>
-                <span>{totalMoney(cartItems).toLocaleString()} VND</span>
-              </div>
-            </div>
+            {!showPaymentMethod ? (
+              <TotalCheckout shippingFee="-" />
+            ) : (
+              <TotalCheckout shippingFee={28000} />
+            )}
           </div>
         </div>
       </div>
@@ -683,4 +539,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default WithAuth(Checkout);

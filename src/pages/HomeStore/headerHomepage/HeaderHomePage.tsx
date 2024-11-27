@@ -15,12 +15,12 @@ import { axiosClient } from "../../../api/axiosClient";
 import Cards from "../../../components/card/Cards";
 import { IProduct } from "../../../types/types";
 
-type ProductParams = {
+interface ProductParams {
   type?: string | null;
   brand?: string | null;
   discountedPrice_gte?: number;
   discountedPrice_lte?: number;
-};
+}
 
 const HeaderHomePage = () => {
   const [searchParams] = useSearchParams();
@@ -38,6 +38,7 @@ const HeaderHomePage = () => {
   const [showPrice, setShowPrice] = useState(false);
   const [showBrand, setShowBrand] = useState(false);
   const [showSize, setShowSize] = useState(false);
+  const [sortOrder, setSortOrder] = useState<string | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
@@ -59,6 +60,7 @@ const HeaderHomePage = () => {
   //   }
   //   fetchData();
   // }, [type, brand]);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -69,9 +71,28 @@ const HeaderHomePage = () => {
           params.discountedPrice_lte = selectedPrice.lte;
         }
 
-        const response: any = await axiosClient.get("/productsCards", {
-          params,
-        });
+        let response: any = await axiosClient.get("/productsCards", { params });
+
+        if (sortOrder) {
+          response = response.sort((a: IProduct, b: IProduct) => {
+            switch (sortOrder) {
+              case "name-asc":
+                return a.name.localeCompare(b.name);
+
+              case "name-desc":
+                return b.name.localeCompare(a.name);
+
+              case "price-asc":
+                return a.discountedPrice - b.discountedPrice;
+
+              case "price-desc":
+                return b.discountedPrice - a.discountedPrice;
+
+              default:
+                return 0;
+            }
+          });
+        }
 
         setData(response);
       } catch (error) {
@@ -79,7 +100,7 @@ const HeaderHomePage = () => {
       }
     }
     fetchData();
-  }, [type, brand, selectedPrice]);
+  }, [type, brand, selectedPrice, sortOrder]);
 
   const handlePriceChange = (priceId: string | null) => {
     if (priceId) {
@@ -386,11 +407,36 @@ const HeaderHomePage = () => {
                     </label>
                     <select
                       name=""
-                      id=""
+                      id="sort"
                       className="p-3 w-48 h-full border-solid border-[#0e1c22] text-[#0e1c22] text-base bg-none outline-none"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        let order = null;
+
+                        switch (value) {
+                          case "Giá: Tăng dần":
+                            order = "price-asc";
+                            break;
+                          case "Giá: Giảm dần":
+                            order = "price-desc";
+                            break;
+                          case "Tên: A - Z":
+                            order = "name-asc";
+                            break;
+                          case "Tên: Z - A":
+                            order = "name-desc";
+                            break;
+                          default:
+                            order = null;
+                        }
+
+                        setSortOrder(order);
+                      }}
                     >
                       {OUTSTANDING_PRODUCTS.map((item, index) => (
-                        <option key={index}>{item}</option>
+                        <option key={index} value={item}>
+                          {item}
+                        </option>
                       ))}
                     </select>
                   </div>

@@ -6,9 +6,10 @@ const WithAuth = <P extends object>(
 ): React.FC<P> => {
   return (props: P) => {
     /** Đây là nơi viết điều kiện */
-    const isAuthenticated = localStorage.getItem("authToken");
+    const user = localStorage.getItem("user");
+    const parsedUser = JSON.parse(user ?? "{}");
 
-    if (!isAuthenticated) {
+    if (!parsedUser?.id) {
       return <Navigate to="/" />;
     }
 

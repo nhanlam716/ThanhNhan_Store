@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import InputTitle from "../../../components/inputForm/InputTitle";
 import Input from "../../../components/inputForm/Input";
 import InputParam from "../../../components/inputForm/InputParam";
@@ -11,6 +11,7 @@ import { RootState, AppDispatch } from "../../../stores/store";
 import { useNavigate } from "react-router-dom";
 import WithNotAuth from "../../../hocs/WithNotAuth";
 import { toast } from "react-toastify";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,11 @@ const LoginPage = () => {
   const { error, isLoading } = useSelector(
     (state: RootState) => state.authState
   );
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePassword = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -72,15 +78,28 @@ const LoginPage = () => {
               {formik.touched.email && formik.errors.email ? (
                 <div style={{ color: "red" }}>{formik.errors.email}</div>
               ) : null}
-              <Input
-                label="mật khẩu:"
-                types="password"
-                placeholder="Nhập mật khẩu"
-                name="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-              />
+              <div className="relative">
+                <Input
+                  label="mật khẩu:"
+                  types={passwordVisible ? "text" : "password"}
+                  placeholder="Nhập mật khẩu"
+                  name="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                />
+                <button
+                  type="button"
+                  onClick={togglePassword}
+                  className="absolute top-[68%] right-3 transform -translate-y-1/2"
+                >
+                  {passwordVisible ? (
+                    <HiEyeOff className="w-5 h-5 text-gray-500" />
+                  ) : (
+                    <HiEye className="w-5 h-5 text-gray-500" />
+                  )}
+                </button>
+              </div>
               {formik.touched.password && formik.errors.password ? (
                 <div style={{ color: "red" }}>{formik.errors.password}</div>
               ) : null}

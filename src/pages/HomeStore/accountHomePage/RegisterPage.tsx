@@ -10,9 +10,9 @@ import { registerUser } from "../../../stores/slices/authSlices";
 import { useNavigate } from "react-router-dom";
 import WithNotAuth from "../../../hocs/WithNotAuth";
 import { toast } from "react-toastify";
-import { Modal } from "flowbite-react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useState } from "react";
+import Modals from "../../../components/modal/Modals";
 
 const RegisterPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +21,16 @@ const RegisterPage = () => {
     (state: RootState) => state.authState
   );
   const [openModal, setOpenModal] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [conPasswordVisible, setConPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConPasswordVisibility = () => {
+    setConPasswordVisible(!conPasswordVisible);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -56,7 +66,6 @@ const RegisterPage = () => {
           navigate("/login");
           resetForm();
         } else {
-          // toast.error("Thông tin của bạn đã được đăng kí");
           setOpenModal(true);
           resetForm();
         }
@@ -119,25 +128,51 @@ const RegisterPage = () => {
               {formik.touched.email && formik.errors.email ? (
                 <div style={{ color: "red" }}>{formik.errors.email}</div>
               ) : null}
-              <Input
-                label="mật khẩu:"
-                types="password"
-                name="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-              />
+              <div className="relative">
+                <Input
+                  label="mật khẩu:"
+                  types={passwordVisible ? "text" : "password"}
+                  name="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute top-[68%] right-3 transform -translate-y-1/2"
+                >
+                  {passwordVisible ? (
+                    <HiEyeOff className="w-5 h-5 text-gray-500" />
+                  ) : (
+                    <HiEye className="w-5 h-5 text-gray-500" />
+                  )}
+                </button>
+              </div>
               {formik.touched.password && formik.errors.password ? (
                 <div style={{ color: "red" }}>{formik.errors.password}</div>
               ) : null}
-              <Input
-                label="nhập lại mật khẩu:"
-                types="password"
-                name="confirmPassword"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.confirmPassword}
-              />
+              <div className="relative">
+                <Input
+                  label="nhập lại mật khẩu:"
+                  types={conPasswordVisible ? "text" : "password"}
+                  name="confirmPassword"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirmPassword}
+                />
+                <button
+                  type="button"
+                  onClick={toggleConPasswordVisibility}
+                  className="absolute top-[68%] right-3 transform -translate-y-1/2"
+                >
+                  {conPasswordVisible ? (
+                    <HiEyeOff className="w-5 h-5 text-gray-500" />
+                  ) : (
+                    <HiEye className="w-5 h-5 text-gray-500" />
+                  )}
+                </button>
+              </div>
               {formik.touched.confirmPassword &&
               formik.errors.confirmPassword ? (
                 <div style={{ color: "red" }}>
@@ -157,30 +192,15 @@ const RegisterPage = () => {
               />
             </form>
           </div>
-          <Modal
-            show={openModal}
-            size="md"
+          <Modals
+            title="Thông tin của bạn đã được đăng kí !!!"
+            btnTitle="Đi đến trang đăng nhập"
+            btnTitle2="Ở lại trang đăng kí"
+            isOpen={openModal}
             onClose={() => setOpenModal(false)}
-            popup
-          >
-            <Modal.Header />
-            <Modal.Body>
-              <div className="text-center">
-                <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                  Thông tin của bạn đã được đăng kí !!!
-                </h3>
-                <div className="flex justify-center gap-4">
-                  <Button color="failure" onClick={handleGoToLogin}>
-                    Đi đến trang đăng nhập
-                  </Button>
-                  <Button color="gray" onClick={() => setOpenModal(false)}>
-                    Ở lại trang đăng kí
-                  </Button>
-                </div>
-              </div>
-            </Modal.Body>
-          </Modal>
+            onclick2={() => setOpenModal(false)}
+            onclick={handleGoToLogin}
+          />
         </div>
       </div>
     </>
