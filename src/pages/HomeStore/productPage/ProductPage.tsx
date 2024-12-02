@@ -433,7 +433,6 @@ const ProductPage = () => {
             onclick={handleGoToLogin}
             onclick2={() => setOpenModal(false)}
           />
-          ;
         </div>
       </div>
     </div>

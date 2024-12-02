@@ -31,12 +31,6 @@ const ShoppingCard = () => {
     }
   };
 
-  // const onRemoveCart = async (data: CardItems) => {
-  //   if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm ??")) {
-  //     dispatch(removedCartItem(data));
-  //   }
-  // };
-
   const onIncreaseCart = (item: CardItems) => {
     const data = { ...item, quantity: Number(item?.quantity) + 1 };
     dispatch(increaseCartItem(data));

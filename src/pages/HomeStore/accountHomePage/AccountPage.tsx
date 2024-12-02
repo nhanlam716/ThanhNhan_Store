@@ -19,13 +19,13 @@ interface OrderResponse {
 const AccountPage = () => {
   const [orders, setOrders] = useState<OrderResponse[] | null>();
   const [expanded, setExpanded] = useState<number | null>(null);
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = JSON.parse(localStorage.getItem("user") || "[]");
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response: any = await axiosClient.get(
-          `http://localhost:3000/CheckoutProductCard?userId=${user.id}`
+          `/CheckoutProductCard?userId=${user.id}`
         );
         setOrders(response);
       } catch (error) {

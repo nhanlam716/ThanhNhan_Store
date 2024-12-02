@@ -14,7 +14,7 @@ import {
   HiOutlineExclamationCircle,
 } from "react-icons/hi";
 import TotalCheckout from "./totalCheckout/TotalCheckout";
-import FormProvinces from "./formProvinces/FormProvinces";
+import FormProvinces, { ILocation } from "./formProvinces/FormProvinces";
 import { axiosClient } from "../../../api/axiosClient";
 import { toast } from "react-toastify";
 import WithAuth from "../../../hocs/WithAuth";
@@ -27,6 +27,14 @@ const Checkout = () => {
   const cartItems = useSelector((state: RootState) => {
     return state.cartState.data;
   });
+  const {
+    provinces,
+    districts,
+    wards,
+    selectedProvince,
+    selectedDistrict,
+    selectedWard,
+  } = useSelector((state: RootState) => state.locationState);
   const navigate = useNavigate();
 
   const [deliveryOption, setDeliveryOption] = useState<string>("delivery");
@@ -73,6 +81,20 @@ const Checkout = () => {
       return;
     }
 
+    const getSelectedName = (
+      list: ILocation[],
+      selectedId: string | null
+    ): string => {
+      const selectedItem = list.find((item) => item.id === selectedId);
+      return selectedItem ? selectedItem.name : "";
+    };
+
+    const provinceName = getSelectedName(provinces, selectedProvince);
+    const districtName = getSelectedName(districts, selectedDistrict);
+    const wardName = getSelectedName(wards, selectedWard);
+
+    const fullAddress = `${formik.values.address}, ${wardName}, ${districtName}, ${provinceName}`;
+
     try {
       const user = JSON.parse(localStorage.getItem("user") || "[]");
 
@@ -81,7 +103,7 @@ const Checkout = () => {
         fullName: `${user.lastName} ${user.firstName}`,
         email: user.email,
         phoneNumber: formik.values.phoneNumber,
-        address: formik.values.address,
+        address: fullAddress,
         products: cartItems,
         paymentMethod: cashOption,
         deliveryOption: deliveryOption,
@@ -89,24 +111,13 @@ const Checkout = () => {
         orderDate: new Date(),
       };
 
-      await axiosClient.post(
-        "http://localhost:3000/CheckoutProductCard",
-        orderData
-      );
+      await axiosClient.post("/CheckoutProductCard", orderData);
 
       setIsCheckoutSuccess(true);
     } catch (error) {
       console.error("Lỗi khi hoàn tất thanh toán:", error);
     }
   };
-
-  // const resetCheckoutInfo = () => {
-  //   setShowPaymentMethod(false);
-  //   setCashOption("cash");
-  //   setDeliveryOption("delivery");
-  //   formik.resetForm();
-  //   dispatch(resetCart());
-  // };
 
   const handleLogout = () => {
     dispatch(logout());

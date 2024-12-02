@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import InputCheckOut from "../../../../components/inputForm/InputCheckOut";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,23 +7,27 @@ import {
   fetchWards,
   resetDistrictsAndWards,
   resetWards,
+  setSelectedDistrict,
+  setSelectedProvince,
+  setSelectedWard,
 } from "../../../../stores/slices/locationSlices";
 import { AppDispatch, RootState } from "../../../../stores/store";
 
 export interface ILocation {
-  code: string;
+  id: string;
   name: string;
 }
 
 const FormProvinces = ({ formik }: { formik: any }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { provinces, districts, wards } = useSelector(
-    (state: RootState) => state.locationState
-  );
-
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
-  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
-  const [selectedWard, setSelectedWard] = useState<string | null>(null);
+  const {
+    provinces,
+    districts,
+    wards,
+    selectedProvince,
+    selectedDistrict,
+    selectedWard,
+  } = useSelector((state: RootState) => state.locationState);
 
   useEffect(() => {
     dispatch(fetchProvinces());
@@ -32,7 +36,7 @@ const FormProvinces = ({ formik }: { formik: any }) => {
   const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const provinceId = e.target.value;
     if (provinceId !== selectedProvince) {
-      setSelectedProvince(provinceId);
+      dispatch(setSelectedProvince(provinceId));
       dispatch(resetDistrictsAndWards());
       if (provinceId) dispatch(fetchDistricts(provinceId));
     }
@@ -41,7 +45,7 @@ const FormProvinces = ({ formik }: { formik: any }) => {
   const handleDistrictChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const districtId = e.target.value;
     if (districtId !== selectedDistrict) {
-      setSelectedDistrict(districtId);
+      dispatch(setSelectedDistrict(districtId));
       dispatch(resetWards());
       if (districtId) dispatch(fetchWards(districtId));
     }
@@ -49,7 +53,7 @@ const FormProvinces = ({ formik }: { formik: any }) => {
 
   const handleWardChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const wardId = e.target.value;
-    setSelectedWard(wardId);
+    dispatch(setSelectedWard(wardId));
   };
 
   return (
@@ -63,7 +67,7 @@ const FormProvinces = ({ formik }: { formik: any }) => {
           >
             <option value="">Chọn Tỉnh/Thành phố</option>
             {provinces.map((province) => (
-              <option key={province.code} value={province.code}>
+              <option key={province.id} value={province.id}>
                 {province.name}
               </option>
             ))}
@@ -76,7 +80,7 @@ const FormProvinces = ({ formik }: { formik: any }) => {
           >
             <option value="">Chọn Quận/Huyện</option>
             {districts.map((district) => (
-              <option key={district.code} value={district.code}>
+              <option key={district.id} value={district.id}>
                 {district.name}
               </option>
             ))}
@@ -89,7 +93,7 @@ const FormProvinces = ({ formik }: { formik: any }) => {
           >
             <option value="">Chọn Phường/Xã</option>
             {wards.map((ward) => (
-              <option key={ward.code} value={ward.code}>
+              <option key={ward.id} value={ward.id}>
                 {ward.name}
               </option>
             ))}

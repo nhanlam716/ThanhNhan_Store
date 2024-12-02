@@ -38,10 +38,12 @@ const InformationPage = () => {
 
   const onCloseNewModal = () => {
     setNewOpenModal(false);
+    setFormData(initialFormData);
   };
 
   const onCloseUpdateModal = () => {
     setUpdateOpenModal(false);
+    setFormData(initialFormData);
   };
 
   const handleAddNew = async () => {
@@ -80,6 +82,20 @@ const InformationPage = () => {
     } catch (error) {
       console.error(error);
       toast.error("Cập nhật thông tin thất bại!");
+    }
+  };
+
+  const handleEditUser = async () => {
+    try {
+      await axiosClient.put(`/users/${formData.id}`, formData);
+
+      localStorage.setItem("user", JSON.stringify(formData));
+
+      toast.success("Cập nhật thông tin người dùng thành công!");
+      setUpdateOpenModal(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Cập nhật thông tin người dùng thất bại!");
     }
   };
 
@@ -141,7 +157,9 @@ const InformationPage = () => {
                 </div>
                 <div className="flex justify-between flex-wrap text-xl mb-4">
                   <span className="w-[118px] text-[#868282]">Điện thoại</span>
-                  <span className="w-[220px] font-medium text-[black]">: </span>
+                  <span className="w-[220px] font-medium text-[black]">
+                    : {user.phone}
+                  </span>
                 </div>
                 <div className="flex justify-between flex-wrap text-xl mb-4">
                   <span className="w-[118px] text-[#868282]">Email</span>
@@ -151,13 +169,18 @@ const InformationPage = () => {
                 </div>
                 <div className="flex justify-between flex-wrap text-xl mb-4">
                   <span className="w-[118px] text-[#868282]">Địa chỉ</span>
-                  <span className="w-[220px] font-medium text-[black]">:</span>
+                  <span className="w-[220px] font-medium text-[black]">
+                    : {user.address}
+                  </span>
                 </div>
               </div>
               <div className="flex gap-3">
                 <div className="mt-1">
                   <h4
-                    onClick={() => setUpdateOpenModal(true)}
+                    onClick={() => {
+                      setFormData(user);
+                      setUpdateOpenModal(true);
+                    }}
                     className="text-xl font-medium text-[black] cursor-pointer hover:text-[red] duration-300"
                   >
                     Chỉnh sửa
@@ -167,32 +190,10 @@ const InformationPage = () => {
                     onClose={onCloseUpdateModal}
                     formData={formData}
                     onChange={handleInputChange}
-                    onSave={handleEditSave}
+                    onSave={handleEditUser}
                     title="Chỉnh sửa địa chỉ"
                     saveLabel="Lưu thông tin"
                   />
-                </div>
-                <div className="cursor-pointer">
-                  <svg
-                    width="38"
-                    height="38"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M18 6L6 18"
-                      stroke="black"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M6 6L18 18"
-                      stroke="black"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                    />
-                  </svg>
                 </div>
               </div>
             </div>

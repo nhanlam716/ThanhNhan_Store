@@ -161,15 +161,11 @@ const HeaderHomePage = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleTogglePrice = () => {
-    setShowPrice(!showPrice);
-  };
-  const handleToggleBrand = () => {
-    setShowBrand(!showBrand);
-  };
-  const handleToggleSize = () => {
-    setShowSize(!showSize);
-  };
+  const handleTogglePrice = () => setShowPrice(!showPrice);
+
+  const handleToggleBrand = () => setShowBrand(!showBrand);
+
+  const handleToggleSize = () => setShowSize(!showSize);
 
   return (
     <div className="my-6">

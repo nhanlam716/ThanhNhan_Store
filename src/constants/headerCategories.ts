@@ -1,8 +1,20 @@
 export const CATEGORY = [
-  { name: "Nike Mad Voltage Pack", href: "/" },
-  { name: "Adidas Vivid Horizon Pack", href: "/" },
-  { name: "Adidas F50", href: "/" },
-  { name: "Nike Mercurial", href: "/" },
+  {
+    name: "Nike Mad Voltage Pack",
+    href: "/allProducts?type=artificial-soccer-shoes&brand=madVoltagePack",
+  },
+  {
+    name: "Adidas Vivid Horizon Pack",
+    href: "/allProducts?type=artificial-soccer-shoes&brand=vividHorizonPack",
+  },
+  {
+    name: "Adidas F50",
+    href: "/allProducts?type=artificial-soccer-shoes&brand=adidasF50",
+  },
+  {
+    name: "Nike Mercurial",
+    href: "/allProducts?type=artificial-soccer-shoes&brand=nikeMercurial",
+  },
   { name: "Sản phẩm Hot Deals", href: "/allProducts?type=hotdeal" },
   {
     name: "Giày sân Cỏ Nhân Tạo",

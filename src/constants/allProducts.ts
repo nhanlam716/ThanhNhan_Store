@@ -58,6 +58,30 @@ export const CONTENT: any = {
       banner:
         "https://file.hstatic.net/200000278317/collection/main-category-banner-zocker1_171a3151f87e49e59422dd6af2409c57_master.jpg",
     },
+    madVoltagePack: {
+      title: "GIÀY ĐÁ BANH NIKE MAD VOLTAGE PACK",
+      description: "aaa",
+      banner:
+        "https://file.hstatic.net/200000278317/collection/main-category-banner-madvoltage_883b6d8b220a4049b51fe7b38f9f1e3f_master.jpg",
+    },
+    nikeMercurial: {
+      title: "GIÀY ĐÁ BANH NIKE MERCURIAL",
+      description: "aaa",
+      banner:
+        "https://file.hstatic.net/200000278317/collection/main-category-banner-nike-mercurial_d402ecdfd9764ac18d47b81b1525f4b7_master.jpg",
+    },
+    vividHorizonPack: {
+      title: "GIÀY ĐÁ BANH ADIDAS VIVID HORIZON PACK",
+      description: "aaa",
+      banner:
+        "https://file.hstatic.net/200000278317/collection/main-category-banner-vivid_01a937af22ca443798705894bcec79e8_master.jpg",
+    },
+    adidasF50: {
+      title: "GIÀY ĐÁ BANH ADIDAS F50",
+      description: "aaa",
+      banner:
+        "https://file.hstatic.net/200000278317/collection/main-category-banner-f50_f050580fc11943e6ba746d8d08d52e73_master.jpg",
+    },
   },
   "futsal-soccer-shoes": {
     title: "giày đá bóng Futsal",

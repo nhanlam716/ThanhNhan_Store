@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ILocation } from "../../pages/HomeStore/checkout/formProvinces/FormProvinces";
 import { axiosClient } from "../../api/axiosClient";
 
@@ -8,6 +8,9 @@ interface ProvinceState {
   wards: ILocation[];
   loading: boolean;
   error: string | null;
+  selectedProvince: string | null;
+  selectedDistrict: string | null;
+  selectedWard: string | null;
 }
 
 const initialState: ProvinceState = {
@@ -16,6 +19,9 @@ const initialState: ProvinceState = {
   wards: [],
   loading: false,
   error: null,
+  selectedProvince: null,
+  selectedDistrict: null,
+  selectedWard: null,
 };
 
 export const fetchProvinces = createAsyncThunk(
@@ -24,9 +30,9 @@ export const fetchProvinces = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await axiosClient.get(
-        "https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1"
+        "https://esgoo.net/api-tinhthanh/1/0.htm"
       );
-      return res.data.data;
+      return res.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -39,9 +45,9 @@ export const fetchDistricts = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await axiosClient.get(
-        `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${provinceCode}&limit=-1`
+        `https://esgoo.net/api-tinhthanh/2/${provinceCode}.htm`
       );
-      return res.data.data;
+      return res.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -54,9 +60,9 @@ export const fetchWards = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await axiosClient.get(
-        `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${districtCode}&limit=-1`
+        `https://esgoo.net/api-tinhthanh/3/${districtCode}.htm`
       );
-      return res.data.data;
+      return res.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -73,6 +79,15 @@ const locationSlice = createSlice({
     },
     resetWards(state) {
       state.wards = [];
+    },
+    setSelectedProvince(state, action: PayloadAction<string | null>) {
+      state.selectedProvince = action.payload;
+    },
+    setSelectedDistrict(state, action: PayloadAction<string | null>) {
+      state.selectedDistrict = action.payload;
+    },
+    setSelectedWard(state, action: PayloadAction<string | null>) {
+      state.selectedWard = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -115,5 +130,11 @@ const locationSlice = createSlice({
   },
 });
 
-export const { resetDistrictsAndWards, resetWards } = locationSlice.actions;
+export const {
+  resetDistrictsAndWards,
+  resetWards,
+  setSelectedProvince,
+  setSelectedDistrict,
+  setSelectedWard,
+} = locationSlice.actions;
 export default locationSlice.reducer;
